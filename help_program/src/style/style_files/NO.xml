@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd">
+  <NamedLayer>
+    <Name>NO</Name>
+    <UserStyle>
+      <Name>population</Name>
+      <Title>NO layer</Title>
+      <Abstract>a style that draws a Point for NO layer</Abstract>
+      <FeatureTypeStyle>
+        <Rule>
+          <Title xmlns="">Below 6500.0</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsLessThan>
+              <PropertyName>TOT_NO</PropertyName>
+              <Literal>6500.0</Literal>
+            </PropertyIsLessThan>
+          </Filter>
+          <PointSymbolizer xmlns="">
+            <Graphic>
+              <Mark>
+                <WellKnownName>circle</WellKnownName>
+                <Fill>
+                  <CssParameter name="fill">#6600CC</CssParameter>
+                </Fill>
+              </Mark>
+              <Size>
+                <Literal xmlns="http://www.opengis.net/ogc">5.0</Literal>
+              </Size>
+            </Graphic>
+          </PointSymbolizer>
+        </Rule>
+        <Rule>
+          <Title xmlns="">Between 6500.0 and 20000.0</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsBetween>
+              <PropertyName>TOT_NO</PropertyName>
+              <LowerBoundary>
+                <Literal>6500.0</Literal>
+              </LowerBoundary>
+              <UpperBoundary>
+                <Literal>20000.0</Literal>
+              </UpperBoundary>
+            </PropertyIsBetween>
+          </Filter>
+          <PointSymbolizer xmlns="">
+            <Graphic>
+              <Mark>
+                <WellKnownName>circle</WellKnownName>
+                <Fill>
+                  <CssParameter name="fill">#6600CC</CssParameter>
+                </Fill>
+              </Mark>
+              <Size>
+                <Literal xmlns="http://www.opengis.net/ogc">7.0</Literal>
+              </Size>
+            </Graphic>
+          </PointSymbolizer>
+        </Rule>
+        <Rule>
+          <Title xmlns="">Between 20000.0 and 40000.0</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsBetween>
+              <PropertyName>TOT_NO</PropertyName>
+              <LowerBoundary>
+                <Literal>20000.0</Literal>
+              </LowerBoundary>
+              <UpperBoundary>
+                <Literal>40000.0</Literal>
+              </UpperBoundary>
+            </PropertyIsBetween>
+          </Filter>
+          <PointSymbolizer xmlns="">
+            <Graphic>
+              <Mark>
+                <WellKnownName>circle</WellKnownName>
+                <Fill>
+                  <CssParameter name="fill">#6600CC</CssParameter>
+                </Fill>
+              </Mark>
+              <Size>
+                <Literal xmlns="http://www.opengis.net/ogc">9.0</Literal>
+              </Size>
+            </Graphic>
+          </PointSymbolizer>
+        </Rule>
+        <Rule>
+          <Title xmlns="">Above 75000.0</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsGreaterThan>
+              <PropertyName>TOT_NO</PropertyName>
+              <Literal>75000.0</Literal>
+            </PropertyIsGreaterThan>
+          </Filter>
+          <PointSymbolizer xmlns="">
+            <Graphic>
+              <Mark>
+                <WellKnownName>circle</WellKnownName>
+                <Fill>
+                  <CssParameter name="fill">#6600CC</CssParameter>
+                </Fill>
+              </Mark>
+              <Size>
+                <Literal xmlns="http://www.opengis.net/ogc">11.0</Literal>
+              </Size>
+            </Graphic>
+          </PointSymbolizer>
+        </Rule>
+      </FeatureTypeStyle>
+    </UserStyle>
+  </NamedLayer>
+</StyledLayerDescriptor>
+

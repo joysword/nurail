@@ -1,0 +1,73 @@
+/*defaults*/
+body 	{background:#B6B6B6 url('../images/bodybgDARKgray.jpg') repeat-x 0 0; color:#000000; margin:10px 0; padding:0; font-family:"Trebuchet MS", verdana, arial, "Times New Roman", serif; font-size:90%; }
+p		{margin:0; padding:0 0 15px 0; }
+a		{color:#000000; text-decoration:underline; }
+a:hover	{color:#225799; text-decoration:none;}
+.normalList {margin-top:-10px;}
+
+
+/*structural elements*/
+#skipLinks {position:absolute; margin-left:-9000px;}
+#container	{margin:0px auto; text-align:center; width: 1024px; }
+#holder		{width:100%; padding:20px 25px 6px 25px; background:#FFFFFF; text-align:left; }
+
+#navigation	{padding:7px 0px 6px 0px; background:#8DBD35; margin: 0px 0px 10px 0px }
+#header		{background:#988060 no-repeat 10px 10px; padding:0px; width:1024px; height:120px; }
+#logo		{background:url('../images/logoUrban.gif') no-repeat 10px 0; border-bottom:1px solid #DADADA; padding:5px 0px 70px 0px; }
+#content	{float:left; width:1020px; padding:20px 10px 0 0; line-height:160%; }
+#contentWide	{float:left; width:1020px; padding:20px 10px 0 0; line-height:160%; }
+#news		{float:right; width:250px; padding:65px 0; line-height:140%; text-align:justify; }
+.newsItem	{padding:15px 15px 5px 15px; background:#A28C6A; border:3px solid #988060; font-size:90%; margin-bottom:20px; font-size:85% }
+#footer		{clear:both; width:1000px; font-size:80%; background:#988060; color:#FFF; padding:8px; margin-left:0px; margin-bottom:10px; text-align:center; }
+#copyright	{ }
+.borderTable	{border-top: 1px solid #222;	border-bottom: 1px solid #222;	border-left: 1px solid #222;border-right: 1px solid #222; margin-bottom:15px;	}
+.borderTable tr:nth-child(odd) {background-color: #DDDDDD}
+.borderTable tr.altRow	{	background: rgb(249,249,249);	}
+.borderTable tr th	{	padding: 2px 4px;	background: rgb(233,233,233);	font-weight: bold;	}
+.borderTable tr td	{	padding: 3px 6px;	border: 1px solid #555;	}
+.floatLeft {float:left;}
+.caption {font-size:smaller; width:550px;}
+.captionSmall {font-size:smaller; margin-left:175px; margin-bottom:30px;}
+.centered {text-align:center; font-weight:bold;}
+.sympHeader4 {margin-bottom:-10px; font-size:110%;}
+#skipLinks {	position: absolute;	font-size: 80%; margin-left:-9000px;}
+#skipLinks ul {	margin: 0px;	padding: 0px;}
+#skipLinks li {	background-image: none;	display: inline;	margin: 0px;	padding-left: .5em;}
+#skipLinks a {	color: #FFFFFF;}
+
+
+
+/*headings*/
+.newsItem h1	{color:#000000; margin:0 0 10px 0; padding:0; font-size:130%; font-weight:normal; font-style:italic; }
+#content h1		{font-size:170%; font-weight:normal; line-height:130%; margin:0; padding:0 0 20px 0; font-style:italic;}
+#contentWide h1		{font-size:170%; font-weight:normal; line-height:130%; margin:0; padding:0 0 20px 0; font-style:italic;}
+#logo h1		{font-weight:normal; font-size:170%; margin:0; padding:0; color:#225799;font-style:italic; }
+.profTitle  { font-size:100%; margin: 0px 0px -2px 0px; color:#988060 }
+.profName  { font-size:125%; margin: 40px 0px 5px 0px; } 
+.profileLink {color:#8DBD35; }
+.profImg {float:right; height:120px; width:80px}
+/* .speakTitle  { font-size:100%; margin: 0px 0px -2px 0px; color:#988060 }
+.speakName  { font-size:110%; margin: 20px 0px 0px 0px; } 
+.speakLink {color:#8DBD35; } */
+
+/*navigation*/
+#navigation ul 		{margin:0px 0px 0px 0px; padding:0px; }
+#navigation li 		{margin:0px 15px 0px 15px; padding:0; list-style:none; display:inline; }
+#navigation a		{background-color:#8DBD35; color:#FFFFFF; padding:6px 15px 6px 15px; text-decoration:none; font-weight:bold; border:solid #8DBD35 0px }
+#navigation a:hover	{background-color:#CCCCCC; color:#000000; }
+#navigation a.curr  {background-color:#FFFFFF; color:#000000; border-bottom:0px; }
+
+
+#footer ul 		{margin:0; padding:0; }
+#footer li 		{margin:0; padding:0; list-style:none; display:inline; }
+#footer a		{color:#000000; font-weight:bold; padding:0 5px 0 0; text-decoration:underline; }
+#footer a:hover	{color:#000000; text-decoration:none; }
+
+
+/*shamelessly borrowed styles from http://www.positioniseverything.net/easyclearing.html*/
+.clearfix:after {content:"."; display:block; height:0; clear:both; visibility:hidden; }
+.clearfix {display:inline-block; }
+/* Hides from IE-mac \*/
+* html .clearfix {height:1%; }
+.clearfix {display:block; }
+/* End hide from IE-mac */

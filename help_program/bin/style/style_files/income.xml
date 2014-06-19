@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd">
+  <NamedLayer>
+    <Name>income</Name>
+    <UserStyle>
+      <Name>population</Name>
+      <Title>income layer</Title>
+      <Abstract>a style that draws a Polygon for income layer</Abstract>
+      <FeatureTypeStyle>
+        <Rule>
+          <Title>Below 25000</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsLessThan>
+              <PropertyName>MEDHINC</PropertyName>
+              <Literal>25000.0</Literal>
+            </PropertyIsLessThan>
+          </Filter>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#17E66A</CssParameter>
+              <CssParameter name="fill-opacity">0.3</CssParameter>
+            </Fill>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Title>Between 25000 and 40000</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsBetween>
+              <PropertyName>MEDHINC</PropertyName>
+              <LowerBoundary>
+                <Literal>25000.0</Literal>
+              </LowerBoundary>
+              <UpperBoundary>
+                <Literal>40000.0</Literal>
+              </UpperBoundary>
+            </PropertyIsBetween>
+          </Filter>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#17E64F</CssParameter>
+              <CssParameter name="fill-opacity">0.3</CssParameter>
+            </Fill>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Title>Between 40000 and 60000</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsBetween>
+              <PropertyName>MEDHINC</PropertyName>
+              <LowerBoundary>
+                <Literal>40000.0</Literal>
+              </LowerBoundary>
+              <UpperBoundary>
+                <Literal>60000.0</Literal>
+              </UpperBoundary>
+            </PropertyIsBetween>
+          </Filter>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#17E62B</CssParameter>
+              <CssParameter name="fill-opacity">0.3</CssParameter>
+            </Fill>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Title>Between 60000 and 90000</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsBetween>
+              <PropertyName>MEDHINC</PropertyName>
+              <LowerBoundary>
+                <Literal>60000.0</Literal>
+              </LowerBoundary>
+              <UpperBoundary>
+                <Literal>90000.0</Literal>
+              </UpperBoundary>
+            </PropertyIsBetween>
+          </Filter>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#39E617</CssParameter>
+              <CssParameter name="fill-opacity">0.3</CssParameter>
+            </Fill>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Title>Between 90000 and 140000</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsBetween>
+              <PropertyName>MEDHINC</PropertyName>
+              <LowerBoundary>
+                <Literal>90000.0</Literal>
+              </LowerBoundary>
+              <UpperBoundary>
+                <Literal>140000.0</Literal>
+              </UpperBoundary>
+            </PropertyIsBetween>
+          </Filter>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#93E617</CssParameter>
+              <CssParameter name="fill-opacity">0.3</CssParameter>
+            </Fill>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Title>Between 140000 and 200000</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsBetween>
+              <PropertyName>MEDHINC</PropertyName>
+              <LowerBoundary>
+                <Literal>140000.0</Literal>
+              </LowerBoundary>
+              <UpperBoundary>
+                <Literal>200000.0</Literal>
+              </UpperBoundary>
+            </PropertyIsBetween>
+          </Filter>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#E6CD17</CssParameter>
+              <CssParameter name="fill-opacity">0.3</CssParameter>
+            </Fill>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Title>Between 200000 and 260000</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsBetween>
+              <PropertyName>MEDHINC</PropertyName>
+              <LowerBoundary>
+                <Literal>200000.0</Literal>
+              </LowerBoundary>
+              <UpperBoundary>
+                <Literal>260000.0</Literal>
+              </UpperBoundary>
+            </PropertyIsBetween>
+          </Filter>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#E66117</CssParameter>
+              <CssParameter name="fill-opacity">0.3</CssParameter>
+            </Fill>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Title>Above 260000</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsGreaterThan>
+              <PropertyName>MEDHINC</PropertyName>
+              <Literal>260000.0</Literal>
+            </PropertyIsGreaterThan>
+          </Filter>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#E61717</CssParameter>
+              <CssParameter name="fill-opacity">0.3</CssParameter>
+            </Fill>
+          </PolygonSymbolizer>
+        </Rule>
+      </FeatureTypeStyle>
+    </UserStyle>
+  </NamedLayer>
+</StyledLayerDescriptor>
+

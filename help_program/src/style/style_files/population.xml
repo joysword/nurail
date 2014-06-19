@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd">
+  <NamedLayer>
+    <Name>population</Name>
+    <UserStyle>
+      <Name>population</Name>
+      <Title>population layer</Title>
+      <Abstract>a style that draws a Polygon for population layer</Abstract>
+      <FeatureTypeStyle>
+        <Rule>
+          <Title>Below 0.01</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsLessThan>
+              <PropertyName>D1B</PropertyName>
+              <Literal>0.01</Literal>
+            </PropertyIsLessThan>
+          </Filter>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#17E66A</CssParameter>
+              <CssParameter name="fill-opacity">0.3</CssParameter>
+            </Fill>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Title>Between 0.01 and 0.03</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsBetween>
+              <PropertyName>D1B</PropertyName>
+              <LowerBoundary>
+                <Literal>0.01</Literal>
+              </LowerBoundary>
+              <UpperBoundary>
+                <Literal>0.03</Literal>
+              </UpperBoundary>
+            </PropertyIsBetween>
+          </Filter>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#17E669</CssParameter>
+              <CssParameter name="fill-opacity">0.3</CssParameter>
+            </Fill>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Title>Between 0.03 and 0.05</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsBetween>
+              <PropertyName>D1B</PropertyName>
+              <LowerBoundary>
+                <Literal>0.03</Literal>
+              </LowerBoundary>
+              <UpperBoundary>
+                <Literal>0.05</Literal>
+              </UpperBoundary>
+            </PropertyIsBetween>
+          </Filter>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#17E667</CssParameter>
+              <CssParameter name="fill-opacity">0.3</CssParameter>
+            </Fill>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Title>Between 0.05 and 0.08</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsBetween>
+              <PropertyName>D1B</PropertyName>
+              <LowerBoundary>
+                <Literal>0.05</Literal>
+              </LowerBoundary>
+              <UpperBoundary>
+                <Literal>0.08</Literal>
+              </UpperBoundary>
+            </PropertyIsBetween>
+          </Filter>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#17E666</CssParameter>
+              <CssParameter name="fill-opacity">0.3</CssParameter>
+            </Fill>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Title>Between 0.08 and 0.12</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsBetween>
+              <PropertyName>D1B</PropertyName>
+              <LowerBoundary>
+                <Literal>0.08</Literal>
+              </LowerBoundary>
+              <UpperBoundary>
+                <Literal>0.12</Literal>
+              </UpperBoundary>
+            </PropertyIsBetween>
+          </Filter>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#17E664</CssParameter>
+              <CssParameter name="fill-opacity">0.3</CssParameter>
+            </Fill>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Title>Between 0.12 and 0.3</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsBetween>
+              <PropertyName>D1B</PropertyName>
+              <LowerBoundary>
+                <Literal>0.12</Literal>
+              </LowerBoundary>
+              <UpperBoundary>
+                <Literal>0.3</Literal>
+              </UpperBoundary>
+            </PropertyIsBetween>
+          </Filter>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#17E65A</CssParameter>
+              <CssParameter name="fill-opacity">0.3</CssParameter>
+            </Fill>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Title>Between 0.3 and 0.5</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsBetween>
+              <PropertyName>D1B</PropertyName>
+              <LowerBoundary>
+                <Literal>0.3</Literal>
+              </LowerBoundary>
+              <UpperBoundary>
+                <Literal>0.5</Literal>
+              </UpperBoundary>
+            </PropertyIsBetween>
+          </Filter>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#17E650</CssParameter>
+              <CssParameter name="fill-opacity">0.3</CssParameter>
+            </Fill>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Title>Between 0.5 and 0.8</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsBetween>
+              <PropertyName>D1B</PropertyName>
+              <LowerBoundary>
+                <Literal>0.5</Literal>
+              </LowerBoundary>
+              <UpperBoundary>
+                <Literal>0.8</Literal>
+              </UpperBoundary>
+            </PropertyIsBetween>
+          </Filter>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#17E640</CssParameter>
+              <CssParameter name="fill-opacity">0.3</CssParameter>
+            </Fill>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Title>Between 0.8 and 1.2</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsBetween>
+              <PropertyName>D1B</PropertyName>
+              <LowerBoundary>
+                <Literal>0.8</Literal>
+              </LowerBoundary>
+              <UpperBoundary>
+                <Literal>1.2</Literal>
+              </UpperBoundary>
+            </PropertyIsBetween>
+          </Filter>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#17E62B</CssParameter>
+              <CssParameter name="fill-opacity">0.3</CssParameter>
+            </Fill>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Title>Between 1.2 and 5</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsBetween>
+              <PropertyName>D1B</PropertyName>
+              <LowerBoundary>
+                <Literal>1.2</Literal>
+              </LowerBoundary>
+              <UpperBoundary>
+                <Literal>5.0</Literal>
+              </UpperBoundary>
+            </PropertyIsBetween>
+          </Filter>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#CBE617</CssParameter>
+              <CssParameter name="fill-opacity">0.3</CssParameter>
+            </Fill>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Title>Between 5 and 8</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsBetween>
+              <PropertyName>D1B</PropertyName>
+              <LowerBoundary>
+                <Literal>5.0</Literal>
+              </LowerBoundary>
+              <UpperBoundary>
+                <Literal>8.0</Literal>
+              </UpperBoundary>
+            </PropertyIsBetween>
+          </Filter>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#E66117</CssParameter>
+              <CssParameter name="fill-opacity">0.3</CssParameter>
+            </Fill>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Title>Above 8</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsGreaterThan>
+              <PropertyName>D1B</PropertyName>
+              <Literal>8.0</Literal>
+            </PropertyIsGreaterThan>
+          </Filter>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#E61717</CssParameter>
+              <CssParameter name="fill-opacity">0.3</CssParameter>
+            </Fill>
+          </PolygonSymbolizer>
+        </Rule>
+      </FeatureTypeStyle>
+    </UserStyle>
+  </NamedLayer>
+</StyledLayerDescriptor>
+

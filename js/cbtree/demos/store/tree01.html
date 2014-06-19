@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>The CheckBox Tree with Observable Store</title>
+    <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/dojo/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/esri/css/esri.css">
+    <style type="text/css">
+@import "../../themes/claro/claro.css";
+
+    </style>
+
+    <script type="text/javascript">
+      var dojoConfig = {
+            async: true,
+            parseOnLoad: true,
+            isDebug: false,
+            //baseUrl: "../../../",
+            packages: [
+              //{ name: "dojo",  location: "dojo" },
+              //{ name: "dijit", location: "dijit" },
+              { name: "cbtree",location: "/~sma/NURail/js/cbtree" }
+            ]
+      };
+    </script>
+    <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/"></script>
+    <!-- <script type="text/javascript" src="../../../dojo/dojo.js"></script> -->
+    <script type="text/javascript">
+		 			require(["dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dijit/layout/AccordionContainer", 
+			"dijit/form/Button", "dijit/form/Textarea", "dijit/Menu", "dijit/form/DropDownButton", "dijit/TooltipDialog",
+            "dijit/DropDownMenu", "dijit/MenuItem", "dojo/domReady!"]);
+         require(["dojo/ready",
+                                "dojo/store/Memory",
+                                "dojo/store/Observable",
+                                "cbtree/Tree",                 // Checkbox tree
+                                "cbtree/model/TreeStoreModel"  // ObjectStoreModel
+                                ], function(ready, Memory, Observable, Tree, ObjectStoreModel) {
+                                       var data = [
+                                            { id: 'indicator', name:'Map Chicago'},
+                                                { id: 'Planning', name:'Planning', parent: 'indicator'},
+                                                    { id: 'P-1', name:'Equity', parent: 'Planning' },
+                                                        { id: 'P-1A', name:'Frequency of service by income level', parent: 'P-1' },
+                                                        { id: 'P-1B', name:'Percentage of household income spent on transit', parent: 'P-1' },
+                                                        { id: 'P-1C', name:'Average household income, race and ethnic composition of impacted locations', parent: 'P-1' },
+                                                    { id: 'P-2', name:'Land Use Planning',parent: 'Planning' },
+                                                        { id: 'P-2A', name:'Greenfield land take per captia-mile or ton-mile', parent: 'P-2' },
+                                                        { id: 'P-2B', name:'Modeled square miles of development in greenfields', parent: 'P-2' },
+                                                        { id: 'P-2C', name:'Greenfield land take per captia-mile or ton-mile', parent: 'P-2' }
+                                            ];
+
+                                      var store = Observable( new Memory( { data: data }));
+                                      var model = new ObjectStoreModel({
+                                            store: store,
+                                            query: {id: "indicator"},
+                                            rootLabel: "Map Chicago",
+                                            checkedRoot: true
+                                      });
+                                                
+          
+          
+              ready(function(){
+                    var tree= new Tree( { model: model, id:"MapLayerTree" }, "CheckboxTree" );
+                    tree.startup();
+                                
+                });
+                                });
+        </script>
+
+  </head>
+
+  <body class="claro">
+    <h1 class="DemoTitle">The CheckBox Tree with Multi State CheckBoxes</h1>
+		<p>
+			A basic CheckBox Tree using an <u>observable</u> dojo/store Memory Store.
+		</p>
+   		          <div id="CheckboxTree">                      
+                    </div>    
+  </body>
+</html>

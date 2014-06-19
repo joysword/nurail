@@ -1,0 +1,80 @@
+<FeatureTypeStyle>
+	<Rule>
+		<Name>Below 20</Name>
+		<ogc:Filter>
+			<ogc:PropertyIsLessThanOrEqualTo>
+				<ogc:PropertyName>Max_Speed</ogc:PropertyName>
+				<ogc:Literal>20</ogc:Literal>
+			</ogc:PropertyIsLessThanOrEqualTo>
+		</ogc:Filter>
+		<LineSymbolizer>
+			<Stroke>
+				<CssParameter name="stroke">#E61717</CssParameter>
+			</Stroke>
+		</LineSymbolizer>
+	</Rule>
+</FeatureTypeStyle>
+<FeatureTypeStyle>
+	<Rule>
+		<Name>Between 20 and 40</Name>
+		<ogc:Filter>
+			<ogc:PropertyIsLessThanOrEqualTo>
+				<ogc:PropertyName>Max_Speed</ogc:PropertyName>
+				<ogc:Literal>40</ogc:Literal>
+			</ogc:PropertyIsLessThanOrEqualTo>
+		</ogc:Filter>
+		<LineSymbolizer>
+			<Stroke>
+				<CssParameter name="stroke">#E69317</CssParameter>
+			</Stroke>
+		</LineSymbolizer>
+	</Rule>
+</FeatureTypeStyle>
+<FeatureTypeStyle>
+	<Rule>
+		<Name>Between 40 and 60</Name>
+		<ogc:Filter>
+			<ogc:PropertyIsLessThanOrEqualTo>
+				<ogc:PropertyName>Max_Speed</ogc:PropertyName>
+				<ogc:Literal>60</ogc:Literal>
+			</ogc:PropertyIsLessThanOrEqualTo>
+		</ogc:Filter>
+		<LineSymbolizer>
+			<Stroke>
+				<CssParameter name="stroke">#BCE617</CssParameter>
+			</Stroke>
+		</LineSymbolizer>
+	</Rule>
+</FeatureTypeStyle>
+<FeatureTypeStyle>
+	<Rule>
+		<Name>Between 60 and 80</Name>
+		<ogc:Filter>
+			<ogc:PropertyIsLessThanOrEqualTo>
+				<ogc:PropertyName>Max_Speed</ogc:PropertyName>
+				<ogc:Literal>80</ogc:Literal>
+			</ogc:PropertyIsLessThanOrEqualTo>
+		</ogc:Filter>
+		<LineSymbolizer>
+			<Stroke>
+				<CssParameter name="stroke">#40E617</CssParameter>
+			</Stroke>
+		</LineSymbolizer>
+	</Rule>
+</FeatureTypeStyle>
+<FeatureTypeStyle>
+	<Rule>
+		<Name>Above 80</Name>
+		<ogc:Filter>
+			<ogc:PropertyIsGreaterThanOrEqualTo>
+				<ogc:PropertyName>Max_Speed</ogc:PropertyName>
+				<ogc:Literal>100</ogc:Literal>
+			</ogc:PropertyIsGreaterThanOrEqualTo>
+		</ogc:Filter>
+		<LineSymbolizer>
+			<Stroke>
+				<CssParameter name="stroke">#17E66A</CssParameter>
+			</Stroke>
+		</LineSymbolizer>
+	</Rule>
+</FeatureTypeStyle>

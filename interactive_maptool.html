@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=7, IE=9, IE=10">
+        <!--The viewport meta tag is used to improve the presentation and behavior of the samples
+        on iOS devices-->
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+        <title>NURail Interactive Map</title>
+        <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dijit/themes/claro/claro.css">
+        <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/esri/css/esri.css">
+
+        <style type="text/css">
+            /*cannot use following to replace with the above link rel why?*/
+            /*@import "http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dijit/themes/claro/claro.css"*/
+            /*@import "http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/esri/css/esri.css"*/
+            @import "js/cbtree/themes/claro/claro.css"; /*overide the argis claro style list otherwise the checkbox will not showup*/
+            @import "css/override.css";
+            @import "css/default.css";
+        </style>
+
+        <!-- <script type="text/javascript" src="js/dojo/dojo/dojo.js" data-dojo-config="isDebug:true,  parseOnLoad: true, async:true"></script> -->
+        
+        <!-- Note that the config must precede the arcgis api -->
+        <script>
+        var remote= true ; // false if runs at localhost; false if runs on nurail.uic.edu
+        
+        var cbtreeLocation;
+        if(remote) cbtreeLocation="/js/cbtree";
+        else cbtreeLocation="/NURail/js/cbtree";
+            var dojoConfig = {
+                parseOnLoad : true,
+                //baseUrl : '/' //does not work with arcgis jsapi
+                packages: [
+                    { name: "cbtree", location: cbtreeLocation }
+                ]
+            };
+        </script>
+
+        <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/"></script>
+        
+        <!-- build the leftlane -->
+        <script type="text/javascript" src="js/sol/leftPane.js"></script>
+        
+        <!-- build the map -->
+        <script type="text/javascript" src="js/sol/loadMap.js"></script>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        
+        <script type="text/javascript">
+            require(["dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dijit/layout/AccordionContainer", 
+            "dijit/form/Button", "dijit/form/Textarea", "dijit/Menu", "dijit/form/DropDownButton", "dijit/TooltipDialog",
+            "dijit/DropDownMenu", "dijit/MenuItem",  "cbtree/model/StoreModel-EXT","cbtree/util/QueryEngine", "cbtree/model/TreeStoreModel","dojo/domReady!"]);
+ 
+            function clearMap() {
+                map.graphics.clear();
+                
+                for(var idx in checkedLayers){
+                    var treeLayerName=WMSLayerNamesMapToTreeLayerNames[checkedLayers[idx]];
+                    //alert(treeLayerName);
+                    //uncheck all checked tree layers
+                    cbTreeModel.uncheck( {name: treeLayerName} );
+                    //remove the WMS_layer from the map
+                    map.removeLayer(layers[checkedLayers[idx]]);
+                    //hide the legend
+                    hideLegend(treeLayerName);
+                }
+                checkedLayers=[];
+            }
+            
+            function switchBaseMap() {
+                //"streets" , "satellite" , "hybrid", "topo", "gray", "oceans", "national-geographic", "osm"
+                //var form = document.form1;
+                //var selectedBaseMap = form.links.options[form.links.selectedIndex].value;
+                var curBaseMap = map.getBasemap();
+                if (curBaseMap== 'streets'){
+                    map.setBasemap('topo');
+                }
+                else{
+                    map.setBasemap('streets');
+                }                
+           }
+           
+           function printMap(){
+                //window.print()                
+                
+                var params = new esri.tasks.PrintParameters();
+                params.map = map;
+                //params.template = template;
+                //printer.execute(params, showPrintingResult);
+           }
+           
+           function showPrintingResult(){
+                dojo.byId("printResult").innerHTML="Download Map PDF";
+           }
+
+            function locate() {
+                map.graphics.clear();
+                var address = {
+                    "SingleLine" : dojo.byId("address").value
+                };
+                locator.outSpatialReference = map.spatialReference;
+                var options = {
+                    address : address,
+                    outFields : ["Loc_name"]
+                }
+                locator.addressToLocations(options);
+            }
+            
+        
+        </script>
+
+      
+        
+    </head>
+
+    <body class="claro">
+
+        <div id="mainWindow" data-dojo-type="dijit.layout.BorderContainer" design="headline" gutters="true" style="width:100%; height:100%;">
+
+            <div id="header" class="roundedCorners" data-dojo-type="dijit.layout.ContentPane" region="top"  style="background-image: url('img/header-bg.jpg')"> 
+                <!-- begin header -->
+                <div style="height: 63px; width:100%; vertical-align: top; text-align: left;  background-repeat: none;">
+                    <div style="float: left;padding:2px;">
+                        <a href="http://www.rita.dot.gov/" title="RITA" target="_blank"> <img src="img/sponsor_logo/DOT.jpg" width="120" height="50" border="none" > </a>
+                    </div>
+                    <div style="float: left;padding:2px;">
+                        <a href="https://sites.google.com/site/nurailcenter/" title="NURAIL CENTER" target="_blank"> <img src="img/sponsor_logo/nurail.jpg" width="100" height="50"border="none" > </a>
+                    </div>
+                    <div style="float: left;  padding:2px;" >
+                        <a href="http://www.utc.uic.edu/" title="UIC UTC" target="_blank"> <img src="img/sponsor_logo/UTC.jpg" height="50" border="none"class="toolImg"> </a>
+                    </div>
+                     
+                    <div style="float: left; padding:2px;">
+                        <a href="http://www.cn.ca/" title="Canadian National Railway Company" target="_blank"> <img src="img/sponsor_logo/CN.png" width="80" height="50"border="none" class="toolImg"> </a>
+                    </div>
+                    
+                    
+                    <div id="toolbar" dojoattachpoint="containerNode" widgetid="toolbar" class="toolFrame">
+                            <div id="clear" class="toolPanel" style="float: right">
+                                <a title="Clear Map" class="toolImg"><img src="img/i_recycle.png"  class="toolImg" onclick="clearMap()"></a>
+                            </div>
+                            
+                            <div id="help" class="toolPanel" style="float: right">
+                                <a title="Help" class="toolImg" href="../map.html#FQA" target="_blank"><img src="img/i_help.png"  class="toolImg"></a>
+                            </div>                            
+
+                            <!-- document.getElementById('baseMapMenu').style.display = 'block'; -->
+                            <div id="basemap" class="toolPanel" onclick="switchBaseMap()" style="float: right">
+                                <a title="Choose Map" class="toolImg"><img src="img/i_camera.png"  class="toolImg"></a>                            
+                            </div>
+                            
+                            <!-- <div id="print" class="toolPanel" onclick="printMap()" style="float: right">
+                                <a title="Print Map" class="toolImg"><img src="img/i_print.png" class="toolImg"></a>
+                            </div>
+                            <div id="printResult" style="float: right"></div> -->
+                            
+                        <span class="controllerStatus"></span>
+                    </div>
+                   <!-- <span>Mouse Coord:<span id="coord"></span> -->
+                        <br />
+                </div>
+            </div>
+
+            <div id="leftPane" data-dojo-type="dijit.layout.AccordionContainer" region="left" style="width: 30%">
+                
+                <div data-dojo-type="dijit.layout.ContentPane" title="Layers" >
+                    <!-- Layer Tree </br> -->
+                    <div id="CheckboxTree"></div>     
+                </div>
+                
+            </div>
+
+            <div id="centerPane" data-dojo-type="dijit.layout.BorderContainer" class="roundedCorners" region="center" gutters="false">
+                <div id="map" data-dojo-type="dijit.layout.ContentPane" class="roundedCorners " region="center"></div>
+
+                <!-- <div id="footer" class="roundedCorners" data-dojo-type="dijit.layout.ContentPane" region="bottom">
+                    This is the footer section
+                </div> -->
+            </div>
+            
+            <div id="rightPane" data-dojo-type="dijit.layout.AccordionContainer" region="right" style="width: 15% ; hight:50%">
+
+                <div data-dojo-type="dijit.layout.ContentPane" title="Find Layer Path" >
+                    <div>
+                        Search Layer <br/>
+                        <table style=" width: 100%;">
+                            <tbody>
+                                <tr>
+                                    <td width="60%"> <textarea type="text" id="layerSearchKeyword" style="width:90%;height:20px"/>Emission</textArea> </td>
+                                    <td width="40%" align="left"> <button data-dojo-type="dijit.form.Button" onclick="findRelevantLayer()" >Find</button> </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <textarea type="text" id="layerSearchResult" style="width:90%; height:100px;visibility:hidden"/></textArea>
+                    </div>                        
+                </div>
+                
+                <div data-dojo-type="dijit.layout.ContentPane" title="Go To Location">
+                    <p><font size=3> Enter an address/neighbourhood name/bus(train)station and the city name</font> <p/>
+                    <textarea type="text" id="address" width="80%"/>Morgan and Harrison Street, Chicago</textArea>
+                    <button daa-dojo-type="dijit.form.Button" onclick="locate()">
+                        Locate
+                    </button>
+                    <br />
+                </div>
+                
+                <div data-dojo-type="dijit.layout.ContentPane"  title="Layer Legend" >
+                    <div id="legendPane"></div>  <!-- cannot put id in the last line, to be registered by rightPane.js -->
+                    
+                    <!-- transportation category -->
+                    <div id="railSpeedLegendLabel"></div>
+                    <div id="railSpeedLegendPicture"></div>
+                    
+                    <!-- demographics category -->
+                    <div id="MedianLegendLabel"></div>
+                    <div id="MedianLegendPicture"></div>
+                    <div id="EmploymentLegendLabel"></div>
+                    <div id="EmploymentLegendPicture"></div>
+                    <div id="PopulationLegendLabel"></div>
+                    <div id="PopulationLegendPicture"></div>                    
+                    
+                    
+                    <!-- landuse category -->
+                    <div id="landuseLegendLabel"></div>
+                    <div id="landuseLegendPicture"></div>
+                    
+                    <!-- emission catogory -->
+                    <!-- <div id="allPollutantsLegendLabel"></div> -->
+                    <!-- <div id="allPollutantsLegendPicture"></div> -->
+                    <div id="CarbonLegendLabel"></div>
+                    <div id="CarbonLegendPicture"></div>
+                    <div id="COLegendLabel"></div>
+                    <div id="COLegendPicture"></div>
+                    <div id="HydrocarbonLegendLabel"></div>
+                    <div id="HydrocarbonLegendPicture"></div>
+                    <div id="NOxLegendLabel"></div>
+                    <div id="NOxLegendPicture"></div>
+                    <div id="PM10LegendLabel"></div>
+                    <div id="PM10LegendPicture"></div>
+                    
+                    <!-- areas to avoid -->
+                    <div id="seismicLegendLabel"></div>
+                    <div id="seismicLegendPicture"></div>
+                    <div id="socialLegendLabel"></div>
+                    <div id="socialLegendPicture"></div>
+
+                </div>
+                
+            </div>
+            
+            <!-- <div id="FindLayerPane" data-dojo-type="dijit.layout.AccordionContainer" region="right" style="width: 13% ; hight:50%"> -->
+            
+            
+            
+        </div>
+
+    </body>
+</html>

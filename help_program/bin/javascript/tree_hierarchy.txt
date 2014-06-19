@@ -1,0 +1,61 @@
+Rail Infrastructure
+    Intermodal Terminal :  intermodal_facility
+    //Rail Yard (need data)
+    Grade Crossing : Illinois_Grade_Crossings
+    //(need 0.5 mile buffer around train stations)
+    Public Transit Facility : transit_station
+    Railroad Speed : Rail_Lines_w_Train_Speed
+Community Profile 
+    County Boundary : county
+    //Community Area Boundary (need Chicago community areas and suburban boundaries)
+    Land Use 
+        Agriculture : agriculture
+        Commercial/Office : commercial
+        Forest/Grassland : forest
+        Industrial : industrial
+        Institutional : institutional
+        Open space : open_space
+        Residential: residential
+        Transportation: transportation
+        Vacant : vacant
+        Water : water
+        Wetland: wetland
+Safety
+    Rail Safety Performance
+        Derailment Accident : accident
+        //Hazardous Materials Incident (need data) 
+        //Accident Rate (need data)
+        //Fatality Rate (need data)
+    Natural Hazard Areas 
+        Flood Hazard : flood
+        Tornado Hazard: tornado
+        Seismic Hazard: seismic
+        //NOAA Social Vulnerability Index
+Livable Communities 
+    Transit Accessibility
+        Employment Density: employment
+        Population Density: population
+    Cultural Resources
+        Archeologic Resource: archeological
+        Historical Site: chicago_landmark
+        Trail: trails
+Transit Equity
+    Median Household Income: income
+        //Percentage of Minority Individuals
+Environmental Sustainability  
+    Modeled Air Emissions  
+        Emission Hotspots : hotspot_buffer
+        //SO2 (need data) 
+        Carbon:  carbon
+        Carbon Monoxide: co
+        NOx : no
+        Hydrocarbon: hydrocarbon
+        PM10: pm
+    Groundwater
+        Alluvial/Glacial Aquifer:  alluvial_glacial_aquifers
+        Shallowest Principal Aquifer:shallowest_principal_aquifers
+    Habitat 
+        Bird Presence : bird
+        Critical Habitat: habitat
+        Natural Area: natural_area
+        Riparian Zone : riverine

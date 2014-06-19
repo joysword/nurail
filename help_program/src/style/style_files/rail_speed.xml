@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd">
+  <NamedLayer>
+    <Name>rail_speed</Name>
+    <UserStyle>
+      <Name>population</Name>
+      <Title>rail_speed layer</Title>
+      <Abstract>a style that draws a Line for rail_speed layer</Abstract>
+      <FeatureTypeStyle>
+        <Rule>
+          <Title>Below 20.0</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsLessThan>
+              <PropertyName>Max_Speed</PropertyName>
+              <Literal>20.0</Literal>
+            </PropertyIsLessThan>
+          </Filter>
+          <LineSymbolizer>
+            <Stroke>
+              <CssParameter name="stroke">#E61717</CssParameter>
+            </Stroke>
+          </LineSymbolizer>
+          <LineSymbolizer>
+            <Stroke>
+              <GraphicStroke>
+                <Graphic>
+                  <Mark>
+                    <WellKnownName>shape://vertline</WellKnownName>
+                    <Stroke>
+                      <CssParameter name="stroke">#E61717</CssParameter>
+                      <CssParameter name="stroke-width">1</CssParameter>
+                    </Stroke>
+                  </Mark>
+                </Graphic>
+              </GraphicStroke>
+            </Stroke>
+          </LineSymbolizer>
+        </Rule>
+        <Rule>
+          <Title>Between 20.0 and 40.0</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsBetween>
+              <PropertyName>Max_Speed</PropertyName>
+              <LowerBoundary>
+                <Literal>20.0</Literal>
+              </LowerBoundary>
+              <UpperBoundary>
+                <Literal>40.0</Literal>
+              </UpperBoundary>
+            </PropertyIsBetween>
+          </Filter>
+          <LineSymbolizer>
+            <Stroke>
+              <CssParameter name="stroke">#E69317</CssParameter>
+            </Stroke>
+          </LineSymbolizer>
+          <LineSymbolizer>
+            <Stroke>
+              <GraphicStroke>
+                <Graphic>
+                  <Mark>
+                    <WellKnownName>shape://vertline</WellKnownName>
+                    <Stroke>
+                      <CssParameter name="stroke">#E69317</CssParameter>
+                      <CssParameter name="stroke-width">1</CssParameter>
+                    </Stroke>
+                  </Mark>
+                </Graphic>
+              </GraphicStroke>
+            </Stroke>
+          </LineSymbolizer>
+        </Rule>
+        <Rule>
+          <Title>Between 40.0 and 60.0</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsBetween>
+              <PropertyName>Max_Speed</PropertyName>
+              <LowerBoundary>
+                <Literal>40.0</Literal>
+              </LowerBoundary>
+              <UpperBoundary>
+                <Literal>60.0</Literal>
+              </UpperBoundary>
+            </PropertyIsBetween>
+          </Filter>
+          <LineSymbolizer>
+            <Stroke>
+              <CssParameter name="stroke">#BCE617</CssParameter>
+            </Stroke>
+          </LineSymbolizer>
+          <LineSymbolizer>
+            <Stroke>
+              <GraphicStroke>
+                <Graphic>
+                  <Mark>
+                    <WellKnownName>shape://vertline</WellKnownName>
+                    <Stroke>
+                      <CssParameter name="stroke">#BCE617</CssParameter>
+                      <CssParameter name="stroke-width">1</CssParameter>
+                    </Stroke>
+                  </Mark>
+                </Graphic>
+              </GraphicStroke>
+            </Stroke>
+          </LineSymbolizer>
+        </Rule>
+        <Rule>
+          <Title>Between 60.0 and 80.0</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsBetween>
+              <PropertyName>Max_Speed</PropertyName>
+              <LowerBoundary>
+                <Literal>60.0</Literal>
+              </LowerBoundary>
+              <UpperBoundary>
+                <Literal>80.0</Literal>
+              </UpperBoundary>
+            </PropertyIsBetween>
+          </Filter>
+          <LineSymbolizer>
+            <Stroke>
+              <CssParameter name="stroke">#40E617</CssParameter>
+            </Stroke>
+          </LineSymbolizer>
+          <LineSymbolizer>
+            <Stroke>
+              <GraphicStroke>
+                <Graphic>
+                  <Mark>
+                    <WellKnownName>shape://vertline</WellKnownName>
+                    <Stroke>
+                      <CssParameter name="stroke">#40E617</CssParameter>
+                      <CssParameter name="stroke-width">1</CssParameter>
+                    </Stroke>
+                  </Mark>
+                </Graphic>
+              </GraphicStroke>
+            </Stroke>
+          </LineSymbolizer>
+        </Rule>
+        <Rule>
+          <Title>Above 100.0</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsGreaterThan>
+              <PropertyName>Max_Speed</PropertyName>
+              <Literal>100.0</Literal>
+            </PropertyIsGreaterThan>
+          </Filter>
+          <LineSymbolizer>
+            <Stroke>
+              <CssParameter name="stroke">#17E66A</CssParameter>
+            </Stroke>
+          </LineSymbolizer>
+          <LineSymbolizer>
+            <Stroke>
+              <GraphicStroke>
+                <Graphic>
+                  <Mark>
+                    <WellKnownName>shape://vertline</WellKnownName>
+                    <Stroke>
+                      <CssParameter name="stroke">#17E66A</CssParameter>
+                      <CssParameter name="stroke-width">1</CssParameter>
+                    </Stroke>
+                  </Mark>
+                </Graphic>
+              </GraphicStroke>
+            </Stroke>
+          </LineSymbolizer>
+        </Rule>
+      </FeatureTypeStyle>
+    </UserStyle>
+  </NamedLayer>
+</StyledLayerDescriptor>
+

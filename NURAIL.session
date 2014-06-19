@@ -1,0 +1,20 @@
+<NotepadPlus>
+    <Session activeView="0">
+        <mainView activeIndex="3">
+            <File firstVisibleLine="3" xOffset="0" scrollWidth="1963" startPos="382" endPos="429" selMode="0" lang="Normal Text" encoding="-1" filename="E:\Dropbox\NURail\README.txt" />
+            <File firstVisibleLine="219" xOffset="0" scrollWidth="27950" startPos="12703" endPos="12703" selMode="0" lang="HTML" encoding="-1" filename="E:\Dropbox\NURail\interactive_maptool.html" />
+            <File firstVisibleLine="273" xOffset="0" scrollWidth="27950" startPos="4423" endPos="4423" selMode="0" lang="Javascript" encoding="-1" filename="E:\Dropbox\NURail\js\sol\loadMap.js" />
+            <File firstVisibleLine="503" xOffset="0" scrollWidth="33865" startPos="22386" endPos="22386" selMode="0" lang="Javascript" encoding="-1" filename="E:\Dropbox\NURail\js\sol\leftPane.js" />
+            <File firstVisibleLine="20" xOffset="0" scrollWidth="33865" startPos="999" endPos="1028" selMode="0" lang="Normal Text" encoding="-1" filename="E:\Dropbox\NURail\help_program\src\javascript\tree_hierarchy.txt" />
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="21398" startPos="637" endPos="637" selMode="0" lang="HTML" encoding="-1" filename="E:\Dropbox\NURail\index.html" />
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="21398" startPos="783" endPos="783" selMode="0" lang="HTML" encoding="-1" filename="E:\Dropbox\NURail\checklist.html" />
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="21398" startPos="844" endPos="844" selMode="0" lang="HTML" encoding="-1" filename="E:\Dropbox\NURail\resource.html" />
+            <File firstVisibleLine="82" xOffset="0" scrollWidth="21398" startPos="4792" endPos="4738" selMode="0" lang="HTML" encoding="-1" filename="E:\Dropbox\NURail\map.html" />
+            <File firstVisibleLine="8" xOffset="0" scrollWidth="21398" startPos="1232" endPos="1170" selMode="0" lang="HTML" encoding="-1" filename="E:\Dropbox\NURail\methodology.html" />
+            <File firstVisibleLine="7" xOffset="0" scrollWidth="1911" startPos="1206" endPos="1206" selMode="0" lang="HTML" encoding="-1" filename="E:\Dropbox\NURail\OurTeam.html" />
+            <File firstVisibleLine="27" xOffset="0" scrollWidth="21398" startPos="3434" endPos="3434" selMode="0" lang="CSS" encoding="-1" filename="E:\Dropbox\NURail\css\bizstyle.css" />
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="3614" startPos="371" endPos="371" selMode="0" lang="Normal Text" encoding="-1" filename="E:\Dropbox\NURail\help_program\src\style\RetrieveLegendPicture.txt" />
+        </mainView>
+        <subView activeIndex="0" />
+    </Session>
+</NotepadPlus>

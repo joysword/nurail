@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd">
+  <NamedLayer>
+    <Name>hydrocarbon</Name>
+    <UserStyle>
+      <Name>population</Name>
+      <Title>hydrocarbon layer</Title>
+      <Abstract>a style that draws a Point for hydrocarbon layer</Abstract>
+      <FeatureTypeStyle>
+        <Rule>
+          <Title xmlns="">Below 250.0</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsLessThan>
+              <PropertyName>TOT_HC</PropertyName>
+              <Literal>250.0</Literal>
+            </PropertyIsLessThan>
+          </Filter>
+          <PointSymbolizer xmlns="">
+            <Graphic>
+              <Mark>
+                <WellKnownName>circle</WellKnownName>
+                <Fill>
+                  <CssParameter name="fill">#FF99FF</CssParameter>
+                </Fill>
+              </Mark>
+              <Size>
+                <Literal xmlns="http://www.opengis.net/ogc">5.0</Literal>
+              </Size>
+            </Graphic>
+          </PointSymbolizer>
+        </Rule>
+        <Rule>
+          <Title xmlns="">Between 250.0 and 800.0</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsBetween>
+              <PropertyName>TOT_HC</PropertyName>
+              <LowerBoundary>
+                <Literal>250.0</Literal>
+              </LowerBoundary>
+              <UpperBoundary>
+                <Literal>800.0</Literal>
+              </UpperBoundary>
+            </PropertyIsBetween>
+          </Filter>
+          <PointSymbolizer xmlns="">
+            <Graphic>
+              <Mark>
+                <WellKnownName>circle</WellKnownName>
+                <Fill>
+                  <CssParameter name="fill">#FF99FF</CssParameter>
+                </Fill>
+              </Mark>
+              <Size>
+                <Literal xmlns="http://www.opengis.net/ogc">7.0</Literal>
+              </Size>
+            </Graphic>
+          </PointSymbolizer>
+        </Rule>
+        <Rule>
+          <Title xmlns="">Between 800.0 and 1600.0</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsBetween>
+              <PropertyName>TOT_HC</PropertyName>
+              <LowerBoundary>
+                <Literal>800.0</Literal>
+              </LowerBoundary>
+              <UpperBoundary>
+                <Literal>1600.0</Literal>
+              </UpperBoundary>
+            </PropertyIsBetween>
+          </Filter>
+          <PointSymbolizer xmlns="">
+            <Graphic>
+              <Mark>
+                <WellKnownName>circle</WellKnownName>
+                <Fill>
+                  <CssParameter name="fill">#FF99FF</CssParameter>
+                </Fill>
+              </Mark>
+              <Size>
+                <Literal xmlns="http://www.opengis.net/ogc">9.0</Literal>
+              </Size>
+            </Graphic>
+          </PointSymbolizer>
+        </Rule>
+        <Rule>
+          <Title xmlns="">Above 3000.0</Title>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <PropertyIsGreaterThan>
+              <PropertyName>TOT_HC</PropertyName>
+              <Literal>3000.0</Literal>
+            </PropertyIsGreaterThan>
+          </Filter>
+          <PointSymbolizer xmlns="">
+            <Graphic>
+              <Mark>
+                <WellKnownName>circle</WellKnownName>
+                <Fill>
+                  <CssParameter name="fill">#FF99FF</CssParameter>
+                </Fill>
+              </Mark>
+              <Size>
+                <Literal xmlns="http://www.opengis.net/ogc">11.0</Literal>
+              </Size>
+            </Graphic>
+          </PointSymbolizer>
+        </Rule>
+      </FeatureTypeStyle>
+    </UserStyle>
+  </NamedLayer>
+</StyledLayerDescriptor>
+

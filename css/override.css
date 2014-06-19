@@ -1,0 +1,43 @@
+.tundra .dijitAccordionContainer{ 
+	font-family: Arial; 
+	width:100%;
+	font-size: 80%;
+}
+.tundra #map .dijitButtonNode { 
+	font-family: Arial, sans;
+	width: 80px;
+	font-size: 80%;
+}
+.tundra .dijitAccordionContainer{
+/*	width: 100px;
+	font-size: 80%;
+*/
+}
+
+.tundra .dijitComboBox {
+	width: 100%;	
+}
+
+.tundra .dijitMenuItem {
+	font-size: 80%;	
+}
+
+.dijitReset {
+	color: #333;
+}
+
+.tundra .dijitToolbar {
+	background-image: url(../images/titleBar.png);
+}
+
+.tundra .dijitTreeLabelFocused {
+	background-color: #333;
+}
+
+.tundra .dijitDialogTitleBar {
+    cursor: default;
+}
+
+.tundra .dijitReset .dijitInline .dijitButtonNode{
+	font-size:80%;
+}
