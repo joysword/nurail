@@ -3,10 +3,11 @@
   <head>
     <meta charset="utf-8">
     <title>The CheckBox Tree with Observable Store</title>
-    <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/dojo/dijit/themes/claro/claro.css">
-    <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/esri/css/esri.css">
     <style type="text/css">
-@import "../../themes/claro/claro.css";
+      @import "../../../dijit/themes/claro/claro.css";
+      @import "../../../dijit/themes/claro/document.css";
+      @import "../../../dijit/tests/css/dijitTests.css";
+      @import "../../themes/claro/claro.css";
 
     </style>
 
@@ -15,56 +16,73 @@
             async: true,
             parseOnLoad: true,
             isDebug: false,
-            //baseUrl: "../../../",
+            baseUrl: "../../../",
             packages: [
-              //{ name: "dojo",  location: "dojo" },
-              //{ name: "dijit", location: "dijit" },
-              { name: "cbtree",location: "/~sma/NURail/js/cbtree" }
+              { name: "dojo",  location: "dojo" },
+              { name: "dijit", location: "dijit" },
+              { name: "cbtree",location: "cbtree" }
             ]
       };
     </script>
-    <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/"></script>
-    <!-- <script type="text/javascript" src="../../../dojo/dojo.js"></script> -->
-    <script type="text/javascript">
-		 			require(["dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dijit/layout/AccordionContainer", 
-			"dijit/form/Button", "dijit/form/Textarea", "dijit/Menu", "dijit/form/DropDownButton", "dijit/TooltipDialog",
-            "dijit/DropDownMenu", "dijit/MenuItem", "dojo/domReady!"]);
-         require(["dojo/ready",
-                                "dojo/store/Memory",
-                                "dojo/store/Observable",
-                                "cbtree/Tree",                 // Checkbox tree
-                                "cbtree/model/TreeStoreModel"  // ObjectStoreModel
-                                ], function(ready, Memory, Observable, Tree, ObjectStoreModel) {
-                                       var data = [
-                                            { id: 'indicator', name:'Map Chicago'},
-                                                { id: 'Planning', name:'Planning', parent: 'indicator'},
-                                                    { id: 'P-1', name:'Equity', parent: 'Planning' },
-                                                        { id: 'P-1A', name:'Frequency of service by income level', parent: 'P-1' },
-                                                        { id: 'P-1B', name:'Percentage of household income spent on transit', parent: 'P-1' },
-                                                        { id: 'P-1C', name:'Average household income, race and ethnic composition of impacted locations', parent: 'P-1' },
-                                                    { id: 'P-2', name:'Land Use Planning',parent: 'Planning' },
-                                                        { id: 'P-2A', name:'Greenfield land take per captia-mile or ton-mile', parent: 'P-2' },
-                                                        { id: 'P-2B', name:'Modeled square miles of development in greenfields', parent: 'P-2' },
-                                                        { id: 'P-2C', name:'Greenfield land take per captia-mile or ton-mile', parent: 'P-2' }
-                                            ];
 
-                                      var store = Observable( new Memory( { data: data }));
-                                      var model = new ObjectStoreModel({
-                                            store: store,
-                                            query: {id: "indicator"},
-                                            rootLabel: "Map Chicago",
-                                            checkedRoot: true
-                                      });
-                                                
-          
-          
-              ready(function(){
-                    var tree= new Tree( { model: model, id:"MapLayerTree" }, "CheckboxTree" );
-                    tree.startup();
-                                
-                });
-                                });
-        </script>
+    <script type="text/javascript" src="../../../dojo/dojo.js"></script>
+    <script type="text/javascript">
+      require([
+        "dojo/ready",
+        "dojo/store/Memory",
+        "dojo/store/Observable",
+        "cbtree/Tree",                 // Checkbox tree
+        "cbtree/model/TreeStoreModel"  // ObjectStoreModel
+        ], function( ready, Memory, Observable, Tree, ObjectStoreModel) {
+
+					var data = [
+							{ id: "earth", name:"The earth", type:"planet", population: "6 billion"},
+							{ id: "AF", name:"Africa", type:"continent", population:"900 million", area: "30,221,532 sq km",
+									timezone: "-1 UTC to +4 UTC", parent: "earth"},
+								{ id: "EG", name:"Egypt", type:"country", parent: "AF" },
+								{ id: "KE", name:"Kenya", type:"country", parent: "AF" },
+									{ id: "Nairobi", name:"Nairobi", type:"city", parent: "KE" },
+									{ id: "Mombasa", name:"Mombasa", type:"city", parent: "KE" },
+								{ id: "SD", name:"Sudan", type:"country", parent: "AF" },
+									{ id: "Khartoum", name:"Khartoum", type:"city", parent: "SD" },
+							{ id: "AS", name:"Asia", type:"continent", parent: "earth" },
+								{ id: "CN", name:"China", type:"country", parent: "AS" },
+								{ id: "IN", name:"India", type:"country", parent: "AS" },
+								{ id: "RU", name:"Russia", type:"country", parent: "AS" },
+								{ id: "MN", name:"Mongolia", type:"country", parent: "AS" },
+							{ id: "OC", name:"Oceania", type:"continent", population:"21 million", parent: "earth"},
+								{ id: "AU", name:"Australia", type:"country", population:"21 million", parent: "OC"},
+							{ id: "EU", name:"Europe", type:"continent", parent: "earth" },
+								{ id: "DE", name:"Germany", type:"country", parent: "EU" },
+								{ id: "FR", name:"France", type:"country", parent: "EU" },
+								{ id: "ES", name:"Spain", type:"country", parent: "EU" },
+								{ id: "IT", name:"Italy", type:"country", parent: "EU" },
+							{ id: "NA", name:"North America", type:"continent", parent: "earth" },
+								{ id: "MX", name:"Mexico", type:"country",  population:"108 million", area:"1,972,550 sq km",
+										parent: "NA" },
+									{ id: "Mexico City", name:"Mexico City", type:"city", population:"19 million", timezone:"-6 UTC", parent: "MX"},
+									{ id: "Guadalajara", name:"Guadalajara", type:"city", population:"4 million", timezone:"-6 UTC", parent: "MX" },
+								{ id: "CA", name:"Canada", type:"country",  population:"33 million", area:"9,984,670 sq km", parent: "NA" },
+									{ id: "Ottawa", name:"Ottawa", type:"city", population:"0.9 million", timezone:"-5 UTC", parent: "CA"},
+									{ id: "Toronto", name:"Toronto", type:"city", population:"2.5 million", timezone:"-5 UTC", parent: "CA" },
+								{ id: "US", name:"United States of America", type:"country", parent: "NA" },
+							{ id: "SA", name:"South America", type:"continent", parent: "earth" },
+								{ id: "BR", name:"Brazil", type:"country", population:"186 million", parent: "SA" },
+								{ id: "AR", name:"Argentina", type:"country", population:"40 million", parent: "SA" }
+						];
+
+          var store = Observable( new Memory( { data: data }));
+          var model = new ObjectStoreModel( { store: store,
+                                               query: {id: "earth"},
+                                               rootLabel: "The Earth",
+                                               checkedRoot: true
+                                             });
+          ready(function(){
+            var tree = new Tree( { model: model, id:"tree01" }, "CheckboxTree" );
+            tree.startup();
+          });
+        });
+      </script>
 
   </head>
 
@@ -73,7 +91,7 @@
 		<p>
 			A basic CheckBox Tree using an <u>observable</u> dojo/store Memory Store.
 		</p>
-   		          <div id="CheckboxTree">                      
-                    </div>    
+    <div id="CheckboxTree">
+    </div>
   </body>
 </html>
