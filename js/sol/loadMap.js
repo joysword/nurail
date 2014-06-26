@@ -91,7 +91,7 @@ function init() {
             // initialize overview map
             var overviewMapDijit = new esri.dijit.OverviewMap({
                 map : map,
-                visible : true
+                visible : false
             });
             overviewMapDijit.startup();
         });
