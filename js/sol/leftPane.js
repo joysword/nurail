@@ -1,6 +1,6 @@
 //workspace: prefix of layer names
 var workspace;
-if(remote) workspace="nurail:";
+if (remote) workspace="nurail:";
 else workspace="Nurail:";
 
 //container that hold the names of WMS_layers that are clicked
