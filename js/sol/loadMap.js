@@ -10,7 +10,7 @@ var map, locator, basemapGallery, printer, gs;
           
 
 function init() {
-    
+
     map = new esri.Map("map", {
         basemap : 'gray',
         center : [-87.651052, 41.872458],
@@ -116,7 +116,7 @@ function init() {
         layers[idx]=new dojo.declare(esri.layers.DynamicMapServiceLayer, {
             // Now for the constructor definition
             constructor: function(idx) {
-                this.spatialReference = new esri.SpatialReference({wkid:4269});
+                this.spatialReference = new esri.SpatialReference({wkid:3857});
                 this.loaded = true;
                 this.onLoad(this);
                 this.id=idx;
@@ -141,7 +141,7 @@ function init() {
                     "&request=" + "GetMap" +
                     "&transparent="+ "true" +
                     "&layers="+workspace+this.id+
-                    "&srs=EPSG:" + "4269" + // You need to use the WMS’s spatial wkid
+                    "&srs=EPSG:" + "3857" + // You need to use the WMS’s spatial wkid
                     "&width=" + width +  //441
                     "&height=" + height +  //512
                     "&styles=" +
@@ -151,7 +151,7 @@ function init() {
                 
                 gs = new esri.tasks.GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");               
                 
-                gs.project([ extent ], new esri.SpatialReference({ wkid:4269}) , function(features) {
+                gs.project([ extent ], new esri.SpatialReference({ wkid:3857}) , function(features) {
                     var translatedExtent =  features[0];    
                     //alert(translatedExtent.spatialReference.wkid+","+translatedExtent.xmin);  
                     params +="&bbox=" + translatedExtent.xmin+","+translatedExtent.ymin+","+translatedExtent.xmax+","+translatedExtent.ymax;
@@ -354,7 +354,7 @@ function showPopup(evt){
     
    //retrieve the attribute info.
    
-    gs.project([ point ], new esri.SpatialReference({ wkid:4269}), function(projectedPoints) {
+    gs.project([ point ], new esri.SpatialReference({ wkid:3857}), function(projectedPoints) {
         pt = projectedPoints[0]; //pt is in longi-lati coordinates
         
         //need an asynchronous loop here:
