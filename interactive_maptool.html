@@ -17,7 +17,7 @@
         <!--overide the argis claro style list otherwise the checkbox will not showup*/-->
         <link rel="stylesheet" href="js/cbtree/themes/claro/claro.css">
         
-        <link rel="stylesheet" href="css/override.css">
+        <!--<link rel="stylesheet" href="css/override.css">-->
         <link rel="stylesheet" href="css/default.css">
 
         <!-- <script type="text/javascript" src="js/dojo/dojo/dojo.js" data-dojo-config="isDebug:true,  parseOnLoad: true, async:true"></script> -->
@@ -51,7 +51,7 @@
         
         <!-- load ArcGIS API modules -->
         <script>
-            require(["dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dijit/layout/AccordionContainer", 
+	        require(["dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dijit/layout/AccordionContainer", 
             "dijit/form/Button", "dijit/form/Textarea", "dijit/Menu", "dijit/form/DropDownButton", "dijit/TooltipDialog",
             "dijit/DropDownMenu", "dijit/MenuItem",  "cbtree/model/StoreModel-EXT","cbtree/util/QueryEngine", "cbtree/model/TreeStoreModel","dojo/domReady!"]);
  
@@ -87,18 +87,18 @@
                 }                
            }
            
-           function printMap(){
+            function printMap(){
                 //window.print()                
                 
                 var params = new esri.tasks.PrintParameters();
                 params.map = map;
                 //params.template = template;
                 //printer.execute(params, showPrintingResult);
-           }
+            }
            
-           function showPrintingResult(){
+            function showPrintingResult(){
                 dojo.byId("printResult").innerHTML="Download Map PDF";
-           }
+            }
 
             function locate() {
                 map.graphics.clear();
