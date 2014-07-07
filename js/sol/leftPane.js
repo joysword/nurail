@@ -11,14 +11,15 @@ treeHierarchyData=[
 { id: 'root', name:'Layers'},
 	{id:'transit', name:'Transit Routes', parent:'root'},
 		{id:'cta', name:'CTA Train Routes', parent:'transit'},
-			{id:'bl', name:'Blue Line', parent:'cta'},
-			{id:'br', name:'Brown Line', parent:'cta'},
-			{id:'gr', name:'Green Line', parent:'cta'},
-			{id:'or', name:'Orange Line', parent:'cta'},
-			{id:'pk', name:'Pink Line', parent:'cta'},
-			{id:'pr', name:'Purple Line', parent:'cta'},
-			{id:'rd', name:'Red Line', parent:'cta'},
-			{id:'yl', name:'Yellow Line', parent:'cta'},
+			{id:'bl', name:'Blue Line', parent:'cta', checked:true},
+			{id:'br', name:'Brown Line', parent:'cta', checked:true},
+			{id:'gr', name:'Green Line', parent:'cta', checked:true},
+			{id:'or', name:'Orange Line', parent:'cta', checked:true},
+			{id:'pk', name:'Pink Line', parent:'cta', checked:true},
+			{id:'pr', name:'Purple Line', parent:'cta', checked:true},
+			{id:'rd', name:'Red Line', parent:'cta', checked:true},
+			{id:'yl', name:'Yellow Line', parent:'cta', checked:true},
+		{id:'metra', name:'Metra Lines', parent:'transit', checked:true},
 	{id:'ri', name:'Rail Infrastructure', parent:'root'},
 		{id:'it', name:'Intermodal Terminal', parent:'ri'},
 		{id:'gc', name:'Grade Crossing', parent:'ri'},
@@ -73,17 +74,17 @@ treeHierarchyData=[
 			{id:'rz', name:'Riparian Zone', parent:'Habitat'},
 ];
 
+var pathsOfAllLayers={'root':'root', 'Blue Line':'Transit Routes -> CTA Train Routes -> Blue Line', 'Brown Line':'Transit Routes -> CTA Train Routes -> Brown Line', 'Green Line':'Transit Routes -> CTA Train Routes -> Green Line', 'Orange Line':'Transit Routes -> CTA Train Routes -> Orange Line', 'Pink Line':'Transit Routes -> CTA Train Routes -> Pink Line', 'Purple Line':'Transit Routes -> CTA Train Routes -> Purple Line', 'Red Line':'Transit Routes -> CTA Train Routes -> Red Line', 'Yellow Line':'Transit Routes -> CTA Train Routes -> Yellow Line', 'Metra Lines':'Transit Routes -> Metra Lines', 'Intermodal Terminal':'Rail Infrastructure -> Intermodal Terminal', 'Grade Crossing':'Rail Infrastructure -> Grade Crossing', 'Public Transit Facility':'Rail Infrastructure -> Public Transit Facility', 'Railroad Speed':'Rail Infrastructure -> Railroad Speed', 'County Boundary':'Community Profile -> County Boundary', 'Agriculture':'Community Profile -> Land Use -> Agriculture', 'Commercial/Office':'Community Profile -> Land Use -> Commercial/Office', 'Forest/Grassland':'Community Profile -> Land Use -> Forest/Grassland', 'Industrial':'Community Profile -> Land Use -> Industrial', 'Institutional':'Community Profile -> Land Use -> Institutional', 'Open space':'Community Profile -> Land Use -> Open space', 'Residential':'Community Profile -> Land Use -> Residential', 'Transportation':'Community Profile -> Land Use -> Transportation', 'Vacant':'Community Profile -> Land Use -> Vacant', 'Water':'Community Profile -> Land Use -> Water', 'Wetland':'Community Profile -> Land Use -> Wetland', 'Derailment Accident':'Safety -> Rail Safety Performance -> Derailment Accident', 'Flood Hazard':'Safety -> Natural Hazard Areas -> Flood Hazard', 'Tornado Hazard':'Safety -> Natural Hazard Areas -> Tornado Hazard', 'Seismic Hazard':'Safety -> Natural Hazard Areas -> Seismic Hazard', 'Employment Density':'Livable Communities -> Transit Accessibility -> Employment Density', 'Population Density':'Livable Communities -> Transit Accessibility -> Population Density', 'Archeologic Resource':'Livable Communities -> Cultural Resources -> Archeologic Resource', 'Historical Site':'Livable Communities -> Cultural Resources -> Historical Site', 'Trail':'Livable Communities -> Cultural Resources -> Trail', 'Median Household Income':'Transit Equity -> Median Household Income', 'Emission Hotspots':'Environmental Sustainability -> Modeled Air Emissions -> Emission Hotspots', 'Carbon':'Environmental Sustainability -> Modeled Air Emissions -> Carbon', 'Carbon Monoxide':'Environmental Sustainability -> Modeled Air Emissions -> Carbon Monoxide', 'NOx':'Environmental Sustainability -> Modeled Air Emissions -> NOx', 'Hydrocarbon':'Environmental Sustainability -> Modeled Air Emissions -> Hydrocarbon', 'PM10':'Environmental Sustainability -> Modeled Air Emissions -> PM10', 'Alluvial/Glacial Aquifer':'Environmental Sustainability -> Groundwater -> Alluvial/Glacial Aquifer', 'Shallowest Principal Aquifer':'Environmental Sustainability -> Groundwater -> Shallowest Principal Aquifer', 'Bird Presence':'Environmental Sustainability -> Habitat -> Bird Presence', 'Critical Habitat':'Environmental Sustainability -> Habitat -> Critical Habitat', 'Natural Area':'Environmental Sustainability -> Habitat -> Natural Area', 'Riparian Zone':'Environmental Sustainability -> Habitat -> Riparian Zone'};
 
-var pathsOfAllLayers={'root':'root', 'Blue Line':'Transit Routes -> CTA Train Routes -> Blue Line', 'Brown Line':'Transit Routes -> CTA Train Routes -> Brown Line', 'Green Line':'Transit Routes -> CTA Train Routes -> Green Line', 'Orange Line':'Transit Routes -> CTA Train Routes -> Orange Line', 'Pink Line':'Transit Routes -> CTA Train Routes -> Pink Line', 'Purple Line':'Transit Routes -> CTA Train Routes -> Purple Line', 'Red Line':'Transit Routes -> CTA Train Routes -> Red Line', 'Yellow Line':'Transit Routes -> CTA Train Routes -> Yellow Line', 'Intermodal Terminal':'Rail Infrastructure -> Intermodal Terminal', 'Grade Crossing':'Rail Infrastructure -> Grade Crossing', 'Public Transit Facility':'Rail Infrastructure -> Public Transit Facility', 'Railroad Speed':'Rail Infrastructure -> Railroad Speed', 'County Boundary':'Community Profile -> County Boundary', 'Agriculture':'Community Profile -> Land Use -> Agriculture', 'Commercial/Office':'Community Profile -> Land Use -> Commercial/Office', 'Forest/Grassland':'Community Profile -> Land Use -> Forest/Grassland', 'Industrial':'Community Profile -> Land Use -> Industrial', 'Institutional':'Community Profile -> Land Use -> Institutional', 'Open space':'Community Profile -> Land Use -> Open space', 'Residential':'Community Profile -> Land Use -> Residential', 'Transportation':'Community Profile -> Land Use -> Transportation', 'Vacant':'Community Profile -> Land Use -> Vacant', 'Water':'Community Profile -> Land Use -> Water', 'Wetland':'Community Profile -> Land Use -> Wetland', 'Derailment Accident':'Safety -> Rail Safety Performance -> Derailment Accident', 'Flood Hazard':'Safety -> Natural Hazard Areas -> Flood Hazard', 'Tornado Hazard':'Safety -> Natural Hazard Areas -> Tornado Hazard', 'Seismic Hazard':'Safety -> Natural Hazard Areas -> Seismic Hazard', 'Employment Density':'Livable Communities -> Transit Accessibility -> Employment Density', 'Population Density':'Livable Communities -> Transit Accessibility -> Population Density', 'Archeologic Resource':'Livable Communities -> Cultural Resources -> Archeologic Resource', 'Historical Site':'Livable Communities -> Cultural Resources -> Historical Site', 'Trail':'Livable Communities -> Cultural Resources -> Trail', 'Median Household Income':'Transit Equity -> Median Household Income', 'Emission Hotspots':'Environmental Sustainability -> Modeled Air Emissions -> Emission Hotspots', 'Carbon':'Environmental Sustainability -> Modeled Air Emissions -> Carbon', 'Carbon Monoxide':'Environmental Sustainability -> Modeled Air Emissions -> Carbon Monoxide', 'NOx':'Environmental Sustainability -> Modeled Air Emissions -> NOx', 'Hydrocarbon':'Environmental Sustainability -> Modeled Air Emissions -> Hydrocarbon', 'PM10':'Environmental Sustainability -> Modeled Air Emissions -> PM10', 'Alluvial/Glacial Aquifer':'Environmental Sustainability -> Groundwater -> Alluvial/Glacial Aquifer', 'Shallowest Principal Aquifer':'Environmental Sustainability -> Groundwater -> Shallowest Principal Aquifer', 'Bird Presence':'Environmental Sustainability -> Habitat -> Bird Presence', 'Critical Habitat':'Environmental Sustainability -> Habitat -> Critical Habitat', 'Natural Area':'Environmental Sustainability -> Habitat -> Natural Area', 'Riparian Zone':'Environmental Sustainability -> Habitat -> Riparian Zone'};
 
-
-var layerNamesInTheLeftPane = ['Agriculture','Alluvial/Glacial Aquifer','Archeologic Resource','Bird Presence','Blue Line','Brown Line','Carbon','Carbon Monoxide','Commercial/Office','County Boundary','Critical Habitat','Derailment Accident','Emission Hotspots','Employment Density','Flood Hazard','Forest/Grassland','Grade Crossing','Green Line','Historical Site','Hydrocarbon','Industrial','Institutional','Intermodal Terminal','Median Household Income','NOx','Natural Area','Open space','Orange Line','PM10','Population Density','Pink Line','Public Transit Facility','Purple Line','Railroad Speed','Red line','Residential','Riparian Zone','Seismic Hazard','Shallowest Principal Aquifer','Tornado Hazard','Trail','Transportation','Vacant','Water','Wetland','Yellow Line'];
+var layerNamesInTheLeftPane = ['Agriculture','Alluvial/Glacial Aquifer','Archeologic Resource','Bird Presence','Blue Line','Brown Line','Carbon','Carbon Monoxide','Commercial/Office','County Boundary','Critical Habitat','Derailment Accident','Emission Hotspots','Employment Density','Flood Hazard','Forest/Grassland','Grade Crossing','Green Line','Historical Site','Hydrocarbon','Industrial','Institutional','Intermodal Terminal','Median Household Income','NOx','Natural Area','Open space','Orange Line','PM10','Population Density','Pink Line','Public Transit Facility','Purple Line','Railroad Speed','Red line','Metra Lines','Residential','Riparian Zone','Seismic Hazard','Shallowest Principal Aquifer','Tornado Hazard','Trail','Transportation','Vacant','Water','Wetland','Yellow Line'];
 
 var WMSLayerNamesMapToTreeLayerNames={
 "Blue" : "Blue Line",
 "Brown" : "Brown Line",
 "Green" : "Green Line",
 "Illinois_Grade_Crossings" : "Grade Crossing",
+"MetraLinesshp" : "Metra Lines",
 "Orange" : "Orange Line",
 "Pink" : "Pink Line",
 "Purple" : "Purple Line",
@@ -135,6 +136,7 @@ var layers={
 "Brown" : "",
 "Green" : "",
 "Illinois_Grade_Crossings" : "",
+"MetraLinesshp" : "",
 "Orange" : "",
 "Pink" : "",
 "Purple" : "",
@@ -179,6 +181,12 @@ var layers={
 "wetland" : "",
 };
 
+
+var initChecked = [
+	"Blue","Brown","Green","Orange","Pink","Purple","Red","Yellow", "MetraLinesshp"
+];
+
+
 var TreeLayerNamesMapToWMSLayers={
 "Agriculture" : ["agriculture"],
 "Alluvial/Glacial Aquifer" : ["alluvial_glacial_aquifers"],
@@ -212,6 +220,7 @@ var TreeLayerNamesMapToWMSLayers={
 "Land Use" : ["agriculture","commercial","forest","industrial","institutional","open_space","residential","transportation","vacant","water","wetland"],
 "Livable Communities" : ["employment","population","archeological","chicago_landmark","trails"],
 "Median Household Income" : ["income"],
+"Metra Lines" : ["MetraLinesshp"],
 "Modeled Air Emissions" : ["hotspot_buffer","carbon","co","no","hydrocarbon","pm"],
 "NOx" : ["no"],
 "Natural Area" : ["natural_area"],
@@ -236,7 +245,7 @@ var TreeLayerNamesMapToWMSLayers={
 "Trail" : ["trails"],
 "Transit Accessibility" : ["employment","population"],
 "Transit Equity" : ["income"],
-"Transit Routes" : ["Blue","Brown","Green","Orange","Pink","Purple","Red","Yellow"],
+"Transit Routes" : ["Blue","Brown","Green","Orange","Pink","Purple","Red","Yellow","MetraLinesshp"],
 "Transportation" : ["transportation"],
 "Vacant" : ["vacant"],
 "Water" : ["water"],
@@ -451,7 +460,7 @@ require(["dojo/ready",
       });
       
 
-      function checkBoxClicked( item, nodeWidget, evt ) {
+      function checkBoxClicked( item, nodeWidget, evt ) { 
         var checked = nodeWidget.get("checked" );
         //get the text of the checked box
         var label    = this.model.getLabel(item);
@@ -507,6 +516,15 @@ require(["dojo/ready",
         }, "CheckboxTree" );
         // Establish listener and start the tree.
         tree.on("checkBoxClick", checkBoxClicked );
+
+		for (var idx in initChecked) {
+			var label = initChecked[idx];
+			console.log("label: "+label);
+        	map.addLayer(layers[label]);
+        	checkedLayers.push(label);
+        	showLegend(WMSLayerNamesMapToTreeLayerNames[label]);
+        }
+        
         tree.startup();
         
         //start right pane
