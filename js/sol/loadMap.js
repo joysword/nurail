@@ -1,13 +1,11 @@
 require(["esri/dijit/OverviewMap", "esri/map", "esri/dijit/BasemapGallery", "esri/tasks/locator",
- // "esri/tasks/Print" file brings js errors
- "esri/tasks/PrintTask", "esri/tasks/PrintTemplate", "esri/tasks/PrintParameters", "esri/tasks/GeometryService",
+"esri/tasks/GeometryService",
 "dijit/Menu", "dijit/form/DropDownButton", "dijit/TooltipDialog","esri/dijit/Geocoder", "cbtree/util/QueryEngine", "dijit/DropDownMenu", "dijit/MenuItem"]);
 
-var map, locator, basemapGallery, printer, gs;
+var map, locator, basemapGallery, gs;
 
 //no codes before init() or outside a function ?
 // var extent = new esri.geometry.Extent(-122.68,45.53,-122.45,45.60, new esri.SpatialReference({ wkid:4326 }));
-          
 
 function init() {
 
@@ -47,27 +45,6 @@ function init() {
     
     // show popup information when click on a feature 
     dojo.connect(map, "onClick", showPopup);
-
-    // printer  task    
-    var printUrl="http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task";
-    //printer=new esri.tasks.PrintTask(printUrl);
-    
-    var template = new esri.tasks.PrintTemplate();
-        template.exportOptions = {
-            width: 500,
-            height: 400,
-            dpi: 96
-        };
-        template.format = "PDF";
-        template.layout = "MAP_ONLY";
-        //template.preserveScale = false;
-        
-    // printer = new esri.dijit.Print({
-        // "map": map,
-        // "templates": template,
-        // url: printUrl
-    // }, dojo.byId("print"));
-    // printer.startup();
     
     require(["dojo/on"], function(on) {
         
