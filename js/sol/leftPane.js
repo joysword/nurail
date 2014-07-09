@@ -517,9 +517,9 @@ require(["dojo/ready",
         // Establish listener and start the tree.
         tree.on("checkBoxClick", checkBoxClicked );
 
+        // Add initial layers
 		for (var idx in initChecked) {
 			var label = initChecked[idx];
-			console.log("label: "+label);
         	map.addLayer(layers[label]);
         	checkedLayers.push(label);
         	showLegend(WMSLayerNamesMapToTreeLayerNames[label]);
