@@ -4,9 +4,6 @@ require(["esri/dijit/OverviewMap", "esri/map", "esri/dijit/BasemapGallery", "esr
 
 var map, locator, basemapGallery, gs;
 
-//no codes before init() or outside a function ?
-// var extent = new esri.geometry.Extent(-122.68,45.53,-122.45,45.60, new esri.SpatialReference({ wkid:4326 }));
-
 function init() {
 
     map = new esri.Map("map", {
@@ -20,36 +17,146 @@ function init() {
         showArcGISBasemaps : true,
         map : map
     });
-    
-    
-    //create the geocoder widget
-    // var geocoder = new esri.dijit.Geocoder({ 
-      // autoNavigate: true, // do not zoom to best result
-      // maxLocations: 20, // increase number of results returned
-      // map: map,
-     // //filter: QueryEngine( {"feature.attributes.Score":100}, {sort:[{property:"name"}]}), // Add a custom filter...
-      // //filter: QueryEngine( {"feature.attributes.Score":100}), // Add a custom filter...
-      // arcgisGeocoder: {
-        // url: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer",
-        // name: "Esri World Geocoder",
-        // placeholder: "Find a location",
-        // sourceCountry: "USA" // limit search to the United States
-      // }
-    // }, "search");
-    // geocoder.startup();
-    // geocoder.focus();
   
     // geocoding function
     locator = new esri.tasks.Locator("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
-    dojo.connect(locator, "onAddressToLocationsComplete", showLocatingResults);
+    require(["dojo/on","dojo/_base/array"], function(on, array) {
+        on(locator, "address-to-locations-complete",
+            //show a graphic at the location of geocoding
+            function showLocatingResults(candidates) {
+
+                var symbol = new esri.symbol.SimpleMarkerSymbol().setStyle(esri.symbol.SimpleMarkerSymbol.STYLE_SQUARE).setColor(new dojo.Color([153, 0, 51, 0.75]));
+
+                var infoTemplate = new esri.InfoTemplate("Location", "Address: ${address}<br />Score: ${score}<br />Source locator: ${locatorName}");
+                var geom;
+
+                dojo.every(candidates.addresses, function(candidate) {
+                    console.log("candidate: ", candidate);
+                    console.log("score:", candidate.score);
+                    if (candidate.score > 80) {
+                        console.log(candidate.location);
+                        var attributes = {
+                            address : candidate.address,
+                            score : candidate.score,
+                            locatorName : candidate.attributes.Loc_name
+                        };
+                        geom = candidate.location;
+                        var graphic = new esri.Graphic(geom, symbol, attributes, infoTemplate);
+                        //add a graphic to the map at the geocoded location
+                        map.graphics.add(graphic);
+
+                        //add a text symbol to the map listing the location of the matched address.
+                        var displayText = candidate.address;
+                        var font = new esri.symbol.Font("16pt", esri.symbol.Font.STYLE_NORMAL, esri.symbol.Font.VARIANT_NORMAL, esri.symbol.Font.WEIGHT_BOLD, "Helvetica");
+                        var textSymbol = new esri.symbol.TextSymbol(displayText, font, new dojo.Color("#666633")).setOffset(0, 10);
+
+                        //            map.graphics.add(new esri.Graphic(geom, textSymbol));
+                        return false;
+                        //break out of loop after one candidate with score greater  than 80 is found.
+                    }
+                });
+
+                if (geom !== undefined) {
+                    map.centerAndZoom(geom, 13);
+                }
+            }
+        );
+    });
     
     // show popup information when click on a feature 
-    dojo.connect(map, "onClick", showPopup);
+    require(["dojo/on"], function(on) {
+        on(map, "click",
+            //show the attribute information of a selected feature
+            function (evt) {
+
+                var point = evt.mapPoint;
+                var symbol = new esri.symbol.SimpleMarkerSymbol().setStyle(esri.symbol.SimpleMarkerSymbol.STYLE_DIAMOND);
+                
+                var graphic = new esri.Graphic(point, symbol);
+
+                
+                //alert(checkedLayers);
+                
+                   
+                
+               //retrieve the attribute info.
+               
+                gs.project([ point ], new esri.SpatialReference({ wkid:3857}), function(projectedPoints) {
+                    pt = projectedPoints[0]; //pt is in longi-lati coordinates
+                    
+                    //need an asynchronous loop here:
+                    //ref http://stackoverflow.com/questions/11488014/asynchronous-process-inside-a-javascript-for-loop
+                    //the selected feature may belong to any of the following layer
+                    for(var idx in checkedLayers){
+                        var layerName='nurail:'+checkedLayers[idx];
+                        
+                       (function(layerName){
+                           //Restful url for WFS service  http://docs.geoserver.org/stable/en/user/services/wfs/reference.html
+                           //geometry_name:"the_geom" https://wiki.state.ma.us/confluence/display/massgis/GeoServer+-+WFS+-+Filter+-+DWithin
+                           //version must be 1.0.0 why?
+                           var url='http://nurail.uic.edu/geoserver/nurail/ows?service=WFS&version=1.0.0&request=GetFeature&typeName='+layerName+'&cql_filter=DWITHIN(the_geom,POINT('+pt.x+' '+pt.y+'),0.01,meters)&propertyName='+popupAttributesForLayer[layerName]+'&outputFormat=application/json';
+                            
+                            //asynochronous function to deal with the response
+                            $.getJSON(url, function(obj){
+                                var cloestFeature=obj.features[0];
+                                
+                                if (typeof cloestFeature === 'undefined') {
+                                    //alert("cloestFeature is undefined");
+                                    return;
+                                }
+                                
+                                //for popup infowindow reference: https://developers.arcgis.com/en/javascript/jssamples/gp_popuplink.html
+                                var popupContent="<b>Detail Feature Information: </b> </br><hr>"
+                                
+                                //add geo-coordinates 
+                                // popupContent+= "<p><font color=\"grey\"> Latitude</font>: " + pt.y + "<br/> <font color=\"grey\">Longitude</font>: " + pt.x  + "</p>";
+                                
+                                //add feature-dependent information
+                                for (var idx in popupAttributesForLayer[layerName]){
+                                    var propertyValue=cloestFeature.properties[popupAttributesForLayer[layerName][idx]];
+                                    if (typeof propertyValue === "string" || propertyValue instanceof String){                         
+                                        propertyValue=propertyValue.replace(/\\/g, " ");
+                                    }
+                                    popupContent+="<font color=\"grey\">"+meaningfulAttributeNames[popupAttributesForLayer[layerName][idx]]+"</font>: "+ propertyValue;
+                                    
+                                    var unit=meaningfulAttributeNames[popupAttributesForLayer[layerName][idx]+"_unit"]
+                                    if (!(unit == undefined)){
+                                        popupContent+="  "+unit;
+                                    }
+                                    popupContent+="<br/>";
+                                }
+
+                                graphic.setInfoTemplate(new esri.InfoTemplate("",popupContent));   
+                                    //+ "<input type='button' value='Convert back to LatLong' onclick='projectToLatLong();' />" 
+                                    //+ "<div id='latlong'></div>"
+                                
+                                //remove the old graphic and show the new graphic
+                                map.graphics.remove(lastPopupGraphic);
+                                map.graphics.add(graphic);
+                                lastPopupGraphic=graphic;
+                                layerOfLastPopupGraphic=layerName;
+                                
+                                //show the infoWindow
+                                map.infoWindow
+                                .setTitle(graphic.getTitle())
+                                .setContent(graphic.getContent())
+                                .show(screenPoint, map.getInfoWindowAnchor(screenPoint));
+                               
+                            });
+                       })(layerName); //pass the layerName to the anonymous function
+                       
+                    }
+                });
+                
+                // json=json.replace(/\\/g, ""); //replace all '\' with empty string
+                // obj = JSON.parse(json);
+            });
+    });
     
     require(["dojo/on"], function(on) {
         
         //register onLoad function
-        on(map, "Load", function() {
+        on(map, "load", function() {
             
             // // add basemap gallery
             // //reference: http://help.arcgis.com/en/webapi/javascript/arcgis/jssamples/map_agol.html
@@ -79,7 +186,7 @@ function init() {
             //dojo.byId("coord").innerHTML = mp.x + ", " + mp.y;
         });// end of onMouseMove function
         
-    }); //end of function(on)
+    });
     
     // Save time by declaring your start extent up front 
     // this is the full extent for the state of Louisiana
@@ -122,7 +229,7 @@ function init() {
                     "&width=" + width +  //441
                     "&height=" + height +  //512
                     "&styles=" +
-                    "&format=" + "image/png"; 
+                    "&format=" + "image/png";
                 
                 //alert("params:"+params); 
                 
@@ -135,7 +242,7 @@ function init() {
                     //"&bbox=" + "-87.7575678843978,41.8509798545157,-87.5445361155993,41.893928932665";
                     // "&exceptions=" + "application/vnd.ogc.se_xml"
 
-                    if(remote) callback("http://nurail.uic.edu/geoserver/nurail/wms?" + params );
+                    if (remote) callback("http://nurail.uic.edu/geoserver/nurail/wms?" + params );
                     else callback("http://localhost:8088/geoserver/NURail/wms?" + params );
                 });//end of anonymous function
                 
@@ -146,44 +253,6 @@ function init() {
     }
  
 }
-
-//show a graphic at the location of geocoding
-function showLocatingResults(candidates) {
-    var candidate;
-    var symbol = new esri.symbol.SimpleMarkerSymbol().setStyle(esri.symbol.SimpleMarkerSymbol.STYLE_SQUARE).setColor(new dojo.Color([153, 0, 51, 0.75]));
-
-    var infoTemplate = new esri.InfoTemplate("Location", "Address: ${address}<br />Score: ${score}<br />Source locator: ${locatorName}");
-    var geom;
-
-    dojo.every(candidates, function(candidate) {
-        console.log(candidate.score);
-        if (candidate.score > 80) {
-            console.log(candidate.location);
-            var attributes = {
-                address : candidate.address,
-                score : candidate.score,
-                locatorName : candidate.attributes.Loc_name
-            };
-            geom = candidate.location;
-            var graphic = new esri.Graphic(geom, symbol, attributes, infoTemplate);
-            //add a graphic to the map at the geocoded location
-            map.graphics.add(graphic);
-
-            //add a text symbol to the map listing the location of the matched address.
-            var displayText = candidate.address;
-            var font = new esri.symbol.Font("16pt", esri.symbol.Font.STYLE_NORMAL, esri.symbol.Font.VARIANT_NORMAL, esri.symbol.Font.WEIGHT_BOLD, "Helvetica");
-            var textSymbol = new esri.symbol.TextSymbol(displayText, font, new dojo.Color("#666633")).setOffset(0, 10);
-
-            //            map.graphics.add(new esri.Graphic(geom, textSymbol));
-            return false;
-            //break out of loop after one candidate with score greater  than 80 is found.
-        }
-    });
-    if (geom !== undefined) {
-        map.centerAndZoom(geom, 13);
-    }
-}
-
 
 var lastPopupGraphic, layerOfLastPopupGraphic; //when the layer it attaches to is removed, it should be also remove from the map
 //translate the attribute name in the shapefile table into meaningful words
@@ -315,97 +384,9 @@ var lastPopupGraphic, layerOfLastPopupGraphic; //when the layer it attaches to i
             ,'nurail:shallowest_principal_aquifers':['ROCK_NAME','AQ_NAME','Shape_Leng', 'Shape_Area']
             ,'nurail:tornado':['DATE_', 'DAMAGE', 'F_SCALE']
         }; 
-
-//show the attribute information of a selected feature
-function showPopup(evt){
-
-    var point = evt.mapPoint;
-    var symbol = new esri.symbol.SimpleMarkerSymbol().setStyle(esri.symbol.SimpleMarkerSymbol.STYLE_DIAMOND);
-    
-    var graphic = new esri.Graphic(point, symbol);
-
-    
-    //alert(checkedLayers);
-    
-       
-    
-   //retrieve the attribute info.
-   
-    gs.project([ point ], new esri.SpatialReference({ wkid:3857}), function(projectedPoints) {
-        pt = projectedPoints[0]; //pt is in longi-lati coordinates
-        
-        //need an asynchronous loop here:
-        //ref http://stackoverflow.com/questions/11488014/asynchronous-process-inside-a-javascript-for-loop
-        //the selected feature may belong to any of the following layer
-        for(var idx in checkedLayers){
-            var layerName='nurail:'+checkedLayers[idx];
-            
-           (function(layerName){
-               //Restful url for WFS service  http://docs.geoserver.org/stable/en/user/services/wfs/reference.html
-               //geometry_name:"the_geom" https://wiki.state.ma.us/confluence/display/massgis/GeoServer+-+WFS+-+Filter+-+DWithin
-               //version must be 1.0.0 why?
-               var url='http://nurail.uic.edu/geoserver/nurail/ows?service=WFS&version=1.0.0&request=GetFeature&typeName='+layerName+'&cql_filter=DWITHIN(the_geom,POINT('+pt.x+' '+pt.y+'),0.01,meters)&propertyName='+popupAttributesForLayer[layerName]+'&outputFormat=application/json';
-                
-                //asynochronous function to deal with the response
-                $.getJSON(url, function(obj){
-                    var cloestFeature=obj.features[0];
-                    
-                    if (typeof cloestFeature === 'undefined') {
-                        //alert("cloestFeature is undefined");
-                        return;
-                    }
-                    
-                    //for popup infowindow reference: https://developers.arcgis.com/en/javascript/jssamples/gp_popuplink.html
-                    var popupContent="<b>Detail Feature Information: </b> </br><hr>"
-                    
-                    //add geo-coordinates 
-                    // popupContent+= "<p><font color=\"grey\"> Latitude</font>: " + pt.y + "<br/> <font color=\"grey\">Longitude</font>: " + pt.x  + "</p>";
-                    
-                    //add feature-dependent information
-                    for (var idx in popupAttributesForLayer[layerName]){
-                        var propertyValue=cloestFeature.properties[popupAttributesForLayer[layerName][idx]];
-                        if (typeof propertyValue === "string" || propertyValue instanceof String){                         
-                            propertyValue=propertyValue.replace(/\\/g, " ");
-                        }
-                        popupContent+="<font color=\"grey\">"+meaningfulAttributeNames[popupAttributesForLayer[layerName][idx]]+"</font>: "+ propertyValue;
-                        
-                        var unit=meaningfulAttributeNames[popupAttributesForLayer[layerName][idx]+"_unit"]
-                        if (!(unit == undefined)){
-                            popupContent+="  "+unit;
-                        }
-                        popupContent+="<br/>";
-                    }
-
-                    graphic.setInfoTemplate(new esri.InfoTemplate("",popupContent));   
-                        //+ "<input type='button' value='Convert back to LatLong' onclick='projectToLatLong();' />" 
-                        //+ "<div id='latlong'></div>"
-                    
-                    //remove the old graphic and show the new graphic
-                    map.graphics.remove(lastPopupGraphic);
-                    map.graphics.add(graphic);
-                    lastPopupGraphic=graphic;
-                    layerOfLastPopupGraphic=layerName;
-                    
-                    //show the infoWindow
-                    map.infoWindow
-                    .setTitle(graphic.getTitle())
-                    .setContent(graphic.getContent())
-                    .show(screenPoint, map.getInfoWindowAnchor(screenPoint));
-                   
-                });
-           })(layerName); //pass the layerName to the anonymous function
-           
-        }
-    });
-    
-    // json=json.replace(/\\/g, ""); //replace all '\' with empty string
-    // obj = JSON.parse(json);
-}
                                 
 require(["dojo/ready"], function(ready){
     ready(function(){
         init(); //this must be wrapped into ready function()
     });
 });
-
-
