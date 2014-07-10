@@ -17,6 +17,8 @@ function init() {
         showArcGISBasemaps : true,
         map : map
     });
+
+    gs = new esri.tasks.GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
   
     // geocoding function
     locator = new esri.tasks.Locator("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
@@ -74,7 +76,7 @@ function init() {
                 var graphic = new esri.Graphic(point, symbol);
                 
                 //retrieve the attribute info
-                gs.project([ point ], new esri.SpatialReference({ wkid:3857}), function(projectedPoints) {
+                gs.project([ point ], new esri.SpatialReference({wkid:3857}), function(projectedPoints) {
                     pt = projectedPoints[0]; //pt is in longi-lati coordinates
                     
                     //need an asynchronous loop here:
@@ -151,8 +153,8 @@ function init() {
         //register onLoad function
         on(map, "load", function() {
             
-            // // add basemap gallery
-            // //reference: http://help.arcgis.com/en/webapi/javascript/arcgis/jssamples/map_agol.html
+            // add basemap gallery
+            //reference: http://help.arcgis.com/en/webapi/javascript/arcgis/jssamples/map_agol.html
             array.forEach(basemapGallery.basemaps, function(bmap) {
                 //Add a menu item for each basemap, when the menu items are selected
                 dijit.byId("basemapMenu").addChild(
@@ -178,7 +180,7 @@ function init() {
     // Create the WMS_layer for each layer in layers
     for(var idx in layers){
         
-        console.log("layers["+idx+"]:", layers[idx]);
+        // console.log("layers["+idx+"]:", layers[idx]);
 
         layers[idx] = new dojo.declare(esri.layers.DynamicMapServiceLayer, {
             // Now for the constructor definition
@@ -212,8 +214,8 @@ function init() {
                     "&height=" + height +
                     "&styles=" +
                     "&format=" + "image/png";
-                
-                gs = new esri.tasks.GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");               
+
+                console.log('params:', params);
                 
                 gs.project([ extent ], new esri.SpatialReference({wkid:3857}) , function(features) {
                     var translatedExtent = features[0];
@@ -233,7 +235,6 @@ function init() {
         //console.log("layers["+idx+"]:", layers[idx]);
         
     }
- 
 }
 
 var lastPopupGraphic, layerOfLastPopupGraphic; //when the layer it attaches to is removed, it should be also removed from the map

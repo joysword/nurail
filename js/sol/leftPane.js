@@ -535,5 +535,14 @@ require(["dojo/ready",
             // }, "legendPane");
         // for(var idx in legendLayers) alert(lengendLayers[idx].title);
         // legend.startup();
+
+        
+	    //$("#MapLayerTree").css("overflow", "hidden");
+
+	    var node = dojo.byId("MapLayerTree");
+	    console.log('node:', node);
+	    dojo.style(node, "overflow", "hidden");
+	    console.log('node:', node);
+ 
     });
 });
