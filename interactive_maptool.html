@@ -122,9 +122,9 @@
 
     <body class="claro">
 
-        <div id="mainWindow" data-dojo-type="dijit.layout.BorderContainer" design="headline" gutters="true" style="width:100%; height:100%;">
+        <div id="mainWindow" data-dojo-type="dijit/layout/BorderContainer" design="headline" gutters="true" style="width:100%; height:100%;">
 
-            <div id="header" class="roundedCorners" data-dojo-type="dijit.layout.ContentPane" region="top"  style="background-image: url('img/header-bg.jpg')"> 
+            <div id="header" class="roundedCorners" data-dojo-type="dijit/layout/ContentPane" region="top"  style="background-image: url('img/header-bg.jpg')"> 
                 <!-- begin header -->
                 <div style="height: 63px; width:100%; vertical-align: top; text-align: left;  background-repeat: none;">
                     <div style="float: left;padding:2px;">
@@ -142,7 +142,7 @@
                     </div>
                     
                     
-                    <div id="toolbar" dojoattachpoint="containerNode" widgetid="toolbar" class="toolFrame">
+                    <div id="toolbar" data-dojo-attach-point="containerNode" widgetid="toolbar" class="toolFrame">
                             <div id="clear" class="toolPanel" style="float: right">
                                 <a title="Clear Map" class="toolImg"><img src="img/i_recycle.png"  class="toolImg" onclick="clearMap()"></a>
                             </div>
@@ -156,11 +156,6 @@
                                 <a title="Choose Map" class="toolImg"><img src="img/i_camera.png"  class="toolImg"></a>                            
                             </div>
                             
-                            <!-- <div id="print" class="toolPanel" onclick="printMap()" style="float: right">
-                                <a title="Print Map" class="toolImg"><img src="img/i_print.png" class="toolImg"></a>
-                            </div>
-                            <div id="printResult" style="float: right"></div> -->
-                            
                         <span class="controllerStatus"></span>
                     </div>
                    <!-- <span>Mouse Coord:<span id="coord"></span> -->
@@ -168,33 +163,33 @@
                 </div>
             </div>
 
-            <div id="leftPane" data-dojo-type="dijit.layout.AccordionContainer" region="left" style="width: 30%">
+            <div id="leftPane" data-dojo-type="dijit/layout/AccordionContainer" region="left" style="width: 30%">
                 
-                <div data-dojo-type="dijit.layout.ContentPane" title="Layers" >
+                <div data-dojo-type="dijit/layout/ContentPane" title="Select Layers to Show" >
                     <!-- Layer Tree </br> -->
                     <div id="CheckboxTree"></div>     
                 </div>
                 
             </div>
 
-            <div id="centerPane" data-dojo-type="dijit.layout.BorderContainer" class="roundedCorners" region="center" gutters="false">
-                <div id="map" data-dojo-type="dijit.layout.ContentPane" class="roundedCorners " region="center"></div>
+            <div id="centerPane" data-dojo-type="dijit/layout/BorderContainer" class="roundedCorners" region="center" gutters="false">
+                <div id="map" data-dojo-type="dijit/layout/ContentPane" class="roundedCorners " region="center"></div>
 
-                <!-- <div id="footer" class="roundedCorners" data-dojo-type="dijit.layout.ContentPane" region="bottom">
+                <!-- <div id="footer" class="roundedCorners" data-dojo-type="dijit/layout/ContentPane" region="bottom">
                     This is the footer section
                 </div> -->
             </div>
             
-            <div id="rightPane" data-dojo-type="dijit.layout.AccordionContainer" region="right" style="width: 15% ; hight:50%">
+            <div id="rightPane" data-dojo-type="dijit/layout/AccordionContainer" region="right" style="width: 15% ; hight:50%">
 
-                <div data-dojo-type="dijit.layout.ContentPane" title="Find Layer Path" >
+                <div data-dojo-type="dijit/layout/ContentPane" title="Find Layer Path" >
                     <div>
                         Search Layer <br/>
                         <table style=" width: 100%;">
                             <tbody>
                                 <tr>
                                     <td width="60%"> <textarea type="text" id="layerSearchKeyword" style="width:90%;height:20px"/>Emission</textArea> </td>
-                                    <td width="40%" align="left"> <button data-dojo-type="dijit.form.Button" onclick="findRelevantLayer()" >Find</button> </td>
+                                    <td width="40%" align="left"> <button data-dojo-type="dijit/form/Button" onclick="findRelevantLayer()" >Find</button> </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -202,16 +197,16 @@
                     </div>                        
                 </div>
                 
-                <div data-dojo-type="dijit.layout.ContentPane" title="Go To Location">
+                <div data-dojo-type="dijit/layout/ContentPane" title="Go To Location">
                     <p><font size=3> Enter an address/neighbourhood name/bus(train)station and the city name</font> <p/>
                     <textarea type="text" id="address" width="80%"/>Morgan and Harrison Street, Chicago</textArea>
-                    <button daa-dojo-type="dijit.form.Button" onclick="locate()">
+                    <button daa-dojo-type="dijit/form/Button" onclick="locate()">
                         Locate
                     </button>
                     <br />
                 </div>
                 
-                <div data-dojo-type="dijit.layout.ContentPane"  title="Layer Legend" >
+                <div data-dojo-type="dijit/layout/ContentPane"  title="Layer Legend" >
                     <div id="legendPane"></div>  <!-- cannot put id in the last line, to be registered by rightPane.js -->
                     
                     <!-- transportation category -->
@@ -255,7 +250,7 @@
                 
             </div>
             
-            <!-- <div id="FindLayerPane" data-dojo-type="dijit.layout.AccordionContainer" region="right" style="width: 13% ; hight:50%"> -->
+            <!-- <div id="FindLayerPane" data-dojo-type="dijit/layout/AccordionContainer" region="right" style="width: 13% ; hight:50%"> -->
             
             
             
