@@ -472,7 +472,7 @@ require(["dojo/ready",
         if(checked){
             for(var layerIdx in ChildrenLayers){ //in JS, layer is an index of ChildrenLayers, i.e. 0, 1, ......
                 var WMSLayerName=ChildrenLayers[layerIdx];
-                map.addLayer( layers[WMSLayerName]); 
+                map.addLayer(layers[WMSLayerName]); 
                 checkedLayers.push(WMSLayerName); //add the layer to the checked layer group, clearMap()
                 showLegend(WMSLayerNamesMapToTreeLayerNames[WMSLayerName]); //show the legend
             }

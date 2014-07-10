@@ -71,16 +71,9 @@ function init() {
 
                 var point = evt.mapPoint;
                 var symbol = new esri.symbol.SimpleMarkerSymbol().setStyle(esri.symbol.SimpleMarkerSymbol.STYLE_DIAMOND);
-                
                 var graphic = new esri.Graphic(point, symbol);
-
                 
-                //alert(checkedLayers);
-                
-                   
-                
-               //retrieve the attribute info.
-               
+                //retrieve the attribute info
                 gs.project([ point ], new esri.SpatialReference({ wkid:3857}), function(projectedPoints) {
                     pt = projectedPoints[0]; //pt is in longi-lati coordinates
                     
@@ -153,14 +146,14 @@ function init() {
             });
     });
     
-    require(["dojo/on"], function(on) {
+    require(["dojo/on", "dojo/_base/array"], function(on, array) {
         
         //register onLoad function
         on(map, "load", function() {
             
             // // add basemap gallery
             // //reference: http://help.arcgis.com/en/webapi/javascript/arcgis/jssamples/map_agol.html
-            dojo.forEach(basemapGallery.basemaps, function(bmap) {
+            array.forEach(basemapGallery.basemaps, function(bmap) {
                 //Add a menu item for each basemap, when the menu items are selected
                 dijit.byId("basemapMenu").addChild(
                     new dijit.MenuItem({
@@ -180,24 +173,14 @@ function init() {
             overviewMapDijit.startup();
         });
 
-        //register onMouseMove function
-        on(map, "MouseMove", function(evt) {
-            var mp = evt.mapPoint;
-            //dojo.byId("coord").innerHTML = mp.x + ", " + mp.y;
-        });// end of onMouseMove function
-        
     });
-    
-    // Save time by declaring your start extent up front 
-    // this is the full extent for the state of Louisiana
-    //var extent = new esri.geometry.Extent(-122.68,45.53,-122.45,45.60, new esri.SpatialReference({ wkid:4326 }));
-    
+
     // Create the WMS_layer for each layer in layers
     for(var idx in layers){
         
-        //alert(idx+" "+layers[idx]);
+        console.log("layers["+idx+"]:", layers[idx]);
 
-        layers[idx]=new dojo.declare(esri.layers.DynamicMapServiceLayer, {
+        layers[idx] = new dojo.declare(esri.layers.DynamicMapServiceLayer, {
             // Now for the constructor definition
             constructor: function(idx) {
                 this.spatialReference = new esri.SpatialReference({wkid:3857});
@@ -218,25 +201,22 @@ function init() {
                 // * the parameters to a string this section up a bit.
                 // **********************************************//
               
-                //alert("NULL,"+extent.spatialReference.wkid+","+map.extent.xmin);
                 var params =
                     "service="+"WMS"+
                     "&version=" + "1.1.0" +
                     "&request=" + "GetMap" +
                     "&transparent="+ "true" +
                     "&layers="+workspace+this.id+
-                    "&srs=EPSG:" + "3857" + // You need to use the WMS’s spatial wkid
-                    "&width=" + width +  //441
-                    "&height=" + height +  //512
+                    "&srs=EPSG:3857" +
+                    "&width=" + width +
+                    "&height=" + height +
                     "&styles=" +
                     "&format=" + "image/png";
                 
-                //alert("params:"+params); 
-                
                 gs = new esri.tasks.GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");               
                 
-                gs.project([ extent ], new esri.SpatialReference({ wkid:3857}) , function(features) {
-                    var translatedExtent =  features[0];    
+                gs.project([ extent ], new esri.SpatialReference({wkid:3857}) , function(features) {
+                    var translatedExtent = features[0];
                     //alert(translatedExtent.spatialReference.wkid+","+translatedExtent.xmin);  
                     params +="&bbox=" + translatedExtent.xmin+","+translatedExtent.ymin+","+translatedExtent.xmax+","+translatedExtent.ymax;
                     //"&bbox=" + "-87.7575678843978,41.8509798545157,-87.5445361155993,41.893928932665";
@@ -244,18 +224,21 @@ function init() {
 
                     if (remote) callback("http://nurail.uic.edu/geoserver/nurail/wms?" + params );
                     else callback("http://localhost:8088/geoserver/NURail/wms?" + params );
-                });//end of anonymous function
+                });
                 
             } //end of method getImageUrl()
             
-        })(idx); //end of declare    
+        })(idx); //end of declare
+
+        //console.log("layers["+idx+"]:", layers[idx]);
         
     }
  
 }
 
-var lastPopupGraphic, layerOfLastPopupGraphic; //when the layer it attaches to is removed, it should be also remove from the map
-//translate the attribute name in the shapefile table into meaningful words
+var lastPopupGraphic, layerOfLastPopupGraphic; //when the layer it attaches to is removed, it should be also removed from the map
+
+    //translate the attribute name in the shapefile table into meaningful words
     var meaningfulAttributeNames={
         'STREET':'STREET',
         'DAYTHRU':'DAY TRAFFIC VOLUME',
@@ -323,9 +306,7 @@ var lastPopupGraphic, layerOfLastPopupGraphic; //when the layer it attaches to i
         'DAMAGE':'DAMAGE',
         'F_SCALE':'FUJITA SCALE',
         'FLOODZONE':'FLOODZONE',
-
-    }
-    
+    };
     
     var popupAttributesForLayer={
             //transport
@@ -383,7 +364,7 @@ var lastPopupGraphic, layerOfLastPopupGraphic; //when the layer it attaches to i
             ,'nurail:social_vulnerability_idx':['SoVI']
             ,'nurail:shallowest_principal_aquifers':['ROCK_NAME','AQ_NAME','Shape_Leng', 'Shape_Area']
             ,'nurail:tornado':['DATE_', 'DAMAGE', 'F_SCALE']
-        }; 
+    }; 
                                 
 require(["dojo/ready"], function(ready){
     ready(function(){
