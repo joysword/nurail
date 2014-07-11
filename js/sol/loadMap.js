@@ -13,6 +13,8 @@ function init() {
         sliderStyle : "small"
     });
 
+    // map = L.mapbox.map('map', 'joysword.i6b4jale').setView([41.8910,-87.6839], 11);
+
     basemapGallery = new esri.dijit.BasemapGallery({
         showArcGISBasemaps : true,
         map : map

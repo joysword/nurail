@@ -20,104 +20,8 @@
         <!--<link rel="stylesheet" href="css/override.css">-->
         <link rel="stylesheet" href="css/default.css">
 
-        <!-- <script type="text/javascript" src="js/dojo/dojo/dojo.js" data-dojo-config="isDebug:true,  parseOnLoad: true, async:true"></script> -->
-        
-        <!-- Note that the config must precede the arcgis api -->
-        <script>
-        var remote= true; // false if runs at localhost; false if runs on nurail.uic.edu
-        
-        var cbtreeLocation;
-        if (remote) cbtreeLocation="/js/cbtree";
-        else cbtreeLocation="/NURail/js/cbtree";
-            var dojoConfig = {
-                parseOnLoad : true,
-                //baseUrl : '/' //does not work with arcgis jsapi
-                packages: [
-                    { name: "cbtree", location: cbtreeLocation }
-                ]
-            };
-        </script>
-
-        <!--<script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/"></script>-->
-        <script src="http://js.arcgis.com/3.9/"></script>
-        
-        <!-- build the leftlane -->
-        <script type="text/javascript" src="js/sol/leftPane.js"></script>
-        
-        <!-- build the map -->
-        <script type="text/javascript" src="js/sol/loadMap.js"></script>
-
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        
-        <!-- load ArcGIS API modules -->
-        <script>
-	        require(["dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dijit/layout/AccordionContainer", 
-            "dijit/form/Button", "dijit/form/Textarea", "dijit/Menu", "dijit/form/DropDownButton", "dijit/TooltipDialog",
-            "dijit/DropDownMenu", "dijit/MenuItem",  "cbtree/model/StoreModel-EXT","cbtree/util/QueryEngine", "cbtree/model/TreeStoreModel","dojo/domReady!"]);
- 
-            function clearMap() {
-                map.graphics.clear();
-                
-                for(var idx in checkedLayers){
-                    var treeLayerName=WMSLayerNamesMapToTreeLayerNames[checkedLayers[idx]];
-                    //alert(treeLayerName);
-                    //uncheck all checked tree layers
-                    cbTreeModel.uncheck( {name: treeLayerName} );
-                    //remove the WMS_layer from the map
-                    map.removeLayer(layers[checkedLayers[idx]]);
-                    //hide the legend
-                    hideLegend(treeLayerName);
-                }
-                checkedLayers=[];
-            }
-            
-            function switchBaseMap() {
-                //"streets" , "satellite" , "hybrid", "topo", "gray", "oceans", "national-geographic", "osm"
-                //var form = document.form1;
-                //var selectedBaseMap = form.links.options[form.links.selectedIndex].value;
-                var curBaseMap = map.getBasemap();
-                if (curBaseMap == 'streets'){
-                    map.setBasemap('gray');
-                }
-                else if (curBaseMap == 'gray') {
-	                map.setBasemap('topo');
-                }
-	            else if (curBaseMap == 'topo') {
-                    map.setBasemap('streets');
-                }                
-           }
-           
-            function printMap(){
-                //window.print()                
-                
-                var params = new esri.tasks.PrintParameters();
-                params.map = map;
-                //params.template = template;
-                //printer.execute(params, showPrintingResult);
-            }
-           
-            function showPrintingResult(){
-                dojo.byId("printResult").innerHTML="Download Map PDF";
-            }
-
-            function locate() {
-                map.graphics.clear();
-                var address = {
-                    "SingleLine" : dojo.byId("address").value
-                };
-                locator.outSpatialReference = map.spatialReference;
-                var options = {
-                    address : address,
-                    outFields : ["Loc_name"]
-                }
-                locator.addressToLocations(options);
-            }
-            
-        
-        </script>
-
-      
-        
+        <link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.css' rel='stylesheet' />
+    
     </head>
 
     <body class="claro">
@@ -206,7 +110,7 @@
                     <br />
                 </div>
                 
-                <div data-dojo-type="dijit/layout/ContentPane"  title="Layer Legend" >
+                <div data-dojo-type="dijit/layout/ContentPane"  title="Layer Legend">
                     <div id="legendPane"></div>  <!-- cannot put id in the last line, to be registered by rightPane.js -->
                     
                     <!-- transportation category -->
@@ -247,6 +151,17 @@
                     <div id="socialLegendPicture"></div>
 
                 </div>
+
+                <div data-dojo-type="dijit/layout/ContentPane" title="Extract Data">
+                    <div>Draw:<br /></div>
+                    <div><button data-dojo-type="dijit/form/Button">Point</button></div>
+                    <div><button data-dojo-type="dijit/form/Button">Multi Point</button></div>
+                    <div><button data-dojo-type="dijit/form/Button">Line</button></div>
+                    <div><button data-dojo-type="dijit/form/Button">Polyline</button></div>
+                    <div><button data-dojo-type="dijit/form/Button">Polygon</button></div>
+                    <div><button data-dojo-type="dijit/form/Button">Freehand Polyline</button></div>
+                    <div><button data-dojo-type="dijit/form/Button">Freehand Polygon</button></div>
+                </div>
                 
             </div>
             
@@ -255,6 +170,102 @@
             
             
         </div>
+
+        <!-- Note that the config must precede the arcgis api -->
+        <script>
+            var remote= true; // false if runs at localhost; false if runs on nurail.uic.edu
+            
+            var cbtreeLocation;
+            if (remote) cbtreeLocation="/js/cbtree";
+            else cbtreeLocation="/NURail/js/cbtree";
+                var dojoConfig = {
+                    parseOnLoad : true,
+                    //baseUrl : '/' //does not work with arcgis jsapi
+                    packages: [
+                        { name: "cbtree", location: cbtreeLocation }
+                    ]
+                };
+        </script>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+        <!--<script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/"></script>-->
+        <script src="http://js.arcgis.com/3.9/"></script>
+        
+        <!-- build the leftlane -->
+        <script type="text/javascript" src="js/sol/leftPane.js"></script>
+        
+        <!-- build the map -->
+        <script type="text/javascript" src="js/sol/loadMap.js"></script>
+
+        <script type="text/javascript" src="js/shi/rightPane.js"></script>        
+
+        <!--<script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.js'></script>-->
+        
+        <!-- load ArcGIS API modules -->
+        <script>
+            require(["dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dijit/layout/AccordionContainer", 
+            "dijit/form/Button", "dijit/form/Textarea", "dijit/Menu", "dijit/form/DropDownButton", "dijit/TooltipDialog",
+            "dijit/DropDownMenu", "dijit/MenuItem",  "cbtree/model/StoreModel-EXT","cbtree/util/QueryEngine", "cbtree/model/TreeStoreModel","dojo/domReady!"]);
+ 
+            function clearMap() {
+                map.graphics.clear();
+                
+                for(var idx in checkedLayers){
+                    var treeLayerName=WMSLayerNamesMapToTreeLayerNames[checkedLayers[idx]];
+                    //alert(treeLayerName);
+                    //uncheck all checked tree layers
+                    cbTreeModel.uncheck( {name: treeLayerName} );
+                    //remove the WMS_layer from the map
+                    map.removeLayer(layers[checkedLayers[idx]]);
+                    //hide the legend
+                    hideLegend(treeLayerName);
+                }
+                checkedLayers=[];
+            }
+            
+            function switchBaseMap() {
+                //"streets" , "satellite" , "hybrid", "topo", "gray", "oceans", "national-geographic", "osm"
+                //var form = document.form1;
+                //var selectedBaseMap = form.links.options[form.links.selectedIndex].value;
+                var curBaseMap = map.getBasemap();
+                if (curBaseMap == 'streets'){
+                    map.setBasemap('gray');
+                }
+                else if (curBaseMap == 'gray') {
+                    map.setBasemap('topo');
+                }
+                else if (curBaseMap == 'topo') {
+                    map.setBasemap('streets');
+                }                
+           }
+           
+            function printMap(){
+                //window.print()                
+                
+                var params = new esri.tasks.PrintParameters();
+                params.map = map;
+                //params.template = template;
+                //printer.execute(params, showPrintingResult);
+            }
+           
+            function showPrintingResult(){
+                dojo.byId("printResult").innerHTML="Download Map PDF";
+            }
+
+            function locate() {
+                map.graphics.clear();
+                var address = {
+                    "SingleLine" : dojo.byId("address").value
+                };
+                locator.outSpatialReference = map.spatialReference;
+                var options = {
+                    address : address,
+                    outFields : ["Loc_name"]
+                }
+                locator.addressToLocations(options);
+            }
+        </script>
 
     </body>
 </html>
