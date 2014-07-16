@@ -400,19 +400,13 @@ html, body {
 }
 
 #leftPane {
-	width: 20%;
-	border-top: solid 1px #343642;
-	border-left: solid 1px #343642;
-	border-bottom: solid 1px #343642;
-	background-color: #DCDAC5;
-	margin: 5px 0px 5px 5px;
 	color: #343642;
 	font: 100% Georgia, "Times New Roman", Times, serif;
-	letter-spacing: 0.05em;#loadingImg {
-	display: none;
-	height: 100%;
-	width: 100%;
-	background-color: transparent;
+}
+
+#rightPane {
+	color: #343642;
+	font: 100% Georgia, "Times New Roman", Times, serif;	
 }
 
 #loadGif {
