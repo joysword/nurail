@@ -24,7 +24,7 @@
 
     <body class="claro">
 
-        <div id="mainWindow" data-dojo-type="dijit/layout/BorderContainer" design="headline" gutters="false" style="width:100%; height:100%;">
+        <div id="mainWindow" data-dojo-type="dijit/layout/BorderContainer" design="headline" gutters="true" style="width:100%; height:100%;">
 
             <div id="header" class="roundedCorners" data-dojo-type="dijit/layout/ContentPane" region="top"  style="background-image: url('img/header-bg.jpg')"> 
                 <!-- begin header -->
@@ -65,11 +65,52 @@
                 </div>
             </div>
 
-            <div id="leftPane" data-dojo-type="dijit/layout/AccordionContainer" region="left" style="width: 30%">
+            <div id="leftPane" data-dojo-type="dijit/layout/AccordionContainer" region="left" style="width: 25%">
                 
                 <div data-dojo-type="dijit/layout/ContentPane" title="Select Layers to Show" >
                     <!-- Layer Tree </br> -->
                     <div id="CheckboxTree"></div>     
+                </div>
+
+                <div data-dojo-type="dijit/layout/ContentPane" title="Extract Data (beta)">
+                    <div>Draw:</div>
+                    <div><button class="drawButton" data-dojo-type="dijit/form/Button">Point</button></div>
+                    <div><button class="drawButton" data-dojo-type="dijit/form/Button">Multi Point</button></div>
+                    <div><button class="drawButton" data-dojo-type="dijit/form/Button">Polygon</button></div>
+                    <div><button class="drawButton" data-dojo-type="dijit/form/Button">Freehand Polygon</button></div>
+                </div>
+
+                <div data-dojo-type="dijit/layout/ContentPane" title="Buffering (beta)">
+                    <div><b>Buffer Parameters</b></div>
+                    <div>Spatial Reference WKID:&nbsp;<input type="text" id="bufferSpatialReference" size="5" value="3857" /><br /></div>
+                    <div>Distance:&nbsp;<input type="text" id="distance" size="5" value="25" />
+                        <select id="unit" style="width:100px;">
+                            <option value="UNIT_STATUTE_MILE">Miles</option>
+                            <option value="UNIT_FOOT">Feet</option>
+                            <option value="UNIT_KILOMETER">Kilometers</option>
+                            <option value="UNIT_METER">Meters</option>
+                            <option value="UNIT_NAUTICAL_MILE">Nautical Miles</option>
+                            <option value="UNIT_US_NAUTICAL_MILE">US Nautical Miles</option>
+                            <option value="UNIT_DEGREE">Degrees</option>
+                        </select>
+                    </div>
+                    <div>Draw:</div>
+                    <div>
+                        <button class="bufferButton" data-dojo-type="dijit/form/Button">Point</button>
+                        <button class="bufferButton" data-dojo-type="dijit/form/Button">Multi Point</button>
+                    </div>
+                    <div>
+                        <button class="bufferButton" data-dojo-type="dijit/form/Button">Line</button>
+                        <button class="bufferButton" data-dojo-type="dijit/form/Button">Polyline</button>
+                        <button class="bufferButton" data-dojo-type="dijit/form/Button">Freehand Polyline</button>
+                    </div>
+                    <div>
+                        <button class="bufferButton" data-dojo-type="dijit/form/Button">Polygon</button>
+                        <button class="bufferButton" data-dojo-type="dijit/form/Button">Freehand Polygon</button>
+                    </div>
+                    
+                    
+                    <br />
                 </div>
                 
             </div>
@@ -84,7 +125,7 @@
             
             <div id="rightPane" data-dojo-type="dijit/layout/AccordionContainer" region="right" style="width: 15% ; hight:50%">
 
-                <!-- <div data-dojo-type="dijit/layout/ContentPane" title="Find Layer Path" >
+                <div data-dojo-type="dijit/layout/ContentPane" title="Find Layer Path" >
                     <div>
                         Search Layer <br/>
                         <table style=" width: 100%;">
@@ -97,16 +138,16 @@
                         </table>
                         <textarea type="text" id="layerSearchResult" style="width:90%; height:100px;visibility:hidden"/></textArea>
                     </div>                        
-                </div> -->
+                </div>
                 
-                <!-- <div data-dojo-type="dijit/layout/ContentPane" title="Go To Location">
+                <div data-dojo-type="dijit/layout/ContentPane" title="Go To Location">
                     <p><font size=3> Enter an address/neighbourhood name/bus(train)station and the city name</font> <p/>
                     <textarea type="text" id="address" width="80%"/>Morgan and Harrison Street, Chicago</textArea>
                     <button daa-dojo-type="dijit/form/Button" onclick="locate()">
                         Locate
                     </button>
                     <br />
-                </div> -->
+                </div>
                 
                 <div data-dojo-type="dijit/layout/ContentPane"  title="Layer Legend">
                     <div id="legendPane"></div>  <!-- cannot put id in the last line, to be registered by rightPane.js -->
@@ -147,48 +188,6 @@
                     <div id="seismicLegendPicture"></div>
                     <div id="socialLegendLabel"></div>
                     <div id="socialLegendPicture"></div>
-
-                </div>
-
-                <div data-dojo-type="dijit/layout/ContentPane" title="Extract Data (beta)">
-                    <div>Draw:</div>
-                    <div><button data-dojo-type="dijit/form/Button">Point</button></div>
-                    <div><button data-dojo-type="dijit/form/Button">Multi Point</button></div>
-                    <div><button data-dojo-type="dijit/form/Button">Polygon</button></div>
-                    <div><button data-dojo-type="dijit/form/Button">Freehand Polygon</button></div>
-                </div>
-
-                <div data-dojo-type="dijit/layout/ContentPane" title="Buffering (beta)">
-                    <div><b>Buffer Parameters</b></div>
-                    <div>Spatial Reference WKID:&nbsp;<input type="text" id="bufferSpatialReference" size="5" value="3857" /><br /></div>
-                    <div>Distance:&nbsp;<input type="text" id="distance" size="5" value="25" />
-                        <select id="unit" style="width:100px;">
-                            <option value="UNIT_STATUTE_MILE">Miles</option>
-                            <option value="UNIT_FOOT">Feet</option>
-                            <option value="UNIT_KILOMETER">Kilometers</option>
-                            <option value="UNIT_METER">Meters</option>
-                            <option value="UNIT_NAUTICAL_MILE">Nautical Miles</option>
-                            <option value="UNIT_US_NAUTICAL_MILE">US Nautical Miles</option>
-                            <option value="UNIT_DEGREE">Degrees</option>
-                        </select>
-                    </div>
-                    <div>Draw:</div>
-                    <div>
-                        <button data-dojo-type="dijit/form/Button">Point</button>
-                        <button data-dojo-type="dijit/form/Button">Multi Point</button>
-                    </div>
-                    <div>
-                        <button data-dojo-type="dijit/form/Button">Line</button>
-                        <button data-dojo-type="dijit/form/Button">Polyline</button>
-                        <button data-dojo-type="dijit/form/Button">Freehand Polyline</button>
-                    </div>
-                    <div>
-                        <button data-dojo-type="dijit/form/Button">Polygon</button>
-                        <button data-dojo-type="dijit/form/Button">Freehand Polygon</button>
-                    </div>
-                    
-                    
-                    <br />
                 </div>
                 
             </div>

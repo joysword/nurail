@@ -11,14 +11,14 @@ treeHierarchyData=[
 { id: 'root', name:'Layers'},
 	{id:'transit', name:'Transit Routes', parent:'root'},
 		{id:'cta', name:'CTA Train Routes', parent:'transit'},
-			{id:'bl', name:'Blue Line', parent:'cta', checked:true},
-			{id:'br', name:'Brown Line', parent:'cta', checked:true},
-			{id:'gr', name:'Green Line', parent:'cta', checked:true},
-			{id:'or', name:'Orange Line', parent:'cta', checked:true},
-			{id:'pk', name:'Pink Line', parent:'cta', checked:true},
-			{id:'pr', name:'Purple Line', parent:'cta', checked:true},
-			{id:'rd', name:'Red Line', parent:'cta', checked:true},
-			{id:'yl', name:'Yellow Line', parent:'cta', checked:true},
+			{id:'bl', name:'CTA Blue Line', parent:'cta', checked:true},
+			{id:'br', name:'CTA Brown Line', parent:'cta', checked:true},
+			{id:'gr', name:'CTA Green Line', parent:'cta', checked:true},
+			{id:'or', name:'CTA Orange Line', parent:'cta', checked:true},
+			{id:'pk', name:'CTA Pink Line', parent:'cta', checked:true},
+			{id:'pr', name:'CTA Purple Line', parent:'cta', checked:true},
+			{id:'rd', name:'CTA Red Line', parent:'cta', checked:true},
+			{id:'yl', name:'CTA Yellow Line', parent:'cta', checked:true},
 		{id:'metra', name:'Metra Lines', parent:'transit', checked:true},
 	{id:'ri', name:'Rail Infrastructure', parent:'root'},
 		{id:'it', name:'Intermodal Terminal', parent:'ri'},
@@ -74,23 +74,23 @@ treeHierarchyData=[
 			{id:'rz', name:'Riparian Zone', parent:'Habitat'},
 ];
 
-var pathsOfAllLayers={'root':'root', 'Blue Line':'Transit Routes -> CTA Train Routes -> Blue Line', 'Brown Line':'Transit Routes -> CTA Train Routes -> Brown Line', 'Green Line':'Transit Routes -> CTA Train Routes -> Green Line', 'Orange Line':'Transit Routes -> CTA Train Routes -> Orange Line', 'Pink Line':'Transit Routes -> CTA Train Routes -> Pink Line', 'Purple Line':'Transit Routes -> CTA Train Routes -> Purple Line', 'Red Line':'Transit Routes -> CTA Train Routes -> Red Line', 'Yellow Line':'Transit Routes -> CTA Train Routes -> Yellow Line', 'Metra Lines':'Transit Routes -> Metra Lines', 'Intermodal Terminal':'Rail Infrastructure -> Intermodal Terminal', 'Grade Crossing':'Rail Infrastructure -> Grade Crossing', 'Public Transit Facility':'Rail Infrastructure -> Public Transit Facility', 'Railroad Speed':'Rail Infrastructure -> Railroad Speed', 'County Boundary':'Community Profile -> County Boundary', 'Agriculture':'Community Profile -> Land Use -> Agriculture', 'Commercial/Office':'Community Profile -> Land Use -> Commercial/Office', 'Forest/Grassland':'Community Profile -> Land Use -> Forest/Grassland', 'Industrial':'Community Profile -> Land Use -> Industrial', 'Institutional':'Community Profile -> Land Use -> Institutional', 'Open space':'Community Profile -> Land Use -> Open space', 'Residential':'Community Profile -> Land Use -> Residential', 'Transportation':'Community Profile -> Land Use -> Transportation', 'Vacant':'Community Profile -> Land Use -> Vacant', 'Water':'Community Profile -> Land Use -> Water', 'Wetland':'Community Profile -> Land Use -> Wetland', 'Derailment Accident':'Safety -> Rail Safety Performance -> Derailment Accident', 'Flood Hazard':'Safety -> Natural Hazard Areas -> Flood Hazard', 'Tornado Hazard':'Safety -> Natural Hazard Areas -> Tornado Hazard', 'Seismic Hazard':'Safety -> Natural Hazard Areas -> Seismic Hazard', 'Employment Density':'Livable Communities -> Transit Accessibility -> Employment Density', 'Population Density':'Livable Communities -> Transit Accessibility -> Population Density', 'Archeologic Resource':'Livable Communities -> Cultural Resources -> Archeologic Resource', 'Historical Site':'Livable Communities -> Cultural Resources -> Historical Site', 'Trail':'Livable Communities -> Cultural Resources -> Trail', 'Median Household Income':'Transit Equity -> Median Household Income', 'Emission Hotspots':'Environmental Sustainability -> Modeled Air Emissions -> Emission Hotspots', 'Carbon':'Environmental Sustainability -> Modeled Air Emissions -> Carbon', 'Carbon Monoxide':'Environmental Sustainability -> Modeled Air Emissions -> Carbon Monoxide', 'NOx':'Environmental Sustainability -> Modeled Air Emissions -> NOx', 'Hydrocarbon':'Environmental Sustainability -> Modeled Air Emissions -> Hydrocarbon', 'PM10':'Environmental Sustainability -> Modeled Air Emissions -> PM10', 'Alluvial/Glacial Aquifer':'Environmental Sustainability -> Groundwater -> Alluvial/Glacial Aquifer', 'Shallowest Principal Aquifer':'Environmental Sustainability -> Groundwater -> Shallowest Principal Aquifer', 'Bird Presence':'Environmental Sustainability -> Habitat -> Bird Presence', 'Critical Habitat':'Environmental Sustainability -> Habitat -> Critical Habitat', 'Natural Area':'Environmental Sustainability -> Habitat -> Natural Area', 'Riparian Zone':'Environmental Sustainability -> Habitat -> Riparian Zone'};
+var pathsOfAllLayers={'root':'root', 'CTA Blue Line':'Trainst Routes -> CTA Train Routes -> CTA Blue Line', 'CTA Brown Line':'Trainst Routes -> CTA Train Routes -> CTA Brown Line', 'CTA Green Line':'Trainst Routes -> CTA Train Routes -> CTA Green Line', 'CTA Orange Line':'Trainst Routes -> CTA Train Routes -> CTA Orange Line', 'CTA Pink Line':'Trainst Routes -> CTA Train Routes -> CTA Pink Line', 'CTA Purple Line':'Trainst Routes -> CTA Train Routes -> CTA Purple Line', 'CTA Red Line':'Trainst Routes -> CTA Train Routes -> CTA Red Line', 'CTA Yellow Line':'Trainst Routes -> CTA Train Routes -> CTA Yellow Line', 'Metra Lines':'Trainst Routes -> Metra Lines', 'Intermodal Terminal':'Rail Infrastructure -> Intermodal Terminal', 'Grade Crossing':'Rail Infrastructure -> Grade Crossing', 'Public Transit Facility':'Rail Infrastructure -> Public Transit Facility', 'Railroad Speed':'Rail Infrastructure -> Railroad Speed', 'County Boundary':'Community Profile -> County Boundary', 'Agriculture':'Community Profile -> Land Use -> Agriculture', 'Commercial/Office':'Community Profile -> Land Use -> Commercial/Office', 'Forest/Grassland':'Community Profile -> Land Use -> Forest/Grassland', 'Industrial':'Community Profile -> Land Use -> Industrial', 'Institutional':'Community Profile -> Land Use -> Institutional', 'Open space':'Community Profile -> Land Use -> Open space', 'Residential':'Community Profile -> Land Use -> Residential', 'Transportation':'Community Profile -> Land Use -> Transportation', 'Vacant':'Community Profile -> Land Use -> Vacant', 'Water':'Community Profile -> Land Use -> Water', 'Wetland':'Community Profile -> Land Use -> Wetland', 'Derailment Accident':'Safety -> Rail Safety Performance -> Derailment Accident', 'Flood Hazard':'Safety -> Natural Hazard Areas -> Flood Hazard', 'Tornado Hazard':'Safety -> Natural Hazard Areas -> Tornado Hazard', 'Seismic Hazard':'Safety -> Natural Hazard Areas -> Seismic Hazard', 'Employment Density':'Livable Communities -> Transit Accessibility -> Employment Density', 'Population Density':'Livable Communities -> Transit Accessibility -> Population Density', 'Archeologic Resource':'Livable Communities -> Cultural Resources -> Archeologic Resource', 'Historical Site':'Livable Communities -> Cultural Resources -> Historical Site', 'Trail':'Livable Communities -> Cultural Resources -> Trail', 'Median Household Income':'Transit Equity -> Median Household Income', 'Emission Hotspots':'Environmental Sustainability -> Modeled Air Emissions -> Emission Hotspots', 'Carbon':'Environmental Sustainability -> Modeled Air Emissions -> Carbon', 'Carbon Monoxide':'Environmental Sustainability -> Modeled Air Emissions -> Carbon Monoxide', 'NOx':'Environmental Sustainability -> Modeled Air Emissions -> NOx', 'Hydrocarbon':'Environmental Sustainability -> Modeled Air Emissions -> Hydrocarbon', 'PM10':'Environmental Sustainability -> Modeled Air Emissions -> PM10', 'Alluvial/Glacial Aquifer':'Environmental Sustainability -> Groundwater -> Alluvial/Glacial Aquifer', 'Shallowest Principal Aquifer':'Environmental Sustainability -> Groundwater -> Shallowest Principal Aquifer', 'Bird Presence':'Environmental Sustainability -> Habitat -> Bird Presence', 'Critical Habitat':'Environmental Sustainability -> Habitat -> Critical Habitat', 'Natural Area':'Environmental Sustainability -> Habitat -> Natural Area', 'Riparian Zone':'Environmental Sustainability -> Habitat -> Riparian Zone'};
 
 
-var layerNamesInTheLeftPane = ['Agriculture','Alluvial/Glacial Aquifer','Archeologic Resource','Bird Presence','Blue Line','Brown Line','Carbon','Carbon Monoxide','Commercial/Office','County Boundary','Critical Habitat','Derailment Accident','Emission Hotspots','Employment Density','Flood Hazard','Forest/Grassland','Grade Crossing','Green Line','Historical Site','Hydrocarbon','Industrial','Institutional','Intermodal Terminal','Median Household Income','NOx','Natural Area','Open space','Orange Line','PM10','Population Density','Pink Line','Public Transit Facility','Purple Line','Railroad Speed','Red line','Metra Lines','Residential','Riparian Zone','Seismic Hazard','Shallowest Principal Aquifer','Tornado Hazard','Trail','Transportation','Vacant','Water','Wetland','Yellow Line'];
+var layerNamesInTheLeftPane = ['Agriculture','Alluvial/Glacial Aquifer','Archeologic Resource','Bird Presence','CTA Blue Line','CTA Brown Line','CTA Green Line','CTA Orange Line','CTA Pink Line','CTA Purple Line','CTA Red Line','CTA Yellow Line','Carbon','Carbon Monoxide','Commercial/Office','County Boundary','Critical Habitat','Derailment Accident','Emission Hotspots','Employment Density','Flood Hazard','Forest/Grassland','Grade Crossing','Historical Site','Hydrocarbon','Industrial','Institutional','Intermodal Terminal','Median Household Income','Metra Lines','NOx','Natural Area','Open space','PM10','Population Density','Public Transit Facility','Railroad Speed','Residential','Riparian Zone','Seismic Hazard','Shallowest Principal Aquifer','Tornado Hazard','Trail','Transportation','Vacant','Water','Wetland'];
 
 var WMSLayerNamesMapToTreeLayerNames={
-"Blue" : "Blue Line",
-"Brown" : "Brown Line",
-"Green" : "Green Line",
+"Blue" : "CTA Blue Line",
+"Brown" : "CTA Brown Line",
+"Green" : "CTA Green Line",
 "Illinois_Grade_Crossings" : "Grade Crossing",
 "MetraLinesshp" : "Metra Lines",
-"Orange" : "Orange Line",
-"Pink" : "Pink Line",
-"Purple" : "Purple Line",
+"Orange" : "CTA Orange Line",
+"Pink" : "CTA Pink Line",
+"Purple" : "CTA Purple Line",
 "Rail_Lines_w_Train_Speed" : "Railroad Speed",
-"Red" : "Red Line",
-"Yellow" : "Yellow Line",
+"Red" : "CTA Red Line",
+"Yellow" : "CTA Yellow Line",
 "accident" : "Derailment Accident",
 "agriculture" : "Agriculture",
 "alluvial_glacial_aquifers" : "Alluvial/Glacial Aquifer",
@@ -181,26 +181,26 @@ var layers={
 "wetland" : "",
 };
 
-
-var initChecked = [
-	"Blue","Brown","Green","Orange","Pink","Purple","Red","Yellow", "MetraLinesshp"
-];
-
-
 var TreeLayerNamesMapToWMSLayers={
 "Agriculture" : ["agriculture"],
 "Alluvial/Glacial Aquifer" : ["alluvial_glacial_aquifers"],
 "Archeologic Resource" : ["archeological"],
 "Bird Presence" : ["bird"],
-"Blue Line" : ["Blue"],
-"Brown Line" : ["Brown"],
+"CTA Blue Line" : ["Blue"],
+"CTA Brown Line" : ["Brown"],
+"CTA Green Line" : ["Green"],
+"CTA Orange Line" : ["Orange"],
+"CTA Pink Line" : ["Pink"],
+"CTA Purple Line" : ["Purple"],
+"CTA Red Line" : ["Red"],
+"CTA Train Routes" : ["Blue","Brown","Green","Orange","Pink","Purple","Red","Yellow"],
+"CTA Yellow Line" : ["Yellow"],
 "Carbon" : ["carbon"],
 "Carbon Monoxide" : ["co"],
 "Commercial/Office" : ["commercial"],
 "Community Profile" : ["county","agriculture","commercial","forest","industrial","institutional","open_space","residential","transportation","vacant","water","wetland"],
 "County Boundary" : ["county"],
 "Critical Habitat" : ["habitat"],
-"CTA Train Routes" : ["Blue","Brown","Green","Orange","Pink","Purple","Red","Yellow"],
 "Cultural Resources" : ["archeological","chicago_landmark","trails"],
 "Derailment Accident" : ["accident"],
 "Emission Hotspots" : ["hotspot_buffer"],
@@ -209,7 +209,6 @@ var TreeLayerNamesMapToWMSLayers={
 "Flood Hazard" : ["flood"],
 "Forest/Grassland" : ["forest"],
 "Grade Crossing" : ["Illinois_Grade_Crossings"],
-"Green Line" : ["Green"],
 "Groundwater" : ["alluvial_glacial_aquifers","shallowest_principal_aquifers"],
 "Habitat" : ["bird","habitat","natural_area","riverine"],
 "Historical Site" : ["chicago_landmark"],
@@ -226,16 +225,12 @@ var TreeLayerNamesMapToWMSLayers={
 "Natural Area" : ["natural_area"],
 "Natural Hazard Areas" : ["flood","tornado","seismic"],
 "Open space" : ["open_space"],
-"Orange Line" : ["Orange"],
 "PM10" : ["pm"],
-"Pink Line" : ["Pink"],
 "Population Density" : ["population"],
 "Public Transit Facility" : ["transit_station"],
-"Purple Line" : ["Purple"],
 "Rail Infrastructure" : ["intermodal_facility","Illinois_Grade_Crossings","transit_station","Rail_Lines_w_Train_Speed"],
 "Rail Safety Performance" : ["accident"],
 "Railroad Speed" : ["Rail_Lines_w_Train_Speed"],
-"Red Line" :["Red"],
 "Residential" : ["residential"],
 "Riparian Zone" : ["riverine"],
 "Safety" : ["accident","flood","tornado","seismic"],
@@ -243,16 +238,18 @@ var TreeLayerNamesMapToWMSLayers={
 "Shallowest Principal Aquifer" : ["shallowest_principal_aquifers"],
 "Tornado Hazard" : ["tornado"],
 "Trail" : ["trails"],
+"Trainst Routes" : ["Blue","Brown","Green","Orange","Pink","Purple","Red","Yellow","MetraLinesshp"],
 "Transit Accessibility" : ["employment","population"],
 "Transit Equity" : ["income"],
-"Transit Routes" : ["Blue","Brown","Green","Orange","Pink","Purple","Red","Yellow","MetraLinesshp"],
 "Transportation" : ["transportation"],
 "Vacant" : ["vacant"],
 "Water" : ["water"],
 "Wetland" : ["wetland"],
-"Yellow Line" : ["Yellow"],
 };
 
+var initChecked = [
+	"Blue","Brown","Green","Orange","Pink","Purple","Red","Yellow", "MetraLinesshp"
+];
 
 //find layers related to the search keyword
 function findRelevantLayer(){
