@@ -1,4 +1,4 @@
-Trainst Routes
+Transit Routes
     CTA Train Routes
         CTA Blue Line : Blue
         CTA Brown Line : Brown
