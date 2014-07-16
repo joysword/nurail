@@ -1,17 +1,15 @@
 package javascript;
-import java.util.*;
-import java.io.*;
-
-import sun.security.action.PutAllAction;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Scanner;
 
 public class CreateTreeHierarchyData{
     private static int leafLvl=3; 
     
     public static void main(String[] args){
-        new CreateTreeHierarchyData().main();
-    }
-    
-    public void main(){
         try{
         	//System.out.println(System.getProperty("user.dir"));
             Scanner sc=new Scanner(new File("src/javascript/tree_hierarchy.txt"));

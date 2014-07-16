@@ -2,21 +2,18 @@
 
 package style;
 import java.awt.Color;
-import java.util.*;
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Random;
 
-import javax.swing.colorchooser.ColorSelectionModel;
-
-import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
-
-import com.sun.corba.se.spi.orb.StringPair;
  
 public class CreateCustomizedSLD{
     public static void main(String[] args){

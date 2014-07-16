@@ -5,10 +5,6 @@ import java.io.FileWriter;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import com.sun.corba.se.spi.orb.StringPair;
-
-import sun.net.www.content.text.plain;
-
 public class FileProcessing {
 	public static void main(String[] args){
 		new FileProcessing().main();

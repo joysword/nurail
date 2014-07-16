@@ -1,3 +1,14 @@
+Trainst Routes
+    CTA Train Routes
+        CTA Blue Line : Blue
+        CTA Brown Line : Brown
+        CTA Green Line : Green
+        CTA Orange Line : Orange
+        CTA Pink Line : Pink
+        CTA Purple Line : Purple
+        CTA Red Line : Red
+        CTA Yellow Line : Yellow
+    Metra Lines : MetraLinesshp
 Rail Infrastructure
     Intermodal Terminal :  intermodal_facility
     //Rail Yard (need data)
