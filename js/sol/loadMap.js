@@ -68,7 +68,7 @@ function init() {
     });
     
     // show popup information when click on a feature 
-    require(["dojo/on"], function(on) {
+    /*require(["dojo/on"], function(on) {
         on(map, "click",
             //show the attribute information of a selected feature
             function (evt) {
@@ -148,12 +148,31 @@ function init() {
                 // json=json.replace(/\\/g, ""); //replace all '\' with empty string
                 // obj = JSON.parse(json);
             });
-    });
+    });*/
     
-    require(["dojo/on", "dojo/_base/array"], function(on, array) {
-        
-        //register onLoad function
+    require(["esri/toolbars/draw",
+        "esri/graphic",
+
+        "esri/symbols/SimpleMarkerSymbol",
+        "esri/symbols/SimpleLineSymbol",
+        "esri/symbols/SimpleFillSymbol",
+
+        "dijit/registry",
+
+        "dojo/on", "dojo/_base/array",
+
+        "dijit/layout/BorderContainer", "dijit/layout/ContentPane", 
+        "dijit/form/Button"
+        ], function(
+            Draw, Graphic,
+            SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol,
+            registry,
+            on, array) {
+
         on(map, "load", function() {
+
+            toolbar = new Draw(map);
+            on(toolbar, "draw-end", addToMap);
             
             // add basemap gallery
             //reference: http://help.arcgis.com/en/webapi/javascript/arcgis/jssamples/map_agol.html
@@ -177,6 +196,145 @@ function init() {
             overviewMapDijit.startup();
         });
 
+        // graphics that are drawn on the map
+        var drawnGeom = [];
+
+        // loop through all dijits, connect onClick event
+        // listeners for buttons to activate drawing tools
+        registry.forEach(function(d) {
+            // d is a reference to a dijit
+            // could be a layout container or a button
+            if ( d.declaredClass === "dijit.form.Button" ) {
+                on(d, "click", activateTool);
+            }
+        });
+
+        function activateTool() {
+            var tool = this.label.toUpperCase().replace(/ /g, "_");
+            toolbar.activate(Draw[tool]);
+            map.hideZoomSlider();
+
+            // remove previous drawn graphics
+            for (var i in drawnGeom) {
+                map.graphics.remove(drawnGeom[i]);
+            }
+        }
+
+        // will be executed after 
+        function addToMap(evt) {
+            var symbol;
+            toolbar.deactivate();
+            map.showZoomSlider();
+            switch (evt.geometry.type) {
+              case "point":
+              case "multipoint":
+                symbol = new SimpleMarkerSymbol();
+                break;
+              default:
+                symbol = new SimpleFillSymbol();
+                break;
+            }
+            var graphic = new Graphic(evt.geometry, symbol);
+            map.graphics.add(graphic);
+
+            drawnGeom.push(graphic);
+
+            if (evt.geometry.type == 'polygon') {
+                
+                //retrieve the attribute info
+                gs.project([ evt.geometry ], new esri.SpatialReference({wkid:3857}), function(projectedPolygons) {
+                    var ring = projectedPolygons[0].rings[0];
+
+                    var strRing = 'POLYGON((';
+
+                    for (var i in ring) {
+                        strRing += ring[i][0].toString() + ' ' + ring[i][1].toString() + ',';
+                    }
+
+                    //console.log('strRing:', strRing);
+
+                    strRing = strRing.substring(0, strRing.length-1);
+                    strRing += '))';
+
+                    //console.log('strRing:', strRing);
+                    
+                    //need an asynchronous loop here:
+                    //ref http://stackoverflow.com/questions/11488014/asynchronous-process-inside-a-javascript-for-loop
+                    //the selected feature may belong to any of the following layer
+                    for(var idx in checkedLayers){
+                        var layerName='nurail:'+checkedLayers[idx];
+                        
+                       (function(layerName){
+                           //Restful url for WFS service  http://docs.geoserver.org/stable/en/user/services/wfs/reference.html
+                           //geometry_name:"the_geom" https://wiki.state.ma.us/confluence/display/massgis/GeoServer+-+WFS+-+Filter+-+DWithin
+                           //version must be 1.0.0 why?
+                           var url='http://nurail.uic.edu/geoserver/nurail/ows?service=WFS&version=1.0.0&request=GetFeature&typeName='+layerName+'&cql_filter=INTERSECTS(the_geom,' + strRing + ')&propertyName='+popupAttributesForLayer[layerName]+'&outputFormat=application/json';
+
+                           //console.log('url:', url);
+                            
+                            //asynochronous function to deal with the response
+                            $.getJSON(url, function(obj){
+                                console.log('obj:', obj);
+
+                                var cloestFeature=obj.features[0];
+                                
+                                // if (typeof cloestFeature === 'undefined') {
+                                //     //alert("cloestFeature is undefined");
+                                //     return;
+                                // }
+                                
+                                //for popup infowindow reference: https://developers.arcgis.com/en/javascript/jssamples/gp_popuplink.html
+                                var popupContent="<b>Detail Feature Information: </b> </br><hr>"
+                                
+                                //add geo-coordinates 
+                                popupContent+= "<p><font color=\"grey\"> Geometry</font>: " + strRing + "</p>";
+                                
+                                //add feature-dependent information
+                                for (var idx in popupAttributesForLayer[layerName]){
+                                    var propertyValue=cloestFeature.properties[popupAttributesForLayer[layerName][idx]];
+                                    if (typeof propertyValue === "string" || propertyValue instanceof String){                         
+                                        propertyValue=propertyValue.replace(/\\/g, " ");
+                                    }
+                                    popupContent+="<font color=\"grey\">"+meaningfulAttributeNames[popupAttributesForLayer[layerName][idx]]+"</font>: "+ propertyValue;
+                                    
+                                    var unit=meaningfulAttributeNames[popupAttributesForLayer[layerName][idx]+"_unit"]
+                                    if (!(unit == undefined)){
+                                        popupContent+="  "+unit;
+                                    }
+                                    popupContent+="<br/>";
+                                }
+
+                                graphic.setInfoTemplate(new esri.InfoTemplate("",popupContent));   
+                                    //+ "<input type='button' value='Convert back to LatLong' onclick='projectToLatLong();' />" 
+                                    //+ "<div id='latlong'></div>"
+                                
+                                //remove the old graphic and show the new graphic
+                                map.graphics.remove(lastPopupGraphic);
+                                map.graphics.add(graphic);
+                                lastPopupGraphic=graphic;
+                                layerOfLastPopupGraphic=layerName;
+
+                                console.log('graphic.getContent():',graphic.getContent());
+
+                                // console.log('map.infoWindow:', map.infoWindow);
+                                
+                                //show the infoWindow
+                                map.infoWindow.setTitle(graphic.getTitle());
+                                //.setTitle(graphic.getInfoTemplate().title)
+                                map.infoWindow.setContent(graphic.getContent());
+                                //.setContent(graphic.getInfoTemplate().content)
+                                //map.infoWindow.show(screenPoint);//, map.getInfoWindowAnchor(screenPoint));
+                               
+                            });
+                       })(layerName); //pass the layerName to the anonymous function
+                       
+                    }
+                });
+            }
+            else {
+                // TODO
+            }
+        }
     });
 
     // Create the WMS_layer for each layer in layers
@@ -235,142 +393,142 @@ function init() {
         })(idx); //end of declare
 
         //console.log("layers["+idx+"]:", layers[idx]);
-        
     }
 }
 
 var lastPopupGraphic, layerOfLastPopupGraphic; //when the layer it attaches to is removed, it should be also removed from the map
 
     //translate the attribute name in the shapefile table into meaningful words
-    var meaningfulAttributeNames={
-        'STREET':'STREET',
-        'DAYTHRU':'DAY TRAFFIC VOLUME',
-        'NGHTTHRU':'NIGHT TRAFFIC VOLUME',
-        'MAXSPD':'MAX SPEED',
-        'MAXSPD':' km/h',
-        'STATION':'STATION',
-        'STR_ADD':'STREET ADDRESS',
-        'Max_Speed':'Max_Speed', 
+var meaningfulAttributeNames={
+    'STREET':'STREET',
+    'DAYTHRU':'DAY TRAFFIC VOLUME',
+    'NGHTTHRU':'NIGHT TRAFFIC VOLUME',
+    'MAXSPD':'MAX SPEED',
+    'MAXSPD':' km/h',
+    'STATION':'STATION',
+    'STR_ADD':'STREET ADDRESS',
+    'Max_Speed':'Max_Speed', 
+    
+    'NAME':'NAME',
+    'TYPE':'TYPE',
+    'comname':'COMMON NAME',
+    'sciname':'SCIENTIFIC NAME',
+    'ACRES':'ACRES',
+    
+    'SHAPE_Leng':'LENGTH',
+    'Shape_Leng':'LENGTH',
+    'Shape_Area':'AREA',
+    'Shape_Area_unit':' acres',
+    
+    'D1B':'POPULATION DENSITY',
+    'D1B_unit':' person/acre',
+            
+    'D1C':'EMPLOYMENT DENSITY',
+    'D1C_unit':' jobs/acre',
+    
+    'MEDHINC':'MEDIUM INCOME',
+    'MEDHINC_unit':' dollars',
+    
+    'NAMELSAD10':'NAME',
+    
+    //emission
+    'GiZScore':'GiZScore',
+    'TOT_CO2':'TOTAL CO2',
+    'TOT_PM':'TOTAL PM',
+    'TOT_NO':'TOTAL NO',
+    'TOT_CO':'TOTAL CO',
+    'TOT_HC':'TOTAL hydrocarbon',
+    
+    //Culture and Social Resources
+    'ADDRESS':'ADDRESS',
+    'FACNAME':'TRAIL NAME',
+    'STATUS':'STATUS',
+    'CNTYNAME':'COUNTY NAME',
+
+    //derailments:
+    'sum':'TOTAL # OF ACCIDENTS (2009~2013)',
+    'class':'TRACK CLASS',
+    'signal':'SIGNALED',
+    'risk':'RISK',
+    'risk_unit':' accidents/billion gross ton-miles',        
+    'confidence':'RISK 95% CONFIDENCE INTERVAL',
+    
+    'Maginitude':'MAGINITUDE',
+    
+    //areas to avoid
+    'Species':'SPECIES NAME',
+    'Population':'SPECIES POPULATION',
+    'Field4':'LEVEL',
+    'SoVI':'SOCIAL VULENERABILITY INDEX',
+    'ROCK_NAME':'ROCK NAME',
+    'AQ_NAME':'AQUIFIER NAME',
+    'DATE_':'DATE',
+    'DAMAGE':'DAMAGE',
+    'F_SCALE':'FUJITA SCALE',
+    'FLOODZONE':'FLOODZONE',
+};
+
+var popupAttributesForLayer={
+        //transport
+        'nurail:Illinois_Grade_Crossings':['STREET', 'DAYTHRU', 'NGHTTHRU', 'MAXSPD']
+        ,'nurail:transit_station':['STATION', 'STR_ADD']
+        ,'nurail:Rail_Lines_w_Train_Speed':['Max_Speed']  
+        ,'nurail:intermodal_facility':['NAME', 'TYPE']
         
-        'NAME':'NAME',
-        'TYPE':'TYPE',
-        'comname':'COMMON NAME',
-        'sciname':'SCIENTIFIC NAME',
-        'ACRES':'ACRES',
+        //natural areas
+        ,'nurail:habitat':['comname', 'sciname']
+        ,'nurail:riverine':['ACRES']
+        ,'nurail:CONUS_wet_poly':['ACRES','SHAPE_Leng']
         
-        'SHAPE_Leng':'LENGTH',
-        'Shape_Leng':'LENGTH',
-        'Shape_Area':'AREA',
-        'Shape_Area_unit':' acres',
+        //landuse
+        ,'nurail:agriculture':['Shape_Area']
+        ,'nurail:commercial':['Shape_Area']
+        ,'nurail:forest':['Shape_Area']
+        ,'nurail:industrial':['Shape_Area']
+        ,'nurail:institutional':['Shape_Area']
+        ,'nurail:open_space':['Shape_Area']
+        ,'nurail:residential':['Shape_Area']
+        ,'nurail:transportation':['Shape_Area']
+        ,'nurail:vacant':['Shape_Area']
+        ,'nurail:water':['Shape_Area']
+        ,'nurail:wetland':['Shape_Area']
         
-        'D1B':'POPULATION DENSITY',
-        'D1B_unit':' person/acre',
-                
-        'D1C':'EMPLOYMENT DENSITY',
-        'D1C_unit':' jobs/acre',
+        //demographic
+        ,'nurail:population':['D1B']
+        ,'nurail:employment':['D1C']
+        ,'nurail:income':['NAME', 'MEDHINC']
         
-        'MEDHINC':'MEDIUM INCOME',
-        'MEDHINC_unit':' dollars',
+        //boundary
+        ,'nurail:county':['NAMELSAD10']
         
-        'NAMELSAD10':'NAME',
-        
-        //emission
-        'GiZScore':'GiZScore',
-        'TOT_CO2':'TOTAL CO2',
-        'TOT_PM':'TOTAL PM',
-        'TOT_NO':'TOTAL NO',
-        'TOT_CO':'TOTAL CO',
-        'TOT_HC':'TOTAL hydrocarbon',
+        //emissions
+        ,'nurail:hotspots':['GiZScore']
+        ,'nurail:carbon':['TOT_CO2']
+        ,'nurail:hydrocarbon':['TOT_HC']
+        ,'nurail:pm':['TOT_PM']
+        ,'nurail:no':['TOT_NO']
+        ,'nurail:co':['TOT_CO']
         
         //Culture and Social Resources
-        'ADDRESS':'ADDRESS',
-        'FACNAME':'TRAIL NAME',
-        'STATUS':'STATUS',
-        'CNTYNAME':'COUNTY NAME',
-
-        //derailments:
-        'sum':'TOTAL # OF ACCIDENTS (2009~2013)',
-        'class':'TRACK CLASS',
-        'signal':'SIGNALED',
-        'risk':'RISK',
-        'risk_unit':' accidents/billion gross ton-miles',        
-        'confidence':'RISK 95% CONFIDENCE INTERVAL',
+        ,'nurail:chicago_landmark':['NAME', 'ADDRESS']
+        ,'nurail:trails':['FACNAME', 'STATUS','SHAPE_Leng','CNTYNAME']
         
-        'Maginitude':'MAGINITUDE',
+        //derailments
+        ,'nurail:accident':['sum', 'class', 'signal', 'risk', 'confidence']
+        ,'nurail:flood':['FLOODZONE']
         
         //areas to avoid
-        'Species':'SPECIES NAME',
-        'Population':'SPECIES POPULATION',
-        'Field4':'LEVEL',
-        'SoVI':'SOCIAL VULENERABILITY INDEX',
-        'ROCK_NAME':'ROCK NAME',
-        'AQ_NAME':'AQUIFIER NAME',
-        'DATE_':'DATE',
-        'DAMAGE':'DAMAGE',
-        'F_SCALE':'FUJITA SCALE',
-        'FLOODZONE':'FLOODZONE',
-    };
-    
-    var popupAttributesForLayer={
-            //transport
-            'nurail:Illinois_Grade_Crossings':['STREET', 'DAYTHRU', 'NGHTTHRU', 'MAXSPD']
-            ,'nurail:transit_station':['STATION', 'STR_ADD']
-            ,'nurail:Rail_Lines_w_Train_Speed':['Max_Speed']  
-            ,'nurail:intermodal_facility':['NAME', 'TYPE']
-            
-            //natural areas
-            ,'nurail:habitat':['comname', 'sciname']
-            ,'nurail:riverine':['ACRES']
-            ,'nurail:CONUS_wet_poly':['ACRES','SHAPE_Leng']
-            
-            //landuse
-            ,'nurail:agriculture':['Shape_Area']
-            ,'nurail:commercial':['Shape_Area']
-            ,'nurail:forest':['Shape_Area']
-            ,'nurail:industrial':['Shape_Area']
-            ,'nurail:institutional':['Shape_Area']
-            ,'nurail:open_space':['Shape_Area']
-            ,'nurail:residential':['Shape_Area']
-            ,'nurail:transportation':['Shape_Area']
-            ,'nurail:vacant':['Shape_Area']
-            ,'nurail:water':['Shape_Area']
-            ,'nurail:wetland':['Shape_Area']
-            
-            //demographic
-            ,'nurail:population':['D1B']
-            ,'nurail:employment':['D1C']
-            ,'nurail:income':['NAME', 'MEDHINC']
-            
-            //boundary
-            ,'nurail:county':['NAMELSAD10']
-            
-            //emissions
-            ,'nurail:hotspots':['GiZScore']
-            ,'nurail:carbon':['TOT_CO2']
-            ,'nurail:hydrocarbon':['TOT_HC']
-            ,'nurail:pm':['TOT_PM']
-            ,'nurail:no':['TOT_NO']
-            ,'nurail:co':['TOT_CO']
-            
-            //Culture and Social Resources
-            ,'nurail:chicago_landmark':['NAME', 'ADDRESS']
-            ,'nurail:trails':['FACNAME', 'STATUS','SHAPE_Leng','CNTYNAME']
-            
-            //derailments
-            ,'nurail:accident':['sum', 'class', 'signal', 'risk', 'confidence']
-            ,'nurail:flood':['FLOODZONE']
-            
-            //areas to avoid
-            ,'nurail:bird':['Species','Population']
-            ,'nurail:seismic':['Maginitude']
-            ,'nurail:seismic_fine':['Field4']
-            ,'nurail:social_vulnerability_idx':['SoVI']
-            ,'nurail:shallowest_principal_aquifers':['ROCK_NAME','AQ_NAME','Shape_Leng', 'Shape_Area']
-            ,'nurail:tornado':['DATE_', 'DAMAGE', 'F_SCALE']
-    }; 
+        ,'nurail:bird':['Species','Population']
+        ,'nurail:seismic':['Maginitude']
+        ,'nurail:seismic_fine':['Field4']
+        ,'nurail:social_vulnerability_idx':['SoVI']
+        ,'nurail:shallowest_principal_aquifers':['ROCK_NAME','AQ_NAME','Shape_Leng', 'Shape_Area']
+        ,'nurail:tornado':['DATE_', 'DAMAGE', 'F_SCALE']
+}; 
                                 
-require(["dojo/ready"], function(ready){
+require(["dojo/parser", "dojo/ready"], function(parser, ready){
     ready(function(){
+        parser.parse();
         init(); //this must be wrapped into ready function()
     });
 });

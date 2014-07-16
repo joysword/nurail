@@ -8,16 +8,19 @@ require([
 
   "dojo/parser", "dijit/registry",
 
+  "dojo/on",
+
   "dijit/layout/BorderContainer", "dijit/layout/ContentPane", 
   "dijit/form/Button", "dojo/domReady!"
 ], function(
-  Map, Draw, Graphic,
+  Draw, Graphic,
   SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol,
-  parser, registry
+  parser, registry,
+  on
 ) {
   parser.parse();
 
-  map.on("load", createToolbar);
+  on(map, "load", createToolbar);
 
   // loop through all dijits, connect onClick event
   // listeners for buttons to activate drawing tools
