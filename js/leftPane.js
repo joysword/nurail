@@ -255,183 +255,179 @@ var initChecked = [
 
 //find layers related to the search keyword
 function findRelevantLayer(){
-    //data structures for supporting the "layer search" function
+	//data structures for supporting the "layer search" function
 
-    dojo.byId("layerSearchResult").style.visibility='visible';
-    
-    var keyword =dojo.byId("layerSearchKeyword").value.toLowerCase();
-    dojo.byId("layerSearchResult").value="";
-    for (var idx in layerNamesInTheLeftPane){
-        if (layerNamesInTheLeftPane[idx].toLowerCase().indexOf(keyword) != -1){
-                dojo.byId("layerSearchResult").value+=pathsOfAllLayers[layerNamesInTheLeftPane[idx]]+"\n\n";
-        }
-    }
-    if(dojo.byId("layerSearchResult").value==""){
-        dojo.byId("layerSearchResult").value="Not exists a layer whose name contains the input keyword";
-    }
-    
+	dojo.byId("layerSearchResult").style.visibility='visible';
+	
+	var keyword =dojo.byId("layerSearchKeyword").value.toLowerCase();
+	dojo.byId("layerSearchResult").value="";
+	for (var idx in layerNamesInTheLeftPane){
+		if (layerNamesInTheLeftPane[idx].toLowerCase().indexOf(keyword) != -1){
+				dojo.byId("layerSearchResult").value+=pathsOfAllLayers[layerNamesInTheLeftPane[idx]]+"\n\n";
+		}
+	}
+	if(dojo.byId("layerSearchResult").value==""){
+		dojo.byId("layerSearchResult").value="Not exists a layer whose name contains the input keyword";
+	}
+	
 }
 
 
 var numberOfCheckedLandUseCategory=0;
 function hideLegend(label){
-    var layerNameHTMLNode, legendURLHTMLNode;
-    switch(label){     
-        case "Railroad Speed":
-            dojo.byId("railSpeedLegendLabel").innerHTML="";
-            dojo.byId("railSpeedLegendPicture").innerHTML="";
-            break;   
-        
-        //landuse
-        case "Land Use": 
-        case "Agriculture":
-        case "Commercial/Office":
-        case "Forest/Grassland":
-        case "Industrial":
-        case "Institutional":
-        case "Open space":
-        case "Transportation":
-        case "Residential":
-        case "Vacant":
-        case "Water":
-        case "Wetland":
-            if(label!="Land Use"){
-                numberOfCheckedLandUseCategory=numberOfCheckedLandUseCategory-1;
-            }
-            if(label=="Land Use" || numberOfCheckedLandUseCategory==0){
-                dojo.byId("landuseLegendLabel").innerHTML="";
-                dojo.byId("landuseLegendPicture").innerHTML="";
-                numberOfCheckedLandUseCategory=0;
-            }
-            break;
-        
-        //demographics
-        case "Transit Accessibility":
-            dojo.byId("incomeLegendLabel").innerHTML="";
-            dojo.byId("incomeLegendPicture").innerHTML="";
-            dojo.byId("employmentLegendLabel").innerHTML="";
-            dojo.byId("employmentLegendPicture").innerHTML="";
-            dojo.byId("populationLegendLabel").innerHTML="";
-            dojo.byId("populationLegendPicture").innerHTML="";
-            break;                    
-        case "Population Density":
-        case "Employment Density":
-        case "Median Household Income":
-            var fields=label.split(" ");
-            dojo.byId(fields[0]+"LegendLabel").innerHTML="";
-            dojo.byId(fields[0]+"LegendPicture").innerHTML="";
-            break;
-            
-        //emissions    
-        case "Modeled Air Emissions":
-            dojo.byId("allPollutantsLegendLabel").innerHTML="";
-            dojo.byId("allPollutantsLegendPicture").innerHTML="";
-            break;
-        case "Carbon":
-       
-        case "Hydrocarbon":
-        case "NOx":
-        case "PM10":
-        case "Seismic Hazard":
-        case "social vulnerability index":
-            var fields=label.split(" ");
-            dojo.byId(fields[0]+"LegendLabel").innerHTML="";
-            dojo.byId(fields[0]+"LegendPicture").innerHTML="";
-            break;
-        case "Carbon Monoxide":
-            dojo.byId("COLegendLabel").innerHTML="";
-            dojo.byId("COLegendPicture").innerHTML="";
-            break;
-    }
-    
+	var layerNameHTMLNode, legendURLHTMLNode;
+	switch(label){     
+		case "Railroad Speed":
+			dojo.byId("railSpeedLegendLabel").innerHTML="";
+			dojo.byId("railSpeedLegendPicture").innerHTML="";
+			break;   
+		
+		//landuse
+		case "Land Use": 
+		case "Agriculture":
+		case "Commercial/Office":
+		case "Forest/Grassland":
+		case "Industrial":
+		case "Institutional":
+		case "Open space":
+		case "Transportation":
+		case "Residential":
+		case "Vacant":
+		case "Water":
+		case "Wetland":
+			if(label!="Land Use"){
+				numberOfCheckedLandUseCategory=numberOfCheckedLandUseCategory-1;
+			}
+			if(label=="Land Use" || numberOfCheckedLandUseCategory==0){
+				dojo.byId("landuseLegendLabel").innerHTML="";
+				dojo.byId("landuseLegendPicture").innerHTML="";
+				numberOfCheckedLandUseCategory=0;
+			}
+			break;
+		
+		//demographics
+		case "Transit Accessibility":
+			dojo.byId("incomeLegendLabel").innerHTML="";
+			dojo.byId("incomeLegendPicture").innerHTML="";
+			dojo.byId("employmentLegendLabel").innerHTML="";
+			dojo.byId("employmentLegendPicture").innerHTML="";
+			dojo.byId("populationLegendLabel").innerHTML="";
+			dojo.byId("populationLegendPicture").innerHTML="";
+			break;                    
+		case "Population Density":
+		case "Employment Density":
+		case "Median Household Income":
+			var fields=label.split(" ");
+			dojo.byId(fields[0]+"LegendLabel").innerHTML="";
+			dojo.byId(fields[0]+"LegendPicture").innerHTML="";
+			break;
+			
+		//emissions    
+		case "Modeled Air Emissions":
+			dojo.byId("allPollutantsLegendLabel").innerHTML="";
+			dojo.byId("allPollutantsLegendPicture").innerHTML="";
+			break;
+		case "Carbon":
+	   
+		case "Hydrocarbon":
+		case "NOx":
+		case "PM10":
+		case "Seismic Hazard":
+		case "social vulnerability index":
+			var fields=label.split(" ");
+			dojo.byId(fields[0]+"LegendLabel").innerHTML="";
+			dojo.byId(fields[0]+"LegendPicture").innerHTML="";
+			break;
+		case "Carbon Monoxide":
+			dojo.byId("COLegendLabel").innerHTML="";
+			dojo.byId("COLegendPicture").innerHTML="";
+			break;
+	} 
 }
 
 function showLegend(label){
-    var layerName, legendURL;
-    switch(label){
-        case "Railroad Speed":
-            legendURL="\/img\/legends\/rail_speed.png";
-            dojo.byId("railSpeedLegendLabel").innerHTML="Rail Speed (km/h) </br>";
-            dojo.byId("railSpeedLegendPicture").innerHTML="<img style=\"border:none;\" src="+legendURL+">";
-            break; 
-        
-        case "Land Use": 
-        case "Agriculture":
-        case "Commercial/Office":
-        case "Forest/Grassland":
-        case "Industrial":
-        case "Institutional":
-        case "Open space":
-        case "Transportation":
-        case "Residential":
-        case "Vacant":
-        case "Water":
-        case "Wetland":
-            legendURL="\/img\/legends\/landuse.png";
-            dojo.byId("landuseLegendLabel").innerHTML="Land Use  </br>";
-            dojo.byId("landuseLegendPicture").innerHTML="<img height=\"180\" width=\"160\" style=\"border:none;\" src="+legendURL+">";
-            if(label=="Land Use"){
-                numberOfCheckedLandUseCategory=11;
-            }else{
-                numberOfCheckedLandUseCategory=numberOfCheckedLandUseCategory+1;
-            }
-            break;
-            
-        case "Transit Accessibility":
-            legendURL="\/img\/legends\/population.png";
-            dojo.byId("populationLegendLabel").innerHTML="Population Density \</br> (persons/acre) </br>";
-            dojo.byId("populationLegendPicture").innerHTML="<img height=\"180\" width=\"160\" style=\"border:none;\" src="+legendURL+">";
-            
-            legendURL="\/img\/legends\/income.png";
-            dojo.byId("incomeLegendLabel").innerHTML="Income Level \</br> (dollar/year) </br>";
-            dojo.byId("incomeLegendPicture").innerHTML="<img height=\"120\" width=\"160\" style=\"border:none;\" src="+legendURL+">";
-            break;
-        case "Median Household Income":
-            legendURL="\/img\/legends\/income.png";
-            dojo.byId("MedianLegendLabel").innerHTML="Median Household Income \</br> (dollar/year) </br>";
-            dojo.byId("MedianLegendPicture").innerHTML="<img height=\"120\" width=\"160\" style=\"border:none;\" src="+legendURL+">";
-            break;
-        case "Employment Density":
-            legendURL="\/img\/legends\/employment.png";
-            dojo.byId("EmploymentLegendLabel").innerHTML="Employment Density \</br> (jobs/acre) </br>";
-            dojo.byId("EmploymentLegendPicture").innerHTML="<img height=\"180\" width=\"160\" style=\"border:none;\" src="+legendURL+">";
-            break;
-        case "Population Density":
-            legendURL="\/img\/legends\/population.png";
-            dojo.byId("PopulationLegendLabel").innerHTML="Population Density \</br> (persons/acre) </br>";
-            dojo.byId("PopulationLegendPicture").innerHTML="<img height=\"180\" width=\"160\" style=\"border:none;\" src="+legendURL+">";
-            break;
-        
-            
-        case "all pollutants emissions":
-            legendURL="\/img\/legends\/hotspots.png";
-            dojo.byId("allPollutantsLegendLabel").innerHTML=label+ " \</br> ";
-            dojo.byId("allPollutantsLegendPicture").innerHTML="<img height=\"120\" width=\"160\" style=\"border:none;\" src="+legendURL+">";
-            break;
-        
-        case "Carbon":
-        case "Hydrocarbon":
-        case "NOx":
-        case "PM10":
-        case "Seismic Hazard":
-        case "social vulnerability index":
-            var fields=label.split(" ");
-            //alert(fields[0]+"LegendLabel");
-            legendURL="\/img\/legends\/"+fields[0]+".png";
-            dojo.byId(fields[0]+"LegendLabel").innerHTML=label+ " \</br> ";
-            dojo.byId(fields[0]+"LegendPicture").innerHTML="<img height=\"120\" width=\"180\" style=\"border:none;\" src="+legendURL+">";
-            break;
-         case "Carbon Monoxide":
-            //alert(fields[0]+"LegendLabel");
-            legendURL="\/img\/legends\/CO.png";
-            dojo.byId("COLegendLabel").innerHTML=label+ " \</br> ";
-            dojo.byId("COLegendPicture").innerHTML="<img height=\"120\" width=\"180\" style=\"border:none;\" src="+legendURL+">";
-            break;
-    }
+	var layerName, legendURL;
+	switch(label){
+		case "Railroad Speed":
+			legendURL="\/img\/legends\/rail_speed.png";
+			dojo.byId("railSpeedLegendLabel").innerHTML="Rail Speed (km/h) </br>";
+			dojo.byId("railSpeedLegendPicture").innerHTML="<img style=\"border:none;\" src="+legendURL+">";
+			break; 
+		
+		case "Land Use": 
+		case "Agriculture":
+		case "Commercial/Office":
+		case "Forest/Grassland":
+		case "Industrial":
+		case "Institutional":
+		case "Open space":
+		case "Transportation":
+		case "Residential":
+		case "Vacant":
+		case "Water":
+		case "Wetland":
+			legendURL="\/img\/legends\/landuse.png";
+			dojo.byId("landuseLegendLabel").innerHTML="Land Use  </br>";
+			dojo.byId("landuseLegendPicture").innerHTML="<img height=\"180\" width=\"160\" style=\"border:none;\" src="+legendURL+">";
+			if(label=="Land Use"){
+				numberOfCheckedLandUseCategory=11;
+			}else{
+				numberOfCheckedLandUseCategory=numberOfCheckedLandUseCategory+1;
+			}
+			break;
+			
+		case "Transit Accessibility":
+			legendURL="\/img\/legends\/population.png";
+			dojo.byId("populationLegendLabel").innerHTML="Population Density \</br> (persons/acre) </br>";
+			dojo.byId("populationLegendPicture").innerHTML="<img height=\"180\" width=\"160\" style=\"border:none;\" src="+legendURL+">";
+			
+			legendURL="\/img\/legends\/income.png";
+			dojo.byId("incomeLegendLabel").innerHTML="Income Level \</br> (dollar/year) </br>";
+			dojo.byId("incomeLegendPicture").innerHTML="<img height=\"120\" width=\"160\" style=\"border:none;\" src="+legendURL+">";
+			break;
+		case "Median Household Income":
+			legendURL="\/img\/legends\/income.png";
+			dojo.byId("MedianLegendLabel").innerHTML="Median Household Income \</br> (dollar/year) </br>";
+			dojo.byId("MedianLegendPicture").innerHTML="<img height=\"120\" width=\"160\" style=\"border:none;\" src="+legendURL+">";
+			break;
+		case "Employment Density":
+			legendURL="\/img\/legends\/employment.png";
+			dojo.byId("EmploymentLegendLabel").innerHTML="Employment Density \</br> (jobs/acre) </br>";
+			dojo.byId("EmploymentLegendPicture").innerHTML="<img height=\"180\" width=\"160\" style=\"border:none;\" src="+legendURL+">";
+			break;
+		case "Population Density":
+			legendURL="\/img\/legends\/population.png";
+			dojo.byId("PopulationLegendLabel").innerHTML="Population Density \</br> (persons/acre) </br>";
+			dojo.byId("PopulationLegendPicture").innerHTML="<img height=\"180\" width=\"160\" style=\"border:none;\" src="+legendURL+">";
+			break;
+		
+			
+		case "all pollutants emissions":
+			legendURL="\/img\/legends\/hotspots.png";
+			dojo.byId("allPollutantsLegendLabel").innerHTML=label+ " \</br> ";
+			dojo.byId("allPollutantsLegendPicture").innerHTML="<img height=\"120\" width=\"160\" style=\"border:none;\" src="+legendURL+">";
+			break;
+		
+		case "Carbon":
+		case "Hydrocarbon":
+		case "NOx":
+		case "PM10":
+		case "Seismic Hazard":
+		case "social vulnerability index":
+			var fields=label.split(" ");
+			//alert(fields[0]+"LegendLabel");
+			legendURL="\/img\/legends\/"+fields[0]+".png";
+			dojo.byId(fields[0]+"LegendLabel").innerHTML=label+ " \</br> ";
+			dojo.byId(fields[0]+"LegendPicture").innerHTML="<img height=\"120\" width=\"180\" style=\"border:none;\" src="+legendURL+">";
+			break;
+		 case "Carbon Monoxide":
+			//alert(fields[0]+"LegendLabel");
+			legendURL="\/img\/legends\/CO.png";
+			dojo.byId("COLegendLabel").innerHTML=label+ " \</br> ";
+			dojo.byId("COLegendPicture").innerHTML="<img height=\"120\" width=\"180\" style=\"border:none;\" src="+legendURL+">";
+			break;
+	}
 }
-
-
-
 
 
 var cbTreeModel;
@@ -444,104 +440,103 @@ require(["dojo/ready",
 "cbtree/model/TreeStoreModel"  // ObjectStoreModel
 ], function(ready, Memory, Observable, Tree, ObjectStoreModel) {
   
-    //Checkbox tree reference: 
-    //http://thejekels.com/dojo/cbtree_AMD.html
-    //https://github.com/pjekel/cbtree/wiki
-    //http://thejekels.com/cbtree/demos/ArcGIS.php
-      store = Observable( new Memory( { data: 
-      treeHierarchyData }));
-      
-      cbTreeModel = new ObjectStoreModel({
-            store: store,
-            query: {id: "root"},
-            rootLabel: "",
-            checkedRoot: true
-      });
-      
+	//Checkbox tree reference: 
+	//http://thejekels.com/dojo/cbtree_AMD.html
+	//https://github.com/pjekel/cbtree/wiki
+	//http://thejekels.com/cbtree/demos/ArcGIS.php
+	store = Observable( new Memory( { data: 
+		treeHierarchyData }));
+	  
+	cbTreeModel = new ObjectStoreModel({
+		store: store,
+		query: {id: "root"},
+		rootLabel: "",
+		checkedRoot: true
+	});
+	  
 
-      function checkBoxClicked( item, nodeWidget, evt ) { 
-        var checked = nodeWidget.get("checked" );
-        //get the text of the checked box
-        var label    = this.model.getLabel(item);
+	function checkBoxClicked( item, nodeWidget, evt ) { 
+		var checked = nodeWidget.get("checked" );
+		//get the text of the checked box
+		var label    = this.model.getLabel(item);
 
-        
-        var ChildrenLayers=TreeLayerNamesMapToWMSLayers[label]; // the children layers of a layer
-        
-        //layers in loadMap.js is the container of true WMS layers
-        if(checked){
-            for(var layerIdx in ChildrenLayers){ //in JS, layer is an index of ChildrenLayers, i.e. 0, 1, ......
-                var WMSLayerName=ChildrenLayers[layerIdx];
-                map.addLayer(layers[WMSLayerName]); 
-                checkedLayers.push(WMSLayerName); //add the layer to the checked layer group, clearMap()
-                showLegend(WMSLayerNamesMapToTreeLayerNames[WMSLayerName]); //show the legend
-            }
-        }
-        else{ //uncheck a layer
-            for(var layerIdx in ChildrenLayers){
-                var WMSLayerName=ChildrenLayers[layerIdx];
-                map.removeLayer(layers[WMSLayerName]);
-                
-                //remove the layer from the checked layer group, clearMap()
-                var index = checkedLayers.indexOf(WMSLayerName);
-                checkedLayers.splice(index, 1);
-                
-                //alert(WMSLayerNamesMapToTreeLayerNames[WMSLayerName]);
-                hideLegend(WMSLayerNamesMapToTreeLayerNames[WMSLayerName]); //hide the legend
-                
-                //handle the dangling popup graphic
-                var fullLayerName="nurail:"+WMSLayerName;
-                if(fullLayerName==layerOfLastPopupGraphic){
-                    map.graphics.remove(lastPopupGraphic);
-                }
-            }
-        }
-       /*
-        if( checked ) {
-            tree.set("iconStyle", {border:"solid"}, item );
-            tree.set("labelStyle",{color:"red"}, item );
-        } else {
-            tree.set("iconStyle", {border:"none"}, item );
-            tree.set("labelStyle",{color:"black"}, item );
-        }                       
-        alert( "The new state for " + label + " is: " + checked );
-         */
-    }    
+		var ChildrenLayers=TreeLayerNamesMapToWMSLayers[label]; // the children layers of a layer
+		
+		//layers in loadMap.js is the container of true WMS layers
+		if(checked){
+			for(var layerIdx in ChildrenLayers){ //in JS, layer is an index of ChildrenLayers, i.e. 0, 1, ......
+				var WMSLayerName=ChildrenLayers[layerIdx];
+				map.addLayer(layers[WMSLayerName]); 
+				checkedLayers.push(WMSLayerName); //add the layer to the checked layer group, clearMap()
+				showLegend(WMSLayerNamesMapToTreeLayerNames[WMSLayerName]); //show the legend
+			}
+		}
+		else{ //uncheck a layer
+			for(var layerIdx in ChildrenLayers){
+				var WMSLayerName=ChildrenLayers[layerIdx];
+				map.removeLayer(layers[WMSLayerName]);
+				
+				//remove the layer from the checked layer group, clearMap()
+				var index = checkedLayers.indexOf(WMSLayerName);
+				checkedLayers.splice(index, 1);
+				
+				//alert(WMSLayerNamesMapToTreeLayerNames[WMSLayerName]);
+				hideLegend(WMSLayerNamesMapToTreeLayerNames[WMSLayerName]); //hide the legend
+				
+				//handle the dangling popup graphic
+				var fullLayerName="nurail:"+WMSLayerName;
+				if(fullLayerName==layerOfLastPopupGraphic){
+					map.graphics.remove(lastPopupGraphic);
+				}
+			}
+		}
+	   /*
+		if( checked ) {
+			tree.set("iconStyle", {border:"solid"}, item );
+			tree.set("labelStyle",{color:"red"}, item );
+		} else {
+			tree.set("iconStyle", {border:"none"}, item );
+			tree.set("labelStyle",{color:"black"}, item );
+		}                       
+		alert( "The new state for " + label + " is: " + checked );
+		 */
+	}    
 
-    ready(function(){
-        //start left pane
-        var tree= new Tree( { 
-            model: cbTreeModel, 
-            id:"MapLayerTree" 
-        }, "CheckboxTree" );
-        // Establish listener and start the tree.
-        tree.on("checkBoxClick", checkBoxClicked );
+	ready(function(){
+		//start left pane
+		var tree= new Tree( { 
+			model: cbTreeModel, 
+			id:"MapLayerTree" 
+		}, "CheckboxTree" );
+		// Establish listener and start the tree.
+		tree.on("checkBoxClick", checkBoxClicked );
 
-        // Add initial layers
+		// Add initial layers
 		for (var idx in initChecked) {
 			var label = initChecked[idx];
-        	map.addLayer(layers[label]);
-        	checkedLayers.push(label);
-        	showLegend(WMSLayerNamesMapToTreeLayerNames[label]);
-        }
-        
-        tree.startup();
-        
-        //start right pane
-        // no need for dynamic legend anymore
-        // var legend = new esri.dijit.Legend({
-              // map  : map,
-              // layerInfos : legendLayers
-            // }, "legendPane");
-        // for(var idx in legendLayers) alert(lengendLayers[idx].title);
-        // legend.startup();
+			map.addLayer(layers[label]);
+			checkedLayers.push(label);
+			showLegend(WMSLayerNamesMapToTreeLayerNames[label]);
+		}
+		
+		tree.startup();
+		
+		//start right pane
+		// no need for dynamic legend anymore
+		// var legend = new esri.dijit.Legend({
+			  // map  : map,
+			  // layerInfos : legendLayers
+			// }, "legendPane");
+		// for(var idx in legendLayers) alert(lengendLayers[idx].title);
+		// legend.startup();
 
-        
-	    //$("#MapLayerTree").css("overflow", "hidden");
+		
+		//$("#MapLayerTree").css("overflow", "hidden");
 
-	    var node = dojo.byId("MapLayerTree");
-	    console.log('node:', node);
-	    dojo.style(node, "overflow", "hidden");
-	    console.log('node:', node);
+		var node = dojo.byId("MapLayerTree");
+		console.log('node:', node);
+		dojo.style(node, "overflow", "hidden");
+		console.log('node:', node);
  
-    });
+	});
 });
