@@ -1,4 +1,4 @@
-var map;
+var map, locator;
 
 require([
     "esri/dijit/OverviewMap", "esri/map", "esri/dijit/BasemapGallery",
@@ -34,7 +34,7 @@ require([
     parser, ready
     ) {
 
-    var basemapGallery, gs, locator, toolbarDraw, toolbarBuffer;
+    var basemapGallery, gs, toolbarDraw, toolbarBuffer;
 
     function init() {
         map = new Map("map", {
@@ -59,11 +59,8 @@ require([
             //show a graphic at the location of geocoding
             function showLocatingResults(candidates) {
 
-                console.log('on locator address-to-locations-complete!!');
-
                 var symbol = new SimpleMarkerSymbol().setStyle(SimpleMarkerSymbol.STYLE_SQUARE).setColor(new dojo.Color([153, 0, 51, 0.75]));
                 var infoTemplate = new esri.InfoTemplate("Location", "Address: ${address}<br />Score: ${score}<br />Source locator: ${locatorName}");
-                console.log('infoTemplate:', infoTemplate);
                 var geom;
 
                 array.every(candidates.addresses, function(candidate) {
@@ -96,7 +93,6 @@ require([
                     map.centerAndZoom(geom, 13);
                 }
 
-                console.log('on locator address-to-locations-complete end!!');
             }
         );
         
@@ -184,9 +180,6 @@ require([
         });*/
 
         on(map, "load", function() {
-
-            console.log('on map load!!');
-
             toolbarDraw = new Draw(map);
             on(toolbarDraw, "draw-end", addDrawToMap);
 
@@ -210,11 +203,9 @@ require([
             // initialize overview map
             var overviewMapDijit = new OverviewMap({
                 map : map,
-                visible : false
+                visible : true
             });
             overviewMapDijit.startup();
-
-            console.log('on map load end!!');
         });
 
         // graphics that are drawn on the map
@@ -399,10 +390,10 @@ require([
             drawnGeom.push(graphic);
 
             var params = new BufferParameters();
-            params.distances = [$("#distance").value];
+            params.distances = [dojo.byId("distance").value];
             params.bufferSpatialReference = new esri.SpatialReference({wkid:3857});
             params.outSpatialReference = map.spatialReference;
-            params.unit = GeometryService[$("#unit").value];
+            params.unit = GeometryService[dojo.byId("unit").value];
 
             console.log('params:', params);
 

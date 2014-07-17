@@ -73,17 +73,20 @@
                 </div>
 
                 <div data-dojo-type="dijit/layout/ContentPane" title="Extract Data (beta)">
-                    <div>Draw:</div>
-                    <div><button class="drawButton" data-dojo-type="dijit/form/Button">Point</button></div>
-                    <div><button class="drawButton" data-dojo-type="dijit/form/Button">Multi Point</button></div>
-                    <div><button class="drawButton" data-dojo-type="dijit/form/Button">Polygon</button></div>
-                    <div><button class="drawButton" data-dojo-type="dijit/form/Button">Freehand Polygon</button></div>
+                    <div><strong>Draw:</strong></div>
+                    <div>
+                        <button class="drawButton" data-dojo-type="dijit/form/Button">Point</button>
+                        <button class="drawButton" data-dojo-type="dijit/form/Button">Multi Point</button>
+                    </div>
+                    <div>
+                        <button class="drawButton" data-dojo-type="dijit/form/Button">Polygon</button>
+                        <button class="drawButton" data-dojo-type="dijit/form/Button">Freehand Polygon</button></div>
                 </div>
 
                 <div data-dojo-type="dijit/layout/ContentPane" title="Buffering (beta)">
-                    <div><b>Buffer Parameters</b></div>
+                    <div><strong>Buffer Parameters:</strong></div>
                     <div>Spatial Reference WKID:&nbsp;<input type="text" id="bufferSpatialReference" size="5" value="3857" /><br /></div>
-                    <div>Distance:&nbsp;<input type="text" id="distance" size="5" value="25" />
+                    <div>Distance:&nbsp;<input type="text" id="distance" size="5" value="5" />
                         <select id="unit" style="width:100px;">
                             <option value="UNIT_STATUTE_MILE">Miles</option>
                             <option value="UNIT_FOOT">Feet</option>
@@ -94,7 +97,7 @@
                             <option value="UNIT_DEGREE">Degrees</option>
                         </select>
                     </div>
-                    <div>Draw:</div>
+                    <div><strong>Draw:</strong></div>
                     <div>
                         <button class="bufferButton" data-dojo-type="dijit/form/Button">Point</button>
                         <button class="bufferButton" data-dojo-type="dijit/form/Button">Multi Point</button>
