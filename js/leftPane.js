@@ -269,11 +269,10 @@ function findRelevantLayer(){
 	if(dojo.byId("layerSearchResult").value==""){
 		dojo.byId("layerSearchResult").value="Not exists a layer whose name contains the input keyword";
 	}
-	
 }
 
-
 var numberOfCheckedLandUseCategory=0;
+
 function hideLegend(label){
 	var layerNameHTMLNode, legendURLHTMLNode;
 	switch(label){     
@@ -429,7 +428,6 @@ function showLegend(label){
 	}
 }
 
-
 var cbTreeModel;
 var store;
 
@@ -456,9 +454,11 @@ require(["dojo/ready",
 	  
 
 	function checkBoxClicked( item, nodeWidget, evt ) { 
-		var checked = nodeWidget.get("checked" );
+		var checked = nodeWidget.get("checked");
+		console.log("checked:", checked);
+
 		//get the text of the checked box
-		var label    = this.model.getLabel(item);
+		var label = this.model.getLabel(item);
 
 		var ChildrenLayers=TreeLayerNamesMapToWMSLayers[label]; // the children layers of a layer
 		
@@ -474,6 +474,7 @@ require(["dojo/ready",
 		else{ //uncheck a layer
 			for(var layerIdx in ChildrenLayers){
 				var WMSLayerName=ChildrenLayers[layerIdx];
+				console.log("WMSLayerName:", WMSLayerName);
 				map.removeLayer(layers[WMSLayerName]);
 				
 				//remove the layer from the checked layer group, clearMap()
@@ -508,8 +509,9 @@ require(["dojo/ready",
 			model: cbTreeModel, 
 			id:"MapLayerTree" 
 		}, "CheckboxTree" );
+		
 		// Establish listener and start the tree.
-		tree.on("checkBoxClick", checkBoxClicked );
+		tree.on("checkBoxClick", checkBoxClicked);
 
 		// Add initial layers
 		for (var idx in initChecked) {
@@ -534,9 +536,9 @@ require(["dojo/ready",
 		//$("#MapLayerTree").css("overflow", "hidden");
 
 		var node = dojo.byId("MapLayerTree");
-		console.log('node:', node);
+		// console.log('node:', node);
 		dojo.style(node, "overflow", "hidden");
-		console.log('node:', node);
+		// console.log('node:', node);
  
 	});
 });

@@ -1,4 +1,5 @@
 var map, locator;
+var lastPopupGraphic, layerOfLastPopupGraphic; //when the layer it attaches to is removed, it should be also removed from the map
 
 require([
     "esri/dijit/OverviewMap", "esri/map", "esri/dijit/BasemapGallery",
@@ -463,8 +464,6 @@ require([
                         "&height=" + height +
                         "&styles=" +
                         "&format=" + "image/png";
-
-                    console.log('params:', params);
                     
                     gs.project([ extent ], new esri.SpatialReference({wkid:3857}) , function(features) {
                         var translatedExtent = features[0];
@@ -485,9 +484,7 @@ require([
         }
     }
 
-    var lastPopupGraphic, layerOfLastPopupGraphic; //when the layer it attaches to is removed, it should be also removed from the map
-
-        //translate the attribute name in the shapefile table into meaningful words
+    //translate the attribute name in the shapefile table into meaningful words
     var meaningfulAttributeNames={
         'STREET':'STREET',
         'DAYTHRU':'DAY TRAFFIC VOLUME',
