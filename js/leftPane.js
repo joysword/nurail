@@ -455,7 +455,6 @@ require(["dojo/ready",
 
 	function checkBoxClicked( item, nodeWidget, evt ) { 
 		var checked = nodeWidget.get("checked");
-		console.log("checked:", checked);
 
 		//get the text of the checked box
 		var label = this.model.getLabel(item);
@@ -474,7 +473,6 @@ require(["dojo/ready",
 		else{ //uncheck a layer
 			for(var layerIdx in ChildrenLayers){
 				var WMSLayerName=ChildrenLayers[layerIdx];
-				console.log("WMSLayerName:", WMSLayerName);
 				map.removeLayer(layers[WMSLayerName]);
 				
 				//remove the layer from the checked layer group, clearMap()
