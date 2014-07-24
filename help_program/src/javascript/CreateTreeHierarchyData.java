@@ -7,12 +7,12 @@ import java.util.HashSet;
 import java.util.Scanner;
 
 public class CreateTreeHierarchyData{
-    private static int leafLvl=3; 
+    private static int leafLvl=3;
+	private static Scanner sc; 
     
     public static void main(String[] args){
         try{
-        	//System.out.println(System.getProperty("user.dir"));
-            Scanner sc=new Scanner(new File("src/javascript/tree_hierarchy.txt"));
+        	sc = new Scanner(new File("src/javascript/tree_hierarchy.txt"));
             String line;
             
             StringBuilder treeHierarchy=new StringBuilder();

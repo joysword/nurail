@@ -33,7 +33,7 @@ Community Profile
         Wetland: wetland
 Safety
     Rail Safety Performance
-        Derailment Accident : accident
+        Derailment Accident Risk: accident
         //Hazardous Materials Incident (need data) 
         //Accident Rate (need data)
         //Fatality Rate (need data)
