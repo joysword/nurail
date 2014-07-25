@@ -8,7 +8,7 @@ Transit Routes
         CTA Purple Line : Purple : check
         CTA Red Line : Red : check
         CTA Yellow Line : Yellow : check
-    Metra Lines : MetraLinesshp
+    Metra Lines : MetraLinesshp: check
 Rail Infrastructure
     Intermodal Terminal :  intermodal_facility
     //Rail Yard (need data)

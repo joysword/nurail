@@ -10,16 +10,16 @@ var checkedLayers=[];
 var treeHierarchyData=[
 	{ id: 'root', name:'Layers'},
 		{id:'transit_routes', name:'Transit Routes', parent:'root'},
-			{id:'cta_train_routes', name:'CTA Train Routes', parent:'transit_routes',},
-				{id:'cta_blue_line', name:'CTA Blue Line', parent:'cta_train_routes'},
-				{id:'cta_brown_line', name:'CTA Brown Line', parent:'cta_train_routes'},
-				{id:'cta_green_line', name:'CTA Green Line', parent:'cta_train_routes'},
-				{id:'cta_orange_line', name:'CTA Orange Line', parent:'cta_train_routes'},
-				{id:'cta_pink_line', name:'CTA Pink Line', parent:'cta_train_routes'},
-				{id:'cta_purple_line', name:'CTA Purple Line', parent:'cta_train_routes'},
-				{id:'cta_red_line', name:'CTA Red Line', parent:'cta_train_routes'},
-				{id:'cta_yellow_line', name:'CTA Yellow Line', parent:'cta_train_routes'},
-			{id:'metra_lines', name:'Metra Lines', parent:'transit_routes'},
+			{id:'cta_train_routes', name:'CTA Train Routes', parent:'transit_routes'},
+				{id:'cta_blue_line', name:'CTA Blue Line', parent:'cta_train_routes', checked:true},
+				{id:'cta_brown_line', name:'CTA Brown Line', parent:'cta_train_routes', checked:true},
+				{id:'cta_green_line', name:'CTA Green Line', parent:'cta_train_routes', checked:true},
+				{id:'cta_orange_line', name:'CTA Orange Line', parent:'cta_train_routes', checked:true},
+				{id:'cta_pink_line', name:'CTA Pink Line', parent:'cta_train_routes', checked:true},
+				{id:'cta_purple_line', name:'CTA Purple Line', parent:'cta_train_routes', checked:true},
+				{id:'cta_red_line', name:'CTA Red Line', parent:'cta_train_routes', checked:true},
+				{id:'cta_yellow_line', name:'CTA Yellow Line', parent:'cta_train_routes', checked:true},
+			{id:'metra_lines', name:'Metra Lines', parent:'transit_routes', checked:true},
 		{id:'rail_infrastructure', name:'Rail Infrastructure', parent:'root'},
 			{id:'intermodal_terminal', name:'Intermodal Terminal', parent:'rail_infrastructure'},
 			{id:'grade_crossing', name:'Grade Crossing', parent:'rail_infrastructure'},
@@ -245,14 +245,13 @@ var TreeLayerNamesMapToWMSLayers={
 	"Water" : ["water"],
 	"Wetland" : ["wetland"],
 };
-//end of automatically generated fields
-
-
 
 //layers that are checked at start
 var initChecked = [
-	"Blue","Brown","Green","Orange","Pink","Purple","Red","Yellow", "MetraLinesshp"
+	"Blue","Brown","Green","Orange","Pink","Purple","Red","Yellow","MetraLinesshp"
 ];
+//end of automatically generated fields
+
 
 //find layers related to the search keyword
 function findRelevantLayer(){
