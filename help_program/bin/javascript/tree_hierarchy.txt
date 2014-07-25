@@ -1,13 +1,13 @@
 Transit Routes
     CTA Train Routes
-        CTA Blue Line : Blue
-        CTA Brown Line : Brown
-        CTA Green Line : Green
-        CTA Orange Line : Orange
-        CTA Pink Line : Pink
-        CTA Purple Line : Purple
-        CTA Red Line : Red
-        CTA Yellow Line : Yellow
+        CTA Blue Line : Blue : check
+        CTA Brown Line : Brown : check
+        CTA Green Line : Green : check
+        CTA Orange Line : Orange : check
+        CTA Pink Line : Pink : check
+        CTA Purple Line : Purple : check
+        CTA Red Line : Red : check
+        CTA Yellow Line : Yellow : check
     Metra Lines : MetraLinesshp
 Rail Infrastructure
     Intermodal Terminal :  intermodal_facility

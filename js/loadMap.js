@@ -42,7 +42,9 @@ require([
             basemap : 'gray',
             center : [-87.651052, 41.872458],
             zoom : 10, //6
-            sliderStyle : "small"
+            sliderStyle : "large",
+            logo: false,
+            showAttribution: false
         });
 
         // map = L.mapbox.map('map', 'joysword.i6b4jale').setView([41.8910,-87.6839], 11);
@@ -188,25 +190,25 @@ require([
             on(toolbarBuffer, "draw-end", addBufferToMap);
             
             // add basemap gallery
-            //reference: http://help.arcgis.com/en/webapi/javascript/arcgis/jssamples/map_agol.html
-            // array.forEach(basemapGallery.basemaps, function(bmap) {
-            //     //Add a menu item for each basemap, when the menu items are selected
-            //     dijit.byId("basemapMenu").addChild(
-            //         new dijit.MenuItem({
-            //             label : bmap.title,
-            //             onClick : dojo.hitch(this, function() {
-            //                 this.basemapGallery.select(bmap.id);
-            //             })
-            //         })
-            //     );
-            // });
+            // reference: http://help.arcgis.com/en/webapi/javascript/arcgis/jssamples/map_agol.html
+            array.forEach(basemapGallery.basemaps, function(bmap) {
+                //Add a menu item for each basemap, when the menu items are selected
+                dijit.byId("basemapMenu").addChild(
+                    new dijit.MenuItem({
+                        label : bmap.title,
+                        onClick : dojo.hitch(this, function() {
+                            this.basemapGallery.select(bmap.id);
+                        })
+                    })
+                );
+            });
             
             // initialize overview map
-            var overviewMapDijit = new OverviewMap({
-                map : map,
-                visible : true
-            });
-            overviewMapDijit.startup();
+            // var overviewMapDijit = new OverviewMap({
+            //     map : map,
+            //     visible : true
+            // });
+            // overviewMapDijit.startup();
         });
 
         // graphics that are drawn on the map

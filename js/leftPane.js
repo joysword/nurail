@@ -10,7 +10,7 @@ var checkedLayers=[];
 var treeHierarchyData=[
 	{ id: 'root', name:'Layers'},
 		{id:'transit_routes', name:'Transit Routes', parent:'root'},
-			{id:'cta_train_routes', name:'CTA Train Routes', parent:'transit_routes'},
+			{id:'cta_train_routes', name:'CTA Train Routes', parent:'transit_routes',},
 				{id:'cta_blue_line', name:'CTA Blue Line', parent:'cta_train_routes'},
 				{id:'cta_brown_line', name:'CTA Brown Line', parent:'cta_train_routes'},
 				{id:'cta_green_line', name:'CTA Green Line', parent:'cta_train_routes'},
@@ -531,12 +531,9 @@ require(["dojo/ready",
 		// for(var idx in legendLayers) alert(lengendLayers[idx].title);
 		// legend.startup();
 
-		
-		//$("#MapLayerTree").css("overflow", "hidden");
-
-		var node = dojo.byId("MapLayerTree");
+		//var node = dojo.byId("MapLayerTree");
 		// console.log('node:', node);
-		dojo.style(node, "overflow", "hidden");
+		//dojo.style(node, "overflow", "hidden");
 		// console.log('node:', node);
  
 	});

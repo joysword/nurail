@@ -1,3 +1,11 @@
+html, body {
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	font-family: Helvetica, Arial, sans-serif;
+}
+
 div #mainWindow {
 	width: 100%;
 	height: 100%;
@@ -8,21 +16,15 @@ div.container {
 	height: 100%;
 }
 
-html, body {
-	padding: 0;
-	margin: 0;
-	width: 100%;
-	height: 100%;
-	font-family: Arial, Helvetica, sans-serif;
-}
 
 .addressInput {
 	font-size: 80%;
 }
 
-.cacheListLegend li img {
-	width: 20px;
-	vertical-align: middle;
+.cacheListLegend {
+	margin: 0;
+	padding: 0;
+	background-color: #EEE;
 }
 
 .cacheListLegend li {
@@ -31,13 +33,12 @@ html, body {
 	list-style: none;
 }
 
-.cacheListLegend span {
+.cacheListLegend li img {
+	width: 20px;
+	vertical-align: middle;
 }
 
-.cacheListLegend {
-	margin: 0;
-	padding: 0;
-	background-color: #EEE;
+.cacheListLegend span {
 }
 
 .closeWidgetContainer {
@@ -51,11 +52,6 @@ html, body {
 	height: 16px;
 }
 
-.contentLegend li {
-	color: #000000;
-	background-color: #EEEEEE;
-}
-
 .contentLegend {
 	color: #EEEEEE;
 	background-color: #336699;
@@ -63,11 +59,16 @@ html, body {
 	width: 180px;
 }
 
+.contentLegend li {
+	color: #000000;
+	background-color: #EEEEEE;
+}
+
 .controllerStatus {
 	position: absolute;
 	bottom: 0px;
 	right: 0px;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-weight: bold;
 	font-size: 70%;
 	color: #fff;
@@ -110,10 +111,6 @@ html, body {
 	left: 500px;
 }
 
-.infoPopupBody p {
-	margin: 0;
-}
-
 .infoPopupBody {
 	position: absolute;
 	width: 200px;
@@ -121,6 +118,10 @@ html, body {
 	margin-right: 30px;
 	z-index: 40;
 	font-size: 8pt;
+}
+
+.infoPopupBody p {
+	margin: 0;
 }
 
 .infoPopupButton {
@@ -140,18 +141,19 @@ html, body {
 	border-bottom: 1px solid black;
 }
 
-.linkIcon {
+/*.linkIcon {
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-image: url(../images/w_link.png);
 	height: 16px;
 	width: 16px;
 	cursor: pointer;
-}
+}*/
 
-.listLegend li img {
-	width: 20px;
-	vertical-align: middle;
+.listLegend {
+	margin: 0;
+	padding: 0;
+	background-color: #EEE;
 }
 
 .listLegend li {
@@ -160,14 +162,13 @@ html, body {
 	list-style: none;
 }
 
-.listLegend span {
-	font-size: 80%;
+.listLegend li img {
+	width: 20px;
+	vertical-align: middle;
 }
 
-.listLegend {
-	margin: 0;
-	padding: 0;
-	background-color: #EEE;
+.listLegend span {
+	font-size: 80%;
 }
 
 .mapOverview {
@@ -185,6 +186,11 @@ html, body {
 	overflow: hidden;
 }
 
+.mapdijit {
+	width: 100%;
+	height: 100%;
+}
+
 .mapdijit .layerbuttons {
 	position: absolute;
 	right: 10px;
@@ -193,15 +199,19 @@ html, body {
 	font-size: 80%;
 }
 
-.mapdijit {
-	width: 100%;
-	height: 100%;
-}
-
 .measureArea {
 	margin: 0;
 	padding: 0;
 	background-color: #EEE;
+}
+
+.measureDistance {
+	width: 180px;
+	font-size: 80%;
+	margin: 0;
+	padding: 0;
+	color: #EEEEEE;
+	background-color: #336699;
 }
 
 .measureDistance table {
@@ -213,15 +223,6 @@ html, body {
 .measureDistance tr {
 	color: #000000;
 	background-color: #EEEEEE;
-}
-
-.measureDistance {
-	width: 180px;
-	font-size: 80%;
-	margin: 0;
-	padding: 0;
-	color: #EEEEEE;
-	background-color: #336699;
 }
 
 .measureLength {
@@ -242,6 +243,7 @@ html, body {
 	-moz-box-shadow: 4px 4px 8px #adadad;
 	-o-box-shadow: 4px 4px 8px #adadad;
 }
+
 .themeItem {
 	margin-left: 0px;
 }
@@ -263,7 +265,7 @@ html, body {
 	vertical-align: top;
 }
 
-.tocLayerCheckedIcon {
+/*.tocLayerCheckedIcon {
 	width: 16px;
 	height: 16px;
 	vertical-align: top;
@@ -285,7 +287,7 @@ html, body {
 	vertical-align: top;
 	background-repeat: no-repeat;
 	background-image: url(../images/w_layer_unchecked.png);
-}
+}*/
 
 .tocTiledSubLayer {
 	color: #FFF;
@@ -315,9 +317,9 @@ html, body {
 	overflow: hidden;
 }
 
-.wbClose {
+/*.wbClose {
 	background-image: url(../images/w_close.png);
-}
+}*/
 
 .widgetBox {
 	position: absolute;
@@ -352,11 +354,10 @@ html, body {
 	z-Index: 999;
 }
 
-#helpHeader .subHeader {
-	background-color: #eee;
-	color: #000;
-	width: 100%;
-	padding: .2em;
+#helpHeader {
+	font-size: 90%;
+	padding: .4em;
+	margin: 0;
 }
 
 #helpHeader div {
@@ -375,31 +376,32 @@ html, body {
 	padding: .2em;
 }
 
-#helpHeader p {
-	margin: 0;
+#helpHeader ul li {
 	padding: .4em;
+	margin-left: 0;
 }
 
 #helpHeader span img {
 	vertical-align: middle;
 }
 
-#helpHeader ul li {
-	padding: .4em;
-	margin-left: 0;
+#helpHeader .subHeader {
+	background-color: #eee;
+	color: #000;
+	width: 100%;
+	padding: .2em;
 }
 
-#helpHeader {
-	font-size: 90%;
-	padding: .4em;
+#helpHeader p {
 	margin: 0;
+	padding: .4em;
 }
 
 #infoWin {
 	font-size: xx-small;
 }
 
-#leftPane {
+/*#leftPane {
 	color: #343642;
 	font: 100% Georgia, "Times New Roman", Times, serif;
 }
@@ -407,11 +409,15 @@ html, body {
 #rightPane {
 	color: #343642;
 	font: 100% Georgia, "Times New Roman", Times, serif;	
-}
+}*/
 
 #loadGif {
 	margin: 0 auto;
 	float: left;
+}
+
+#menu {
+	width: 230px;
 }
 
 #menu a {
@@ -431,8 +437,10 @@ html, body {
 	text-decoration: none;
 }
 
-#menu {
-	width: 230px;
+#themes {
+	width: 100%;
+	padding: 0;
+	margin: 0;
 }
 
 #themes ul {
@@ -441,9 +449,6 @@ html, body {
 	padding: 0;
 }
 
-#themes {
-	width: 100%;
+.claro .dijitContentPane {
 	padding: 0;
-	margin: 0;
 }
-
