@@ -65,7 +65,7 @@ public class RiskAnalysis {
 	public void initializeTracks(String fileName){
 		try{
 			File f=new File(fileName);
-			BufferedReader reader =new BufferedReader(new FileReader(fileName));
+			reader =new BufferedReader(new FileReader(fileName));
 
 			System.out.println(Arrays.toString(f.getName().split("\\.") ));
 			int year=Integer.parseInt( f.getName().split("\\.")[0] );
@@ -111,18 +111,17 @@ public class RiskAnalysis {
 					track=tracks.get(fields[Constants.TRACK_NAME_FIELD_INDEX]);
 				}
 				//update annual stat
-					if(!track.yearlyStats.containsKey(year)){ // a new year for the track
-						track.yearlyStats.put(year, new AnnualStat(year));
-					}
-					AnnualStat as=track.yearlyStats.get(year); 
-					try{
-						as.totalTonnage+=Double.parseDouble(fields[Constants.TRAFFIC_DENSITY_FIELD_INDEX]); //ton
-					}catch(Exception ex){
-						as.totalTonnage+=0;
-					}
-					//System.out.println(fields[Constants.TRAFFIC_DENSITY_FIELD_INDEX]);
-					as.derailmentCnt+=1; //cnt
-				
+				if(!track.yearlyStats.containsKey(year)){ // a new year for the track
+					track.yearlyStats.put(year, new AnnualStat(year));
+				}
+				AnnualStat as=track.yearlyStats.get(year); 
+				try{
+					as.totalTonnage+=Double.parseDouble(fields[Constants.TRAFFIC_DENSITY_FIELD_INDEX]); //ton
+				}catch(Exception ex){
+					as.totalTonnage+=0;
+				}
+				//System.out.println(fields[Constants.TRAFFIC_DENSITY_FIELD_INDEX]);
+				as.derailmentCnt+=1; //cnt			
 			}
 			System.out.println("noOfLines in file: "+noOfLines + "  noOfAccident lines: "+noOfAccidents);
 			System.out.println("no of tracks involved in accidents: "+ tracks.size());
