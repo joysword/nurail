@@ -1,7 +1,6 @@
 package riskanalysis;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,7 +36,7 @@ public class Constants {
 	public static final int SIGNALED_FIELD_INDEX=140;
 	
 	
-	//reference :[1].	Xiang Liu, M. Rapik Saat, Christopher P. L. Barkan. ¡°Analysis of Freight-Train Derailment Rates in the United States¡±. (Draft on July 23, 2013) 
+	//reference :[1].	Xiang Liu, M. Rapik Saat, Christopher P. L. Barkan. ï¿½ï¿½Analysis of Freight-Train Derailment Rates in the United Statesï¿½ï¿½. (Draft on July 23, 2013) 
 	public static final HashMap<Integer, List<Double>> risks=new HashMap<Integer, List<Double>>();
 	static {
 		risks.put(100, Arrays.asList(new Double[]{1.29, 1.086, 1.534}));
@@ -61,36 +60,4 @@ public class Constants {
 		risks.put(501, Arrays.asList(new Double[]{.04, .033, .055}));
 		risks.put(511, Arrays.asList(new Double[]{.03, .026, .035}));
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 }

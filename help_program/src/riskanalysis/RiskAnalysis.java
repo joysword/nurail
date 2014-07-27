@@ -3,12 +3,10 @@ package riskanalysis;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Scanner;
 
 import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
@@ -18,6 +16,8 @@ public class RiskAnalysis {
 
 	public static HashMap<String, RiskCluster> riskClusters=new HashMap<String, RiskCluster>();
 	public static HashMap<String, Track> tracks=new HashMap<String, Track>();
+	private static Scanner sc;
+	private static BufferedReader reader;
 	
 	public static void main(String[] args) {
 		new RiskAnalysis().main();
@@ -227,7 +227,7 @@ public class RiskAnalysis {
 		 * Scanner doesnot work, but BufferedReader works
 		 */
 		try{
-			Scanner sc=new Scanner(new File(Constants.RAW_DATA_DIR+"12.txt"));
+			sc = new Scanner(new File(Constants.RAW_DATA_DIR+"12.txt"));
 			int cnt=0;
 			//sc.nextLine();
 			while (true) {
@@ -242,7 +242,7 @@ public class RiskAnalysis {
 			}
 			
 			
-			BufferedReader reader =new BufferedReader(new FileReader(Constants.RAW_DATA_DIR+"11.txt"));
+			reader = new BufferedReader(new FileReader(Constants.RAW_DATA_DIR+"11.txt"));
 		    cnt=0;
 			while ((line = reader.readLine()) != null) {
 		        //process each line in some way
