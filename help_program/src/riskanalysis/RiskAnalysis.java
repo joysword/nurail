@@ -204,12 +204,11 @@ public class RiskAnalysis {
 			System.out.println("****************** analysis of year "+year+" **********************");
 			String fileName=Constants.RAW_DATA_DIR+year+".txt";
 			initializeTracks(fileName);		
-			
-			computeRiskClusters();		
-			printRiskClusters();
-			printTracks();
-			System.out.println();
 		}
+		computeRiskClusters();		
+		printRiskClusters();
+		printTracks();
+		System.out.println();
 		
 		//calculateCoefficients();
 		

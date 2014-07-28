@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Constants {
 
-	public static final String RAW_DATA_DIR="E:/program_data/ArcGIS/NURail/Clean Layers/Illinois_only/derailment_risk/byYear/";
+	public static final String RAW_DATA_DIR="/Users/joysword/Development/NURail_Project/derailment_risk_analysis/derailment_risk/byYear/";
 	
 	
 	public static final int TRAFFIC_DENSITY_THRESHOLD=2000;
