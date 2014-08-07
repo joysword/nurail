@@ -18,6 +18,8 @@
         <link rel="stylesheet" href="css/default.css">
 
         <link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.css' rel='stylesheet' />
+
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     
     </head>
 
@@ -64,29 +66,38 @@
                 </div>
             </div>
 
-            <div id="leftPane" data-dojo-type="dijit/layout/AccordionContainer" region="left" style="width: 330px;">
-                
-                <div id="cbtreePane" data-dojo-type="dijit/layout/ContentPane" title="Select Layers to Show" >
-                    <!-- Layer Tree </br> -->
-                    <div id="CheckboxTree"></div>     
-                </div>
+            <!--<div id="leftPane" data-dojo-type="dijit/layout/AccordionContainer" region="left" style="width: 330px;">-->
+            <div id="leftPane" data-dojo-type="dijit/layout/ContentPane" region="left" style="width:330px; height: 100%">
 
-                <div id="drawPane" data-dojo-type="dijit/layout/ContentPane" title="Extract Data (beta)">
-                    <div><strong>Draw:</strong></div>
+                <!--<div id="cbtreePane" data-dojo-type="dijit/layout/ContentPane" title="Select Layers to Show" >-->
+                <div class="accordion-toggle">1. Select Layers to Show</div>
+                    <!-- Layer Tree </br> -->
+                    <div class="accordion-content default">
+                        <div id="CheckboxTree"></div>
+                    </div>
+                <!--</div>-->
+
+                <!--<div id="drawPane" data-dojo-type="dijit/layout/ContentPane" title="Extract Data (beta)">-->
+                <div class="accordion-toggle">2. Select Area of Interest</div>
+                    <div class="accordion-content">
+                    <div><strong>Click a button to start drawing:</strong></div>
                     <div>
                         <button class="drawButton" data-dojo-type="dijit/form/Button">Point</button>
                         <button class="drawButton" data-dojo-type="dijit/form/Button">Multi Point</button>
                     </div>
                     <div>
                         <button class="drawButton" data-dojo-type="dijit/form/Button">Polygon</button>
-                        <button class="drawButton" data-dojo-type="dijit/form/Button">Freehand Polygon</button></div>
-                </div>
+                        <button class="drawButton" data-dojo-type="dijit/form/Button">Freehand Polygon</button>
+                    </div>
+                    </div>
+                <!--</div>-->
 
-                <div id="bufferPane" data-dojo-type="dijit/layout/ContentPane" title="Buffering (beta)">
-                    <div><strong>Buffer Parameters:</strong></div>
-                    <div>Spatial Reference WKID:&nbsp;<input type="text" id="bufferSpatialReference" size="5" value="3857" /><br /></div>
+                <!--<div id="bufferPane" data-dojo-type="dijit/layout/ContentPane" title="Buffering (beta)">-->
+                <div class="accordion-toggle">3. Select Buffering Parameters</div>
+                    <div class="accordion-content">
+                    <div><strong>Specify buffer parameters:</strong></div>
                     <div>Distance:&nbsp;<input type="text" id="distance" size="5" value="2" />
-                        <select id="unit" style="width:100px;">
+                        <select id="unit" style="">
                             <option value="UNIT_STATUTE_MILE">Miles</option>
                             <option value="UNIT_FOOT">Feet</option>
                             <option value="UNIT_KILOMETER">Kilometers</option>
@@ -113,9 +124,10 @@
                     
                     
                     <br />
-                </div>
+                    </div>
+                <!--</div>-->
 
-                <div id="searchPane" data-dojo-type="dijit/layout/ContentPane" style="height:100px">
+                <!-- <div id="searchPane" data-dojo-type="dijit/layout/ContentPane" style="height:100px">
                     <div>
                         Search Layer <br/>
                         <table style=" width: 100%;">
@@ -137,9 +149,11 @@
                         Locate
                     </button>
                     <br />
-                </div>
+                </div> -->
                 
-                <div data-dojo-type="dijit/layout/ContentPane"  title="Layer Legend">
+                <!--<div data-dojo-type="dijit/layout/ContentPane"  title="Layer Legend">-->
+                <div class="accordion-toggle">4. Legend</div>
+                    <div class="accordion-content">
                     <div id="legendPane"></div>  <!-- cannot put id in the last line, to be registered by rightPane.js -->
                     
                     <!-- transportation category -->
@@ -178,7 +192,8 @@
                     <div id="seismicLegendPicture"></div>
                     <div id="socialLegendLabel"></div>
                     <div id="socialLegendPicture"></div>
-                </div>
+                    </div>
+                <!--</div>-->
             </div>
 
             <div id="map" data-dojo-type="dijit/layout/ContentPane" region="center" style="padding: 0px"></div>
@@ -204,6 +219,8 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
         <script src="http://js.arcgis.com/3.10/"></script>
+
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         
         <!-- build the leftlane -->
         <script type="text/javascript" src="js/leftPane.js"></script>

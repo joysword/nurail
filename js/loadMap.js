@@ -191,17 +191,17 @@ require([
             
             // add basemap gallery
             // reference: http://help.arcgis.com/en/webapi/javascript/arcgis/jssamples/map_agol.html
-            array.forEach(basemapGallery.basemaps, function(bmap) {
-                //Add a menu item for each basemap, when the menu items are selected
-                dijit.byId("basemapMenu").addChild(
-                    new dijit.MenuItem({
-                        label : bmap.title,
-                        onClick : dojo.hitch(this, function() {
-                            this.basemapGallery.select(bmap.id);
-                        })
-                    })
-                );
-            });
+            // array.forEach(basemapGallery.basemaps, function(bmap) {
+            //     //Add a menu item for each basemap, when the menu items are selected
+            //     dijit.byId("basemapMenu").addChild(
+            //         new dijit.MenuItem({
+            //             label : bmap.title,
+            //             onClick : dojo.hitch(this, function() {
+            //                 this.basemapGallery.select(bmap.id);
+            //             })
+            //         })
+            //     );
+            // });
             
             // initialize overview map
             // var overviewMapDijit = new OverviewMap({
@@ -394,7 +394,7 @@ require([
 
             var params = new BufferParameters();
             params.distances = [dojo.byId("distance").value];
-            params.bufferSpatialReference = new esri.SpatialReference({wkid:3857});
+            params.bufferSpatialReference = map.spatialReference;
             params.outSpatialReference = map.spatialReference;
             params.unit = GeometryService[dojo.byId("unit").value];
 
@@ -616,5 +616,30 @@ require([
     ready(function(){
         parser.parse();
         init(); //this must be wrapped into ready function()
+
+        var offset = $('.accordion-toggle').length * $('.accordion-toggle').outerHeight(true)
+            + $('#header').outerHeight(true);
+
+        console.log('offset:',offset);
+
+        $('.accordion-content').css('height', $(window).height() - offset);
+        $('.accordion-content').hide();
+        $('.accordion-content.default').show();
+
+        $('.accordion-toggle').on('click', function() {
+
+            $(this).next().slideDown('fast');
+
+            $('.accordion-content').not($(this).next()).slideUp('fast');
+        });
+
+        $(window).resize(function () {
+            $('.accordion-content').css('height', ($(window).height() - offset));
+        }).resize();
+
+        console.log('done');
     });
 });
+
+(function() {
+})()

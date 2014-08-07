@@ -452,3 +452,19 @@ div.container {
 .claro .dijitContentPane {
 	padding: 0;
 }
+
+.accordion-toggle {
+	padding:6px 12px;
+	border: 1px solid transparent;
+  	border-radius: 4px;
+  	cursor: pointer;
+  	color: #fff;
+  	background-color: #428bca;
+  	border-color: #357ebd;
+}
+
+.accordion-toggle:hover {
+	color: #fff;
+  	background-color: #3071a9;
+  	border-color: #285e8e;
+}
