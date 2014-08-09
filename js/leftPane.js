@@ -533,6 +533,7 @@ require(["dojo/ready",
 		//var node = dojo.byId("MapLayerTree");
 		// console.log('node:', node);
 		//dojo.style(node, "overflow", "hidden");
+		$('#MapLayerTree').css('overflow', 'hidden');
 		// console.log('node:', node);
  
 	});

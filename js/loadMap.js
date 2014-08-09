@@ -37,6 +37,8 @@ require([
 
     var basemapGallery, gs, toolbarDraw, toolbarBuffer;
 
+    var drawnGraphics = [];
+
     function init() {
         map = new Map("map", {
             basemap : 'gray',
@@ -185,9 +187,6 @@ require([
         on(map, "load", function() {
             toolbarDraw = new Draw(map);
             on(toolbarDraw, "draw-end", addDrawToMap);
-
-            toolbarBuffer = new Draw(map);
-            on(toolbarBuffer, "draw-end", addBufferToMap);
             
             // add basemap gallery
             // reference: http://help.arcgis.com/en/webapi/javascript/arcgis/jssamples/map_agol.html
@@ -211,44 +210,22 @@ require([
             // overviewMapDijit.startup();
         });
 
-        // graphics that are drawn on the map
-        var drawnGeom = [];
-
-        // loop through all dijits, connect onClick event
-        // listeners for buttons to activate drawing tools
-        registry.forEach(function(d) {
-            // d is a reference to a dijit
-            // could be a layout container or a button
-            if ( d.declaredClass === "dijit.form.Button" ) {
-                if (d.class == "bufferButton" ) {
-                    on(d, "click", activateBufferTool);
-                }
-                else {
-                    on(d, "click", activateDrawTool);
-                }
-            }
-        });
+        $(".draw-button").on("click", activateDrawTool);
 
         function activateDrawTool() {
-            var tool = this.label.toUpperCase().replace(/ /g, "_");
+            var tool = $(this).text().toUpperCase().replace(/ /g, "_");
             toolbarDraw.activate(Draw[tool]);
             map.hideZoomSlider();
 
             // remove previous drawn graphics
-            for (var i in drawnGeom) {
-                map.graphics.remove(drawnGeom[i]);
+            for (var i in drawnGraphics) {
+                map.graphics.remove(drawnGraphics[i]);
             }
-        }
+            drawnGraphics.splice(0, drawnGraphics.length);
 
-        function activateBufferTool() {
-            var tool = this.label.toUpperCase().replace(/ /g, "_");
-            toolbarBuffer.activate(Draw[tool]);
-            map.hideZoomSlider();
-
-            // remove previous drawn graphics
-            for (var i in drawnGeom) {
-                map.graphics.remove(drawnGeom[i]);
-            }
+            // reset Buffer-related options
+            $('#select-buffer').removeClass('hide');
+            $('#draw-buffer').addClass('hide');
         }
 
         // will be executed after draw graphics were drawn
@@ -258,158 +235,51 @@ require([
             toolbarDraw.deactivate();
             map.showZoomSlider();
             switch (geometry.type) {
-              case 'point':
-              case 'multipoint':
-                symbol = new SimpleMarkerSymbol();
-                break;
-              default: // polygon
-                symbol = new SimpleFillSymbol();
-                break;
+                case 'point':
+                case 'multipoint':
+                    symbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 6, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,0,0]), 1), new Color([0,255,0,0.25]));
+                    break;
+                case 'polyline':
+                    symbol = new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASH, new Color([255,0,0]), 1);
+                    break;
+                case 'polygon':
+                    symbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_NULL, new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT, new Color([255,0,0]), 2), new Color([255,255,0,0.25]));
+                    break;
             }
             var graphic = new Graphic(geometry, symbol);
             map.graphics.add(graphic);
 
-            drawnGeom.push(graphic);
+            drawnGraphics.push(graphic);
 
-            if (geometry.type == 'polygon') {
-                
-                //retrieve the attribute info
-                gs.project([ geometry ], new esri.SpatialReference({wkid:3857}), function(projectedPolygons) {
-                    var ring = projectedPolygons[0].rings[0];
+            // show next step (step 3)
+            openAccordion('#step3');
 
-                    var strRing = 'POLYGON((';
-
-                    for (var i in ring) {
-                        strRing += ring[i][0].toString() + ' ' + ring[i][1].toString() + ',';
-                    }
-
-                    //console.log('strRing:', strRing);
-
-                    strRing = strRing.substring(0, strRing.length-1);
-                    strRing += '))';
-
-                    //console.log('strRing:', strRing);
-                    
-                    //need an asynchronous loop here:
-                    //ref http://stackoverflow.com/questions/11488014/asynchronous-process-inside-a-javascript-for-loop
-                    //the selected feature may belong to any of the following layer
-                    for(var idx in checkedLayers){
-                        var layerName='nurail:'+checkedLayers[idx];
-                        
-                       (function(layerName){
-                           //Restful url for WFS service  http://docs.geoserver.org/stable/en/user/services/wfs/reference.html
-                           //geometry_name:"the_geom" https://wiki.state.ma.us/confluence/display/massgis/GeoServer+-+WFS+-+Filter+-+DWithin
-                           //version must be 1.0.0 why?
-                           var url='http://nurail.uic.edu/geoserver/nurail/ows?service=WFS&version=1.0.0&request=GetFeature&typeName='+layerName+'&cql_filter=INTERSECTS(the_geom,' + strRing + ')&propertyName='+popupAttributesForLayer[layerName]+'&outputFormat=application/json';
-
-                           //console.log('url:', url);
-                            
-                            //asynochronous function to deal with the response
-                            $.getJSON(url, function(obj){
-                                console.log('obj:', obj);
-
-                                var cloestFeature=obj.features[0];
-                                
-                                // if (typeof cloestFeature === 'undefined') {
-                                //     //alert("cloestFeature is undefined");
-                                //     return;
-                                // }
-                                
-                                //for popup infowindow reference: https://developers.arcgis.com/en/javascript/jssamples/gp_popuplink.html
-                                var popupContent="<b>Detail Feature Information: </b> </br><hr>"
-                                
-                                //add geo-coordinates 
-                                popupContent+= "<p><font color=\"grey\"> Geometry</font>: " + strRing + "</p>";
-                                
-                                //add feature-dependent information
-                                for (var idx in popupAttributesForLayer[layerName]){
-                                    var propertyValue=cloestFeature.properties[popupAttributesForLayer[layerName][idx]];
-                                    if (typeof propertyValue === "string" || propertyValue instanceof String){                         
-                                        propertyValue=propertyValue.replace(/\\/g, " ");
-                                    }
-                                    popupContent+="<font color=\"grey\">"+meaningfulAttributeNames[popupAttributesForLayer[layerName][idx]]+"</font>: "+ propertyValue;
-                                    
-                                    var unit=meaningfulAttributeNames[popupAttributesForLayer[layerName][idx]+"_unit"]
-                                    if (!(unit == undefined)){
-                                        popupContent+="  "+unit;
-                                    }
-                                    popupContent+="<br/>";
-                                }
-
-                                graphic.setInfoTemplate(new esri.InfoTemplate("",popupContent));   
-                                    //+ "<input type='button' value='Convert back to LatLong' onclick='projectToLatLong();' />" 
-                                    //+ "<div id='latlong'></div>"
-                                
-                                //remove the old graphic and show the new graphic
-                                map.graphics.remove(lastPopupGraphic);
-                                map.graphics.add(graphic);
-                                lastPopupGraphic=graphic;
-                                layerOfLastPopupGraphic=layerName;
-
-                                console.log('graphic.getContent():',graphic.getContent());
-
-                                // console.log('map.infoWindow:', map.infoWindow);
-                                
-                                //show the infoWindow
-                                map.infoWindow.setTitle(graphic.getTitle());
-                                //.setTitle(graphic.getInfoTemplate().title)
-                                map.infoWindow.setContent(graphic.getContent());
-                                //.setContent(graphic.getInfoTemplate().content)
-                                //map.infoWindow.show(screenPoint);//, map.getInfoWindowAnchor(screenPoint));
-                               
-                            });
-                       })(layerName); //pass the layerName to the anonymous function
-                       
-                    }
-                });
-            }
-            else {
-                // TODO
-            }
         }
 
         // will be executed after buffer graphics were drawn
-        function addBufferToMap(evt) {
-            var symbol;
-            var geometry = evt.geometry;
-            toolbarBuffer.deactivate();
-            map.showZoomSlider();
-            switch (geometry.type) {
-                case 'point':
-                case 'multipoint':
-                    var symbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 6, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,0,0]), 1), new Color([0,255,0,0.25]));
-                    break;
-                case 'polyline':
-                    var symbol = new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASH, new Color([255,0,0]), 1);
-                    break;
-                case 'polygon':
-                    var symbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_NULL, new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT, new Color([255,0,0]), 2), new Color([255,255,0,0.25]));
-                    break;
-            }
-
-            var graphic = new Graphic(geometry, symbol);
-            map.graphics.add(graphic);
-
-            drawnGeom.push(graphic);
-
+        function addBuffer() {
             var params = new BufferParameters();
-            params.distances = [dojo.byId("distance").value];
+            params.distances = [$("#distance").val()];
             params.bufferSpatialReference = map.spatialReference;
             params.outSpatialReference = map.spatialReference;
-            params.unit = GeometryService[dojo.byId("unit").value];
+            params.unit = GeometryService[$("#unit").val()];
 
-            console.log('params:', params);
-
-            if (geometry.type === "polygon") {
-                //if geometry is a polygon then simplify polygon. This will make the user drawn polygon topologically correct.
-                gs.simplify([geometry], function(geometries) {
-                    params.geometries = geometries;
+            $.each(drawnGraphics, function(i, graphic) {
+                var geometry = graphic.geometry;
+                if (geometry.type === "polygon") {
+                    //if geometry is a polygon then simplify polygon. This will make the user drawn polygon topologically correct.
+                    gs.simplify([geometry], function(geometries) {
+                        params.geometries = geometries;
+                        gs.buffer(params, showBuffer);
+                    });
+                } else {
+                    params.geometries = [geometry];
                     gs.buffer(params, showBuffer);
-                });
-            } else {
-                params.geometries = [geometry];
-                gs.buffer(params, showBuffer);
-            }
+                }
+            });
+
+            $('#step4').next().slideDown('fast');
+            $('#step3').next().slideUp('fast');
         }
 
         function showBuffer(bufferedGeometries) {
@@ -422,11 +292,16 @@ require([
                 new Color([255,0,0,0.35])
             );
 
-            array.forEach(bufferedGeometries, function(geometry) {
+            $.each(bufferedGeometries, function(i, geometry) {
                 var graphic = new Graphic(geometry, symbol);
                 map.graphics.add(graphic);
-                drawnGeom.push(graphic);
+                drawnGraphics.push(graphic);
             });
+        }
+
+        function openAccordion(selector) {
+            $(selector).next().slideDown('fast');
+            $('.accordion-content').not($(selector).next()).slideUp('fast');
         }
 
         // Create the WMS_layer for each layer in layers
@@ -484,7 +359,51 @@ require([
 
             //console.log("layers["+idx+"]:", layers[idx]);
         }
-    }
+
+        var offset = $('.accordion-toggle').length * $('.accordion-toggle').outerHeight(true)
+            + $('#header').outerHeight(true);
+
+        $('.accordion-content').css('height', $(window).height() - offset);
+        $('.accordion-content').hide();
+        $('.accordion-content.default').show();
+
+        $('.accordion-toggle').on('click', function() {
+            $(this).next().slideDown('fast');
+            $('.accordion-content').not($(this).next()).slideUp('fast');
+        });
+
+        $(window).resize(function () {
+            $('.accordion-content').css('height', ($(window).height() - offset));
+        }).resize();
+
+        // if choose to buffer, show options
+        $('#yes').on('click', function() {
+            $('#select-buffer').addClass('hide');
+            $('#draw-buffer').removeClass('hide');
+        });
+
+        // if choose not to buffer, go to step 4
+        $('#no').on('click', function() {
+            openAccordion('#step4');
+        });
+
+        // if apply buffer to map, add buffer and go to step 4
+        $('#apply-buffer').on('click', function() {
+            addBuffer();
+            openAccordion('#step4');
+        });
+
+        // if cancel buffering, hide options
+        $('#cancel-buffer').on('click', function() {
+            $('#select-buffer').removeClass('hide');
+            $('#draw-buffer').addClass('hide');
+        });
+
+
+
+
+        
+    } // end of init()
 
     //translate the attribute name in the shapefile table into meaningful words
     var meaningfulAttributeNames={
@@ -616,27 +535,6 @@ require([
     ready(function(){
         parser.parse();
         init(); //this must be wrapped into ready function()
-
-        var offset = $('.accordion-toggle').length * $('.accordion-toggle').outerHeight(true)
-            + $('#header').outerHeight(true);
-
-        console.log('offset:',offset);
-
-        $('.accordion-content').css('height', $(window).height() - offset);
-        $('.accordion-content').hide();
-        $('.accordion-content.default').show();
-
-        $('.accordion-toggle').on('click', function() {
-
-            $(this).next().slideDown('fast');
-
-            $('.accordion-content').not($(this).next()).slideUp('fast');
-        });
-
-        $(window).resize(function () {
-            $('.accordion-content').css('height', ($(window).height() - offset));
-        }).resize();
-
         console.log('done');
     });
 });
