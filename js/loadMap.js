@@ -45,8 +45,8 @@ require([
             center : [-87.651052, 41.872458],
             zoom : 10, //6
             sliderStyle : "large",
-            logo: false,
-            showAttribution: false
+            logo: false
+            //showAttribution: false
         });
 
         // map = L.mapbox.map('map', 'joysword.i6b4jale').setView([41.8910,-87.6839], 11);
@@ -360,12 +360,18 @@ require([
             //console.log("layers["+idx+"]:", layers[idx]);
         }
 
+        var headHeight = $('#header').outerHeight(true);
         var offset = $('.accordion-toggle').length * $('.accordion-toggle').outerHeight(true)
-            + $('#header').outerHeight(true);
+            + headHeight;
 
-        $('.accordion-content').css('height', $(window).height() - offset);
         $('.accordion-content').hide();
         $('.accordion-content.default').show();
+
+        console.log('height:', $(window).height() - headHeight);
+
+        $('.accordion-content').css('height', $(window).height() - offset);
+        $('#map_root').css('height', $(window).height() - headHeight);
+        //console.log($('#map').attr())
 
         $('.accordion-toggle').on('click', function() {
             $(this).next().slideDown('fast');
@@ -374,6 +380,7 @@ require([
 
         $(window).resize(function () {
             $('.accordion-content').css('height', ($(window).height() - offset));
+            $('#map').css('height', $(window).height() - headHeight);
         }).resize();
 
         // if choose to buffer, show options
@@ -399,10 +406,6 @@ require([
             $('#draw-buffer').addClass('hide');
         });
 
-
-
-
-        
     } // end of init()
 
     //translate the attribute name in the shapefile table into meaningful words
