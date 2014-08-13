@@ -5,6 +5,8 @@ require([
     "esri/dijit/OverviewMap", "esri/map", "esri/dijit/BasemapGallery",
     "esri/tasks/locator", "esri/tasks/GeometryService", "esri/dijit/Geocoder",
 
+    "esri/tasks/AreasAndLengthsParameters",
+
     // "esri/InfoTemplate",
 
     "esri/toolbars/draw", "esri/graphic", "esri/Color",
@@ -15,25 +17,106 @@ require([
 
     "esri/tasks/BufferParameters",
 
+    "dojo/store/Memory",
+    "dojo/store/Observable",
+    "cbtree/Tree",                 // Checkbox tree
+    "cbtree/model/TreeStoreModel",  // ObjectStoreModel
+
     "dijit/registry", "dojo/on", "dojo/_base/array",
 
-    // "dijit/layout/BorderContainer", "dijit/layout/ContentPane", 
-    // "dijit/form/Button"
+    "dojo/_base/lang",
 
     "dojo/parser", "dojo/ready"
     ], function(
     OverviewMap, Map, BasemapGallery,
     Locator, GeometryService, Geocoder, // InfoTemplate,
+
+    AreasAndLengthsParameters,
     
     Draw, Graphic, Color,
 
     SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol,
 
     BufferParameters,
+
+    Memory, Observable, Tree, ObjectStoreModel,
     
     registry, on, array,
+
+    lang,
+
     parser, ready
     ) {
+    //Checkbox tree reference: 
+    //http://thejekels.com/dojo/cbtree_AMD.html
+    //https://github.com/pjekel/cbtree/wiki
+    //http://thejekels.com/cbtree/demos/ArcGIS.php
+    store = Observable( new Memory( { data: 
+        treeHierarchyData }));
+      
+    cbTreeModel = new ObjectStoreModel({
+        store: store,
+        query: {id: "root"},
+        rootLabel: "",
+        checkedRoot: true
+    });
+
+    function checkBoxClicked( item, nodeWidget, evt ) { 
+        var checked = nodeWidget.get("checked");
+
+        //get the text of the checked box
+        var label = this.model.getLabel(item);
+
+        var ChildrenLayers=TreeLayerNamesMapToWMSLayers[label]; // the children layers of a layer
+        
+        //layers in loadMap.js is the container of true WMS layers
+        if(checked){
+            for(var layerIdx in ChildrenLayers){ //in JS, layer is an index of ChildrenLayers, i.e. 0, 1, ......
+                var WMSLayerName=ChildrenLayers[layerIdx];
+                map.addLayer(layers[WMSLayerName]); 
+                checkedLayers.push(WMSLayerName); //add the layer to the checked layer group, clearMap()
+                showLegend(WMSLayerNamesMapToTreeLayerNames[WMSLayerName]); //show the legend
+            }
+        }
+        else{ //uncheck a layer
+            for(var layerIdx in ChildrenLayers){
+                var WMSLayerName=ChildrenLayers[layerIdx];
+                map.removeLayer(layers[WMSLayerName]);
+                
+                //remove the layer from the checked layer group, clearMap()
+                var index = checkedLayers.indexOf(WMSLayerName);
+                checkedLayers.splice(index, 1);
+                
+                //alert(WMSLayerNamesMapToTreeLayerNames[WMSLayerName]);
+                hideLegend(WMSLayerNamesMapToTreeLayerNames[WMSLayerName]); //hide the legend
+                
+                //handle the dangling popup graphic
+                var fullLayerName="nurail:"+WMSLayerName;
+                if(fullLayerName==layerOfLastPopupGraphic){
+                    map.graphics.remove(lastPopupGraphic);
+                }
+            }
+        }
+       /*
+        if( checked ) {
+            tree.set("iconStyle", {border:"solid"}, item );
+            tree.set("labelStyle",{color:"red"}, item );
+        } else {
+            tree.set("iconStyle", {border:"none"}, item );
+            tree.set("labelStyle",{color:"black"}, item );
+        }                       
+        alert( "The new state for " + label + " is: " + checked );
+         */
+    }
+
+/****************** end of leftPane.js
+*******************
+******************/
+
+    //identify proxy page to use if the toJson payload to the geometry service is greater than 2000 characters.
+    //If this null or not available the project and lengths operation will not work.  Otherwise it will do a http post to the proxy.
+    esriConfig.defaults.io.proxyUrl = "php-proxy/proxy.php";
+    esriConfig.defaults.io.alwaysUseProxy = false;
 
     var basemapGallery, gs, toolbarDraw, toolbarBuffer;
 
@@ -56,11 +139,21 @@ require([
             map : map
         });
 
-        gs = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
+        //gs = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
+        gs = new GeometryService("http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer");
+        gs.on("areas-and-lengths-complete",
+            function showAreasAndLengths(evt) {
+                var html = "";
+                for (var i=0;i<evt.result.areas.length;i++) {
+                    html += "Area: " + evt.result.areas[i] + " km<sup>2</sup><br />"
+                    + "Length: " + evt.result.lengths[i] + " km<br />";
+                }
+                $('#areas-and-lengths').html(html);
+            });
       
         // geocoding function
         locator = new Locator("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
-        on(locator, "address-to-locations-complete",
+        locator.on("address-to-locations-complete",
             //show a graphic at the location of geocoding
             function showLocatingResults(candidates) {
 
@@ -184,9 +277,9 @@ require([
                 });
         });*/
 
-        on(map, "load", function() {
+        map.on("load", function() {
             toolbarDraw = new Draw(map);
-            on(toolbarDraw, "draw-end", addDrawToMap);
+            toolbarDraw.on("draw-end", addDrawToMap);
             
             // add basemap gallery
             // reference: http://help.arcgis.com/en/webapi/javascript/arcgis/jssamples/map_agol.html
@@ -256,30 +349,38 @@ require([
 
         }
 
-        // will be executed after buffer graphics were drawn
-        function addBuffer() {
-            var params = new BufferParameters();
-            params.distances = [$("#distance").val()];
-            params.bufferSpatialReference = map.spatialReference;
-            params.outSpatialReference = map.spatialReference;
-            params.unit = GeometryService[$("#unit").val()];
+        // will be executed after graphics were drawn
+        function addBuffer(yes) {
+            if (yes) {
+                console.log('addBuffer true');
+                var params = new BufferParameters();
+                params.distances = [$("#distance").val()];
+                params.bufferSpatialReference = map.spatialReference;
+                params.outSpatialReference = map.spatialReference;
+                params.unit = GeometryService[$("#unit").val()];
 
-            $.each(drawnGraphics, function(i, graphic) {
-                var geometry = graphic.geometry;
-                if (geometry.type === "polygon") {
-                    //if geometry is a polygon then simplify polygon. This will make the user drawn polygon topologically correct.
-                    gs.simplify([geometry], function(geometries) {
-                        params.geometries = geometries;
+                $.each(drawnGraphics, function(i, graphic) {
+                    var geometry = graphic.geometry;
+                    if (geometry.type === "polygon") {
+                        //if geometry is a polygon then simplify polygon. This will make the user drawn polygon topologically correct.
+                        gs.simplify([geometry], function(geometries) {
+                            params.geometries = geometries;
+                            gs.buffer(params, showBuffer);
+                        });
+                    } else {
+                        params.geometries = [geometry];
                         gs.buffer(params, showBuffer);
-                    });
-                } else {
-                    params.geometries = [geometry];
-                    gs.buffer(params, showBuffer);
-                }
-            });
+                    }
+                    console.log('here 1111');
+                });
 
-            $('#step4').next().slideDown('fast');
-            $('#step3').next().slideUp('fast');
+                console.log('here 2222');
+            }
+            else {
+                console.log('here 3333');
+                getArea();
+                openAccordion('#step4');
+            }
         }
 
         function showBuffer(bufferedGeometries) {
@@ -297,6 +398,10 @@ require([
                 map.graphics.add(graphic);
                 drawnGraphics.push(graphic);
             });
+
+            console.log('here 4444');
+            getArea();
+            openAccordion('#step4');
         }
 
         function openAccordion(selector) {
@@ -367,8 +472,6 @@ require([
         $('.accordion-content').hide();
         $('.accordion-content.default').show();
 
-        console.log('height:', $(window).height() - headHeight);
-
         $('.accordion-content').css('height', $(window).height() - offset);
         $('#map_root').css('height', $(window).height() - headHeight);
         //console.log($('#map').attr())
@@ -391,13 +494,12 @@ require([
 
         // if choose not to buffer, go to step 4
         $('#no').on('click', function() {
-            openAccordion('#step4');
+            addBuffer(false);
         });
 
         // if apply buffer to map, add buffer and go to step 4
         $('#apply-buffer').on('click', function() {
-            addBuffer();
-            openAccordion('#step4');
+            addBuffer(true);
         });
 
         // if cancel buffering, hide options
@@ -405,6 +507,22 @@ require([
             $('#select-buffer').removeClass('hide');
             $('#draw-buffer').addClass('hide');
         });
+
+        function getArea() {
+            var params = new AreasAndLengthsParameters();
+            params.lengthUnit = GeometryService.UNIT_KILOMETER;
+            params.areaUnit = GeometryService.UNIT_SQUARE_KILOMETERS;
+            params.calculationType = "geodesic";
+            var polygons = [];
+            for (var i=0;i<drawnGraphics.length;i++) {
+                polygons.push(drawnGraphics[i].geometry);
+                console.log('pushed',i);
+            }
+            console.log(drawnGraphics);
+            params.polygons = polygons;
+            console.log(params.polygons);
+            gs.areasAndLengths(params);
+        }
 
     } // end of init()
 
@@ -538,9 +656,28 @@ require([
     ready(function(){
         parser.parse();
         init(); //this must be wrapped into ready function()
+
+        //start left pane
+        var tree= new Tree( { 
+            model: cbTreeModel, 
+            id:"MapLayerTree" 
+        }, "CheckboxTree" );
+        
+        // Establish listener and start the tree.
+        tree.on("checkBoxClick", checkBoxClicked);
+
+        // Add initial layers
+        for (var idx in initChecked) {
+            var label = initChecked[idx];
+            map.addLayer(layers[label]);
+            checkedLayers.push(label);
+            showLegend(WMSLayerNamesMapToTreeLayerNames[label]);
+        }
+        
+        tree.startup();
+        
+        $('#MapLayerTree').css('overflow', 'hidden');
+
         console.log('done');
     });
 });
-
-(function() {
-})()

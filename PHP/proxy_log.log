@@ -1,0 +1,60 @@
+
+ 
+08-12-14 19:19:39 | GET detected
+08-12-14 19:19:39 | This proxy does not support empty parameters.
+ 
+08-12-14 22:02:09 | POST detected
+08-12-14 22:02:09 | Proxy could not resolve requested url - http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer/areasAndLengths.  Possible solution would be to update 'mustMatch', 'matchAll' or 'url' property in the configuration file.
+ 
+08-12-14 22:05:54 | GET detected
+ 
+08-12-14 22:05:58 | GET detected
+ 
+08-12-14 22:06:03 | GET detected
+ 
+08-12-14 22:06:08 | GET detected
+08-12-14 22:06:08 | This proxy does not support empty parameters.
+ 
+08-12-14 22:06:13 | GET detected
+08-12-14 22:06:13 | Proxy could not resolve requested url - http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer/areasAndLengths.  Possible solution would be to update 'mustMatch', 'matchAll' or 'url' property in the configuration file.
+ 
+08-12-14 22:08:51 | GET detected
+ 
+08-12-14 22:18:55 | POST detected
+ 
+08-12-14 22:19:17 | GET detected
+ 
+08-12-14 22:19:19 | GET detected
+ 
+08-12-14 22:19:21 | GET detected
+ 
+08-12-14 22:19:41 | GET detected
+ 
+08-12-14 22:19:45 | GET detected
+08-12-14 22:19:45 | This proxy does not support empty parameters.
+ 
+08-12-14 22:19:46 | GET detected
+ 
+08-12-14 22:19:50 | GET detected
+08-12-14 22:19:50 | This proxy does not support empty parameters.
+ 
+08-12-14 22:27:47 | GET detected
+08-12-14 22:27:47 | This proxy does not support empty parameters.
+ 
+08-12-14 22:27:51 | GET detected
+ 
+08-12-14 22:30:29 | GET detected
+ 
+08-12-14 22:30:37 | GET detected
+ 
+08-12-14 22:30:57 | GET detected
+ 
+08-12-14 22:31:00 | GET detected
+08-12-14 22:31:00 | This proxy does not support empty parameters.
+ 
+08-12-14 22:38:03 | GET detected
+ 
+08-12-14 22:38:05 | GET detected
+ 
+08-12-14 22:38:30 | GET detected
+08-12-14 22:38:30 | This proxy does not support empty parameters.
