@@ -18,6 +18,8 @@
         <link rel="stylesheet" href="js/cbtree/themes/claro/claro.css">
 
         <link rel="stylesheet" href="css/default.css">
+
+        <link rel="stylesheet" href="css/overlay.css">
     
     </head>
 
@@ -137,7 +139,7 @@
                     <div id="step4" class="accordion-toggle">4. View Data</div>
                     <div class="accordion-content text">
                         <div id="areas-and-lengths"></div>
-                        <div id="feature-data"></div>
+                        <div><a href class="overlay-trigger" data-overlay="overlay-feature-data">Show Data</a></div>
                         <div id="legendPane"></div>  <!-- cannot put id in the last line, to be registered by rightPane.js -->
                         
                         <!-- transportation category -->
@@ -184,6 +186,12 @@
 
         </div><!-- container-fluid -->
 
+        <div id="overlay-feature-data" class="overlay">
+            <div id="feature-data" class="overlay-inner">
+
+            </div>
+        </div>
+
         <!-- Note that the config must precede the arcgis api -->
         <script>
             var remote= true; // false if runs at localhost; false if runs on nurail.uic.edu
@@ -213,8 +221,7 @@
         <script type="text/javascript" src="js/loadMap.js"></script>
 
         <!-- build the output table -->
-        <!--<script type="text/javascript" src="js/json-to-table.js"></script>-->
-        <script type="text/javascript" src="js/jquery.dynatable.js"></script>
+        <script type="text/javascript" src="js/json-to-table.js"></script>
         
         <!-- load ArcGIS API modules -->
         <script>

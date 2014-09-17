@@ -466,45 +466,48 @@ require([
         function loadFeatureData(geom) {
             console.log("in loadFeatureData");
 
-                for (var idx in checkedLayers) {
+            var drawnShape = "";
+
+            if (geom.type === "polygon") {
+                drawnShape += "POLYGON((";
+
+                for (var i in geom.rings[0]) {
+                    if (i!=geom.rings[0].length-1) {
+                        drawnShape += geom.rings[0][i][0] + ' ' + geom.rings[0][i][1] + ',';
+                    }
+                    else {
+                        drawnShape += geom.rings[0][i][0] + ' ' + geom.rings[0][i][1] + '))';   
+                    }
+                }
+            }
+            else if (geom.type === "polyline") {
+                drawnShape += "POLYLINE()";
+            }
+            else if (geom.type === "multipoint") {
+                drawnShape += "MULTIPOINT()";
+            }
+            else { // geom.type === "point"
+                drawnShape += "POINT()";
+            }
+
+            for (var idx in checkedLayers) {
+                console.log('~~~~~start', idx);
+                (function (idx) {
+                    console.log('~~~~~in ', idx);
+                    var myTable = {};
+
                     var layerName = 'nurail:'+checkedLayers[idx];
                     console.log(layerName);
 
-                    console.log(geom);
+                    myTable.title = WMSLayerNamesMapToTreeLayerNames[checkedLayers[idx]];
+                    myTable.data = [];
 
+                    //Restful url for WFS service  http://docs.geoserver.org/stable/en/user/services/wfs/reference.html
+                    //geometry_name:"the_geom" https://wiki.state.ma.us/confluence/display/massgis/GeoServer+-+WFS+-+Filter+-+DWithin
+                    //version must be 1.0.0 why?
+                    var url = "";
                     if (geom.type === "polygon") {
-
-                        var drawnShape = "POLYGON((";
-
-                        for (var i in geom.rings[0]) {
-                            if (i!=geom.rings[0].length-1) {
-                                drawnShape += geom.rings[0][i][0] + ' ' + geom.rings[0][i][1] + ',';
-                            }
-                            else {
-                                drawnShape += geom.rings[0][i][0] + ' ' + geom.rings[0][i][1] + '))';   
-                            }
-                        }
-
-                        (function (layerName) {
-                            //Restful url for WFS service  http://docs.geoserver.org/stable/en/user/services/wfs/reference.html
-                            //geometry_name:"the_geom" https://wiki.state.ma.us/confluence/display/massgis/GeoServer+-+WFS+-+Filter+-+DWithin
-                            //version must be 1.0.0 why?
-                            var url='http://nurail.uic.edu/geoserver/nurail/ows?service=WFS&version=1.0.0&request=GetFeature&typeName='+layerName+'&cql_filter=INTERSECTS(the_geom,' + drawnShape + ')&propertyName='+popupAttributesForLayer[layerName]+'&outputFormat=application/json';
-
-                            console.log(url);
-
-                            //asynochronous function to deal with the response
-                            $.getJSON(url, function (obj) {
-                                console.log('obj:', obj);
-
-                                var jsonHtmlTable = ConvertJsonToTable(obj.features, 'jsonTable', null, 'Download');
-
-                                console.log('table:', jsonHtmlTable);
-
-                                $("feature-data").html(jsonHtmlTable);
-                            });
-
-                        })(layerName);
+                        url='http://nurail.uic.edu/geoserver/nurail/ows?service=WFS&version=1.0.0&request=GetFeature&typeName='+layerName+'&cql_filter=INTERSECTS(the_geom,' + drawnShape + ')&propertyName='+popupAttributesForLayer[layerName]+'&outputFormat=application/json';
                     }
                     else if (geom.type === "polyline") {
                         console.log(geom.type);
@@ -515,12 +518,115 @@ require([
                     else { // geom.type === "point"
                         console.log(geom.type);   
                     }
-                }
-            //});
 
-            // json=json.replace(/\\/g, ""); //replace all '\' with empty string
-            // obj = JSON.parse(json);
+                    console.log(url);
+
+                    //asynochronous function to deal with the response
+                    $.getJSON(url, function (obj) {
+                        console.log('~~~~~in ', idx, "'s getJSON");
+
+                        var myFeatures = obj.features;
+
+                        for (var ii in myFeatures) {
+
+                            var myRow = {};
+
+                            var myProperties = myFeatures[ii].properties;
+                        
+                            for (var prop in myProperties) {
+                                myRow[meaningfulAttributeNames[prop]] = myProperties[prop];
+                            }
+
+                            myTable.data.push(myRow);
+
+                            console.log('myRow:', myRow);
+                        }
+
+                        myTable.html = ConvertJsonToTable(myTable.data, 'jsonTable', null, 'Download');
+
+                        console.log("myTable:", myTable);
+
+                        console.log("html:", myTable.html);
+
+                        $("#feature-data").html(function (idx, html) {
+                            return html + "<h5>" + myTable.title + "</h5>" + myTable.html;
+                        });
+
+                        console.log('~~~~~out', idx, "'s getJSON");
+
+                    });
+
+                    console.log('~~~~~out', idx);
+                })(idx);
+                console.log('~~~~~end  ', idx);
+            }
+
         }
+
+        // https://kopepasah.com/tutorial/awesome-overlays-with-simple-css-javascript-html/
+        $( '.overlay-trigger' ).on( 'click', function( event ) {
+
+            console.log('clicked');
+            event.preventDefault();
+     
+            /**
+             * Set the overlay variable based on the data provided
+             * by the overlay trigger.
+             */
+            var overlay = $( this ).data( 'overlay' );
+     
+            /**
+             * If the overlay variable is not defined, give a message
+             * and return.
+            */
+            if ( ! overlay ) {
+                console.log( 'You must provide the overlay id in the trigger. (data-overlay="overlay-id").' );
+                return;
+            }
+     
+            /**
+             * If we've made it this far, we should have the data
+             * needed to open a overlay. Here we set the id variable
+             * based on overlay variable.
+             */
+            var id = '#' + overlay;
+     
+            /**
+             * Let's open up the overlay and prevent the body from
+             * scrolling, both by adding a simple class. The rest
+             * is handled by CSS (awesome).
+             */
+            $( id ).addClass( 'overlay-open' );
+            $( 'body' ).addClass( 'overlay-view' );
+     
+            /**
+             * When the overlay outer wrapper or `overlay-close`
+             * triger is clicked, lets remove the classes from
+             * the current overlay and body. Removal of these
+             * classes restores the current state of the user
+             * experience. Again, all handled by CSS (awesome).
+             */
+            $( id ).on( 'click', function( event ) {
+                // Verify that only the outer wrapper was clicked.
+                if ( event.target.id == overlay ) {
+                    $( id ).removeClass( 'overlay-open' );
+                    $( 'body' ).removeClass( 'overlay-view' );
+                }
+            });
+     
+            /**
+             * Closes the overlay when the esc key is pressed. See
+             * comment above on closing the overlay for more info
+             * on how this is accomplished.
+             */
+            $( document ).keyup( function( event ) {
+                // Verify that the esc key was pressed.
+                if ( event.keyCode == 27 ) {
+                    $( id ).removeClass( 'overlay-open' );
+                    $( 'body' ).removeClass( 'overlay-view' );
+                }
+            });
+        });
 
     } // end of init()
 
@@ -579,7 +685,7 @@ require([
         'D1B': 'Population Density (person/acre)',
 
         // Archeologic Resource
-        'AREA': 'Area (acres)'
+        'AREA': 'Area (acres)',
 
         // Historical Site
         'ADDRESS': 'Address',
@@ -625,7 +731,9 @@ require([
         // Riparian Zone
         //'ACRES': 'Acres',
 
-        // not in use
+// below are not in use
+//
+//
         'MAXSPD':'MAX SPEED',
         'MAXSPD':' km/h',
 

@@ -1,0 +1,43 @@
+.overlay {
+  overflow: scroll;
+  position: fixed;
+  top: 0;
+  bottom: 110%;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 10000;
+  opacity: 0;
+  background: #4D4D4D;
+  transition: opacity 200ms linear, bottom 0s linear 200ms;
+}
+
+.overlay-open {
+  bottom: 0;
+  opacity: 1;
+  transition: opacity 200ms linear, bottom 0s linear;
+}
+
+.overlay-view {
+  overflow: hidden;
+}
+
+.overlay-inner {
+  background: #FFF;
+  margin: 5rem auto;
+  padding: 4rem;
+  max-width: 90%;
+}
+
+.overlay-inner h5 {
+  font-size: 16px;
+  padding-left: 10px;
+}
+
+.overlay-inner table {
+  font-size: 11px;
+  text-align: right;
+  vertical-align: middle;
+  margin-bottom: 12px;
+
+}
