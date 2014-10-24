@@ -9,18 +9,18 @@
         <title>NURail Interactive Map</title>
 
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-        
+
 		<link rel="stylesheet" href="http://js.arcgis.com/3.10/js/dojo/dijit/themes/claro/claro.css">
 
         <link rel="stylesheet" href="http://js.arcgis.com/3.10/js/esri/css/esri.css">
 
-        <!--overide the argis claro style list otherwise the checkbox will not showup*/-->
+        <!--override the arcgis claro style list otherwise the checkbox will not show up*/-->
         <link rel="stylesheet" href="js/cbtree/themes/claro/claro.css">
 
         <link rel="stylesheet" href="css/default.css">
 
         <link rel="stylesheet" href="css/overlay.css">
-    
+
     </head>
 
     <body class="claro">
@@ -33,7 +33,7 @@
                     <a href="http://www.cn.ca/" title="Canadian National Railway Company" target="_blank"> <img src="img/sponsor_logo/CN.png" width="80" height="50"border="none" class="toolImg"> </a>
             </div>
             <div class="navbar-right">
-                <form action="../map.html#FAQ" method="get" target="_blank">
+                <form action="map.html#FAQ" method="get" target="_blank">
                     <button type="button" class="btn btn-primary navbar-btn" onclick="switchBaseMap()">Switch Basemap</button>
                     <button type="submit" class="btn btn-primary navbar-btn">Help</button>
                     <button type="button" class="btn btn-primary navbar-btn" onclick="clearMap()">Clear Map</button>
@@ -49,7 +49,7 @@
                     <div class="accordion-content default" style="overflow:scroll">
                         <div id="CheckboxTree"></div>
                     </div>
-                    
+
                     <div id="step2" class="accordion-toggle">2. Draw Area of Interest</div>
                     <div class="accordion-content text">
                         <form role="form">
@@ -124,7 +124,7 @@
                                 </tbody>
                             </table>
                             <textarea type="text" id="layerSearchResult" style="width:90%; height:100px;visibility:hidden"/></textArea>
-                        </div>                        
+                        </div>
                     </div>
 
                     <div data-dojo-type="dijit/layout/ContentPane" title="Go To Location">
@@ -135,30 +135,29 @@
                         </button>
                         <br />
                     </div> -->
-                    
+
                     <div id="step4" class="accordion-toggle">4. View Data</div>
                     <div class="accordion-content text">
+                        <div id="legendPane"></div>  <!-- cannot put id in the last line, to be registered by rightPane.js -->
                         <div id="areas-and-lengths"></div>
                         <div><a href class="overlay-trigger" data-overlay="overlay-feature-data">Show Data</a></div>
-                        <div id="legendPane"></div>  <!-- cannot put id in the last line, to be registered by rightPane.js -->
-                        
+
                         <!-- transportation category -->
                         <div id="railSpeedLegendLabel"></div>
                         <div id="railSpeedLegendPicture"></div>
-                        
+
                         <!-- demographics category -->
                         <div id="MedianLegendLabel"></div>
                         <div id="MedianLegendPicture"></div>
                         <div id="EmploymentLegendLabel"></div>
                         <div id="EmploymentLegendPicture"></div>
                         <div id="PopulationLegendLabel"></div>
-                        <div id="PopulationLegendPicture"></div>                    
-                        
-                        
+                        <div id="PopulationLegendPicture"></div>
+
                         <!-- landuse category -->
                         <div id="landuseLegendLabel"></div>
                         <div id="landuseLegendPicture"></div>
-                        
+
                         <!-- emission catogory -->
                         <!-- <div id="allPollutantsLegendLabel"></div> -->
                         <!-- <div id="allPollutantsLegendPicture"></div> -->
@@ -172,7 +171,7 @@
                         <div id="NOxLegendPicture"></div>
                         <div id="PM10LegendLabel"></div>
                         <div id="PM10LegendPicture"></div>
-                        
+
                         <!-- areas to avoid -->
                         <div id="seismicLegendLabel"></div>
                         <div id="seismicLegendPicture"></div>
@@ -195,7 +194,7 @@
         <!-- Note that the config must precede the arcgis api -->
         <script>
             var remote= true; // false if runs at localhost; false if runs on nurail.uic.edu
-            
+
             var cbtreeLocation;
             if (remote) cbtreeLocation="/js/cbtree";
             else cbtreeLocation="/NURail/js/cbtree";
@@ -213,25 +212,25 @@
         <script src="http://js.arcgis.com/3.10/"></script>
 
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-        
-        <!-- build the leftlane -->
+
+        <!-- build the leftPane -->
         <script type="text/javascript" src="js/leftPane.js"></script>
-        
+
         <!-- build the map -->
         <script type="text/javascript" src="js/loadMap.js"></script>
 
         <!-- build the output table -->
         <script type="text/javascript" src="js/json-to-table.js"></script>
-        
+
         <!-- load ArcGIS API modules -->
         <script>
-            require(["dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dijit/layout/AccordionContainer", 
+            require(["dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dijit/layout/AccordionContainer",
             "dijit/form/Button", "dijit/form/Textarea", "dijit/Menu", "dijit/form/DropDownButton", "dijit/TooltipDialog",
             "dijit/DropDownMenu", "dijit/MenuItem",  "cbtree/model/StoreModel-EXT","cbtree/util/QueryEngine", "cbtree/model/TreeStoreModel","dojo/domReady!"]);
- 
+
             function clearMap() {
                 map.graphics.clear();
-                
+
                 for(var idx in checkedLayers){
                     var treeLayerName=WMSLayerNamesMapToTreeLayerNames[checkedLayers[idx]];
                     //alert(treeLayerName);
@@ -244,7 +243,7 @@
                 }
                 checkedLayers=[];
             }
-            
+
             function switchBaseMap() {
                 //"streets" , "satellite" , "hybrid", "topo", "gray", "oceans", "national-geographic", "osm"
                 //var form = document.form1;
@@ -258,7 +257,7 @@
                 }
                 else if (curBaseMap == 'topo') {
                     map.setBasemap('streets');
-                }                
+                }
             }
 
             function locate() {

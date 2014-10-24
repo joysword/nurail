@@ -32,7 +32,7 @@ require([
     Locator, GeometryService, Geocoder, // InfoTemplate,
 
     AreasAndLengthsParameters,
-    
+
     Draw, Graphic, Color,
 
     SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol,
@@ -40,20 +40,20 @@ require([
     BufferParameters,
 
     Memory, Observable, Tree, ObjectStoreModel,
-    
+
     registry, on, array,
 
     lang,
 
     parser, ready
     ) {
-    //Checkbox tree reference: 
+    //Checkbox tree reference:
     //http://thejekels.com/dojo/cbtree_AMD.html
     //https://github.com/pjekel/cbtree/wiki
     //http://thejekels.com/cbtree/demos/ArcGIS.php
-    store = Observable( new Memory( { data: 
+    store = Observable( new Memory( { data:
         treeHierarchyData }));
-      
+
     cbTreeModel = new ObjectStoreModel({
         store: store,
         query: {id: "root"},
@@ -61,19 +61,21 @@ require([
         checkedRoot: true
     });
 
-    function checkBoxClicked( item, nodeWidget, evt ) { 
+    function checkBoxClicked( item, nodeWidget, evt ) {
+        console.log('checkbox clicked');
+
         var checked = nodeWidget.get("checked");
 
         //get the text of the checked box
         var label = this.model.getLabel(item);
 
         var ChildrenLayers=TreeLayerNamesMapToWMSLayers[label]; // the children layers of a layer
-        
+
         //layers in loadMap.js is the container of true WMS layers
         if(checked){
             for(var layerIdx in ChildrenLayers){ //in JS, layer is an index of ChildrenLayers, i.e. 0, 1, ......
                 var WMSLayerName=ChildrenLayers[layerIdx];
-                map.addLayer(layers[WMSLayerName]); 
+                map.addLayer(layers[WMSLayerName]);
                 checkedLayers.push(WMSLayerName); //add the layer to the checked layer group, clearMap()
                 showLegend(WMSLayerNamesMapToTreeLayerNames[WMSLayerName]); //show the legend
             }
@@ -82,14 +84,14 @@ require([
             for(var layerIdx in ChildrenLayers){
                 var WMSLayerName=ChildrenLayers[layerIdx];
                 map.removeLayer(layers[WMSLayerName]);
-                
+
                 //remove the layer from the checked layer group, clearMap()
                 var index = checkedLayers.indexOf(WMSLayerName);
                 checkedLayers.splice(index, 1);
-                
+
                 //alert(WMSLayerNamesMapToTreeLayerNames[WMSLayerName]);
                 hideLegend(WMSLayerNamesMapToTreeLayerNames[WMSLayerName]); //hide the legend
-                
+
                 //handle the dangling popup graphic
                 var fullLayerName="nurail:"+WMSLayerName;
                 if(fullLayerName==layerOfLastPopupGraphic){
@@ -104,7 +106,7 @@ require([
         } else {
             tree.set("iconStyle", {border:"none"}, item );
             tree.set("labelStyle",{color:"black"}, item );
-        }                       
+        }
         alert( "The new state for " + label + " is: " + checked );
          */
     }
@@ -164,12 +166,18 @@ require([
             function showAreasAndLengths(evt) {
                 var html = "";
                 for (var i=0;i<evt.result.areas.length;i++) {
+                    if (i==0) {
+                        html += "Selected Area:<br />"
+                    }
+                    else {
+                        html += "Buffered Area:<br />"
+                    }
                     html += "Area: " + evt.result.areas[i] + " km<sup>2</sup><br />"
-                    + "Length: " + evt.result.lengths[i] + " km<br />";
+                    + "Length: " + evt.result.lengths[i] + " km<br /><br />";
                 }
                 $('#areas-and-lengths').html(html);
             });
-      
+
         // geocoding function
         locator = new Locator("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
         locator.on("address-to-locations-complete",
@@ -216,7 +224,7 @@ require([
         map.on("load", function () {
             toolbarDraw = new Draw(map);
             toolbarDraw.on("draw-end", addDrawToMap);
-            
+
             // add basemap gallery
             // reference: http://help.arcgis.com/en/webapi/javascript/arcgis/jssamples/map_agol.html
             // array.forEach(basemapGallery.basemaps, function (bmap) {
@@ -230,7 +238,7 @@ require([
             //         })
             //     );
             // });
-            
+
             // initialize overview map
             // var overviewMapDijit = new OverviewMap({
             //     map : map,
@@ -340,7 +348,7 @@ require([
             getArea();
             loadFeatureData(drawnGraphics[drawnGraphics.length-1].geometry);
             openAccordion('#step4');
-            
+
         }
 
         function openAccordion(selector) {
@@ -350,7 +358,7 @@ require([
 
         // Create the WMS_layer for each layer in layers
         for(var idx in layers){
-            
+
             // console.log("layers["+idx+"]:", layers[idx]);
 
             layers[idx] = new dojo.declare(esri.layers.DynamicMapServiceLayer, {
@@ -362,7 +370,7 @@ require([
                     this.id=idx;
                     //alert(this.id);
                 },
-        
+
                 //
                 //invoked when "map.addLayer" method is invoked
                 //
@@ -373,7 +381,7 @@ require([
                     // * WMS’es created by other software. I had change
                     // * the parameters to a string this section up a bit.
                     // **********************************************//
-                  
+
                     var params =
                         "service="+"WMS"+
                         "&version=" + "1.1.0" +
@@ -385,10 +393,10 @@ require([
                         "&height=" + height +
                         "&styles=" +
                         "&format=" + "image/png";
-                    
+
                     gs.project([ extent ], new esri.SpatialReference({wkid:3857}) , function (features) {
                         var translatedExtent = features[0];
-                        //alert(translatedExtent.spatialReference.wkid+","+translatedExtent.xmin);  
+                        //alert(translatedExtent.spatialReference.wkid+","+translatedExtent.xmin);
                         params +="&bbox=" + translatedExtent.xmin+","+translatedExtent.ymin+","+translatedExtent.xmax+","+translatedExtent.ymax;
                         //"&bbox=" + "-87.7575678843978,41.8509798545157,-87.5445361155993,41.893928932665";
                         // "&exceptions=" + "application/vnd.ogc.se_xml"
@@ -396,9 +404,9 @@ require([
                         if (remote) callback("http://nurail.uic.edu/geoserver/nurail/wms?" + params );
                         else callback("http://localhost:8088/geoserver/NURail/wms?" + params );
                     });
-                    
+
                 } //end of method getImageUrl()
-                
+
             })(idx); //end of declare
 
             //console.log("layers["+idx+"]:", layers[idx]);
@@ -476,7 +484,7 @@ require([
                         drawnShape += geom.rings[0][i][0] + ' ' + geom.rings[0][i][1] + ',';
                     }
                     else {
-                        drawnShape += geom.rings[0][i][0] + ' ' + geom.rings[0][i][1] + '))';   
+                        drawnShape += geom.rings[0][i][0] + ' ' + geom.rings[0][i][1] + '))';
                     }
                 }
             }
@@ -489,6 +497,10 @@ require([
             else { // geom.type === "point"
                 drawnShape += "POINT()";
             }
+
+            console.log("checkedLayers:", checkedLayers);
+
+            $("#feature-data").html("");
 
             for (var idx in checkedLayers) {
                 console.log('~~~~~start', idx);
@@ -516,7 +528,7 @@ require([
                         console.log(geom.type);
                     }
                     else { // geom.type === "point"
-                        console.log(geom.type);   
+                        console.log(geom.type);
                     }
 
                     console.log(url);
@@ -532,7 +544,7 @@ require([
                             var myRow = {};
 
                             var myProperties = myFeatures[ii].properties;
-                        
+
                             for (var prop in myProperties) {
                                 myRow[meaningfulAttributeNames[prop]] = myProperties[prop];
                             }
@@ -568,13 +580,13 @@ require([
 
             console.log('clicked');
             event.preventDefault();
-     
+
             /**
              * Set the overlay variable based on the data provided
              * by the overlay trigger.
              */
             var overlay = $( this ).data( 'overlay' );
-     
+
             /**
              * If the overlay variable is not defined, give a message
              * and return.
@@ -583,14 +595,14 @@ require([
                 console.log( 'You must provide the overlay id in the trigger. (data-overlay="overlay-id").' );
                 return;
             }
-     
+
             /**
              * If we've made it this far, we should have the data
              * needed to open a overlay. Here we set the id variable
              * based on overlay variable.
              */
             var id = '#' + overlay;
-     
+
             /**
              * Let's open up the overlay and prevent the body from
              * scrolling, both by adding a simple class. The rest
@@ -598,7 +610,7 @@ require([
              */
             $( id ).addClass( 'overlay-open' );
             $( 'body' ).addClass( 'overlay-view' );
-     
+
             /**
              * When the overlay outer wrapper or `overlay-close`
              * triger is clicked, lets remove the classes from
@@ -613,7 +625,7 @@ require([
                     $( 'body' ).removeClass( 'overlay-view' );
                 }
             });
-     
+
             /**
              * Closes the overlay when the esc key is pressed. See
              * comment above on closing the overlay for more info
@@ -718,8 +730,8 @@ require([
         //'Shape_Area': 'Shape_Area', // CHANGE // need to know whether it's acre or sq ft
 
         // Bird Presence
-        'Species': 'Species Name', 
-        'Population': 'Species Population', 
+        'Species': 'Species Name',
+        'Population': 'Species Population',
         'IUCN_Categ': 'IUCN Category',
 
         // Critical Habitat
@@ -739,7 +751,7 @@ require([
 
         'comname':'COMMON NAME',
         'sciname':'SCIENTIFIC NAME',
-        
+
         'SHAPE_Leng':'LENGTH',
         'Shape_Leng':'LENGTH',
         'Shape_Area':'AREA',
@@ -753,9 +765,9 @@ require([
         'class':'TRACK CLASS',
         'signal':'SIGNALED',
         'risk':'RISK',
-        'risk_unit':' accidents/billion gross ton-miles',        
+        'risk_unit':' accidents/billion gross ton-miles',
         'confidence':'RISK 95% CONFIDENCE INTERVAL',
-        
+
         //areas to avoid
         'Field4':'LEVEL',
         'SoVI':'SOCIAL VULENERABILITY INDEX'
@@ -793,7 +805,7 @@ require([
                 ,'nurail:vacant':['LANDUSE3', 'Shape_Area']
                 ,'nurail:water':['LANDUSE3', 'Shape_Area']
                 ,'nurail:wetland':['LANDUSE3', 'Shape_Area']
-            
+
             // Safety
                 // Rail Safety Performance
                 ,'nurail:accident':[] // CHANGE
@@ -815,7 +827,7 @@ require([
             ,'nurail:income':['NAME', 'MEDHINC']
 
             // Environmental Sustainability
-                // Modeled Air Emissions  
+                // Modeled Air Emissions
                 ,'nurail:hotspot_buffer':[]
                 ,'nurail:carbon':['TOT_CO2']
                 ,'nurail:co':['TOT_CO']
@@ -825,7 +837,7 @@ require([
                 // Groundwater
                 ,'nurail:alluvial_glacial_aquifers':['AREA']
                 ,'nurail:shallowest_principal_aquifers':['ROCK_NAME', 'AQ_NAME', 'Shape_Leng', 'Shape_Area']
-                // Habitat 
+                // Habitat
                 ,'nurail:bird':['Species', 'Population', 'IUCN_Categ']
                 ,'nurail:habitat':[] // CHANGE
                 ,'nurail:natural_area':['ACRES', 'NAME']
@@ -837,11 +849,11 @@ require([
         init(); //this must be wrapped into ready function ()
 
         //start left pane
-        var tree= new Tree( { 
-            model: cbTreeModel, 
-            id:"MapLayerTree" 
+        var tree= new Tree( {
+            model: cbTreeModel,
+            id:"MapLayerTree"
         }, "CheckboxTree" );
-        
+
         // Establish listener and start the tree.
         tree.on("checkBoxClick", checkBoxClicked);
 
@@ -852,9 +864,9 @@ require([
             checkedLayers.push(label);
             showLegend(WMSLayerNamesMapToTreeLayerNames[label]);
         }
-        
+
         tree.startup();
-        
+
         $('#MapLayerTree').css('overflow', 'hidden');
 
         console.log('done');
