@@ -550,19 +550,74 @@ require([
 
                             var myFeatures = obj.features;
 
+                            var totalArea = 0;
+                            var totalLength = 0;
+                            var hasArea = false;
+                            var hasLength = false;
+
+                            var myProperties = myFeatures[0].properties;
+
+                            for (var prop in myProperties) {
+                                if (prop === 'Shape_Area' || prop === 'AREA' || prop === 'ACRES') {
+                                    hasArea = true;
+                                }
+                                if (prop === 'SHAPE_Leng' || prop === 'Shape_Leng') {
+                                    hasLength = true;
+                                }
+                            }
+
+
                             for (var ii in myFeatures) {
 
                                 var myRow = {};
 
                                 var myProperties = myFeatures[ii].properties;
 
-                                for (var prop in myProperties) {
+                                myRow['id'] = ii;
+
+                                for (prop in myProperties) {
+
                                     myRow[meaningfulAttributeNames[prop]] = myProperties[prop];
+                                    if (prop === 'Shape_Area' || prop === 'AREA' || prop === 'ACRES') {
+                                        totalArea += myProperties[prop];
+                                    }
+                                    if (prop === 'SHAPE_Leng' || prop === 'Shape_Leng') {
+                                        totalLength += myProperties[prop];
+                                    }
                                 }
 
                                 myTable.data.push(myRow);
+                            }
 
-                                console.log('myRow:', myRow);
+                            if (hasArea) {
+                                myRow = {};
+                                myRow['id'] = 'TOTAL AREA';
+                                myProperties = myFeatures[0].properties;
+                                for (prop in myProperties) {
+                                    if (prop === 'Shape_Area' || prop === 'AREA' || prop === 'ACRES') {
+                                        myRow[meaningfulAttributeNames[prop]] = totalArea;
+                                    }
+                                    else {
+                                        myRow[meaningfulAttributeNames[prop]] = '';
+                                    }
+                                }
+                                myTable.data.push(myRow);
+                            }
+
+                            if (hasLength) {
+                                myRow = {};
+                                myRow['id'] = 'TOTAL LENGTH';
+                                myProperties = myFeatures[0].properties;
+                                for (prop in myProperties) {
+                                    if (prop === 'SHAPE_Leng' || prop === 'Shape_Leng') {
+                                        myRow[meaningfulAttributeNames[prop]] = totalLength;
+                                    }
+                                    else {
+                                        myRow[meaningfulAttributeNames[prop]] = '';
+                                    }
+                                }
+
+                                myTable.data.push(myRow);
                             }
 
                             myTable.html = ConvertJsonToTable(myTable.data, 'jsonTable', null, 'Download');
