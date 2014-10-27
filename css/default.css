@@ -23,6 +23,10 @@ html, body {
 	border-radius: 0;
 }
 
+.map .tooltip {
+	opacity: 1;
+}
+
 #nav-left {
 	padding: 2px;
 }
@@ -423,7 +427,7 @@ html, body {
 
 #rightPane {
 	color: #343642;
-	font: 100% Georgia, "Times New Roman", Times, serif;	
+	font: 100% Georgia, "Times New Roman", Times, serif;
 }*/
 
 #loadGif {

@@ -128,9 +128,9 @@ require([
         map = new Map("map", {
             basemap : 'gray',
             center : [-87.651052, 41.872458],
-            zoom : 10, //6
-            sliderStyle : "large",
-            logo: false
+            zoom : 10//, //6
+            //sliderStyle : "large",
+            //logo: false
             //showAttribution: false
         });
 
@@ -141,8 +141,9 @@ require([
             map : map
         });
 
-        //gs = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
+        // gs = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
         gs = new GeometryService("http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer");
+
 
         /* note:
         if using tasks.arcgisonline.com {
@@ -221,8 +222,8 @@ require([
             }
         );
 
-        map.on("load", function () {
-            toolbarDraw = new Draw(map);
+        map.on("load", function (evtObj) {
+            toolbarDraw = new Draw(evtObj.map);
             toolbarDraw.on("draw-end", addDrawToMap);
 
             // add basemap gallery
