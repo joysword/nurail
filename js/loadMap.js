@@ -503,74 +503,85 @@ require([
             $("#feature-data").html("");
 
             for (var idx in checkedLayers) {
-                console.log('~~~~~start', idx);
                 (function (idx) {
                     console.log('~~~~~in ', idx);
                     var myTable = {};
 
                     var layerName = 'nurail:'+checkedLayers[idx];
-                    console.log(layerName);
 
-                    myTable.title = WMSLayerNamesMapToTreeLayerNames[checkedLayers[idx]];
-                    myTable.data = [];
-
-                    //Restful url for WFS service  http://docs.geoserver.org/stable/en/user/services/wfs/reference.html
-                    //geometry_name:"the_geom" https://wiki.state.ma.us/confluence/display/massgis/GeoServer+-+WFS+-+Filter+-+DWithin
-                    //version must be 1.0.0 why?
-                    var url = "";
-                    if (geom.type === "polygon") {
-                        url='http://nurail.uic.edu/geoserver/nurail/ows?service=WFS&version=1.0.0&request=GetFeature&typeName='+layerName+'&cql_filter=INTERSECTS(the_geom,' + drawnShape + ')&propertyName='+popupAttributesForLayer[layerName]+'&outputFormat=application/json';
+                    if (checkedLayers[idx] == 'Blue'
+                        || checkedLayers[idx] == 'Brown'
+                        || checkedLayers[idx] == 'Green'
+                        || checkedLayers[idx] == 'Orange'
+                        || checkedLayers[idx] == 'Pink'
+                        || checkedLayers[idx] == 'Purple'
+                        || checkedLayers[idx] == 'Red'
+                        || checkedLayers[idx] == 'Yellow'
+                        || checkedLayers[idx] == 'MetroLinssshp') {
                     }
-                    else if (geom.type === "polyline") {
-                        console.log(geom.type);
-                    }
-                    else if (geom.type === "multipoint") {
-                        console.log(geom.type);
-                    }
-                    else { // geom.type === "point"
-                        console.log(geom.type);
-                    }
+                    else {
 
-                    console.log(url);
+                        console.log(layerName);
+                        console.log(popupAttributesForLayer[layerName]);
 
-                    //asynochronous function to deal with the response
-                    $.getJSON(url, function (obj) {
-                        console.log('~~~~~in ', idx, "'s getJSON");
+                        myTable.title = WMSLayerNamesMapToTreeLayerNames[checkedLayers[idx]];
+                        myTable.data = [];
 
-                        var myFeatures = obj.features;
-
-                        for (var ii in myFeatures) {
-
-                            var myRow = {};
-
-                            var myProperties = myFeatures[ii].properties;
-
-                            for (var prop in myProperties) {
-                                myRow[meaningfulAttributeNames[prop]] = myProperties[prop];
-                            }
-
-                            myTable.data.push(myRow);
-
-                            console.log('myRow:', myRow);
+                        //Restful url for WFS service  http://docs.geoserver.org/stable/en/user/services/wfs/reference.html
+                        //geometry_name:"the_geom" https://wiki.state.ma.us/confluence/display/massgis/GeoServer+-+WFS+-+Filter+-+DWithin
+                        //version must be 1.0.0 why?
+                        var url = "";
+                        if (geom.type === "polygon") {
+                            url='http://nurail.uic.edu/geoserver/nurail/ows?service=WFS&version=1.0.0&request=GetFeature&typeName='+layerName+'&cql_filter=INTERSECTS(the_geom,' + drawnShape + ')&propertyName='+popupAttributesForLayer[layerName]+'&outputFormat=application/json';
+                        }
+                        else if (geom.type === "polyline") {
+                            console.log(geom.type);
+                        }
+                        else if (geom.type === "multipoint") {
+                            console.log(geom.type);
+                        }
+                        else { // geom.type === "point"
+                            console.log(geom.type);
                         }
 
-                        myTable.html = ConvertJsonToTable(myTable.data, 'jsonTable', null, 'Download');
+                        //asynochronous function to deal with the response
+                        $.getJSON(url, function (obj) {
+                            console.log('~~~~~in ', idx, "'s getJSON");
 
-                        console.log("myTable:", myTable);
+                            var myFeatures = obj.features;
 
-                        console.log("html:", myTable.html);
+                            for (var ii in myFeatures) {
 
-                        $("#feature-data").html(function (idx, html) {
-                            return html + "<h5>" + myTable.title + "</h5>" + myTable.html;
+                                var myRow = {};
+
+                                var myProperties = myFeatures[ii].properties;
+
+                                for (var prop in myProperties) {
+                                    myRow[meaningfulAttributeNames[prop]] = myProperties[prop];
+                                }
+
+                                myTable.data.push(myRow);
+
+                                console.log('myRow:', myRow);
+                            }
+
+                            myTable.html = ConvertJsonToTable(myTable.data, 'jsonTable', null, 'Download');
+
+                            console.log("myTable:", myTable);
+
+                            console.log("html:", myTable.html);
+
+                            $("#feature-data").html(function (idx, html) {
+                                return html + "<h5>" + myTable.title + "</h5>" + myTable.html;
+                            });
+
+                            console.log('~~~~~out', idx, "'s getJSON");
+
                         });
 
-                        console.log('~~~~~out', idx, "'s getJSON");
+                    }
 
-                    });
-
-                    console.log('~~~~~out', idx);
                 })(idx);
-                console.log('~~~~~end  ', idx);
             }
 
         }
