@@ -173,8 +173,8 @@ require([
                     else {
                         html += "Buffered Area:<br />"
                     }
-                    html += "Area: " + evt.result.areas[i] + " km<sup>2</sup><br />"
-                    + "Length: " + evt.result.lengths[i] + " km<br /><br />";
+                    html += "Area: " + evt.result.areas[i].toFixed(2) + " km<sup>2</sup><br />"
+                    + "Length: " + evt.result.lengths[i].toFixed(2) + " km<br /><br />";
                 }
                 $('#areas-and-lengths').html(html);
             });
