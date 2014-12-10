@@ -1,6 +1,8 @@
 var map, locator;
 var lastPopupGraphic, layerOfLastPopupGraphic; //when the layer it attaches to is removed, it should be also removed from the map
 
+var cur_shape;
+
 require([
     "esri/dijit/OverviewMap", "esri/map", "esri/dijit/BasemapGallery",
     "esri/tasks/locator", "esri/tasks/GeometryService", "esri/dijit/Geocoder",
@@ -165,16 +167,24 @@ require([
         */
         gs.on("areas-and-lengths-complete",
             function showAreasAndLengths(evt) {
+                console.log('in showAreasAndLength, meaning areas-and-legnth-complete')
                 var html = "";
-                for (var i=0;i<evt.result.areas.length;i++) {
-                    if (i==0) {
-                        html += "Selected Area:<br />"
+                if (evt.result.areas.length == 1) {
+                    html += "Buffered Area:<br />"
+                    html += "Area: " + evt.result.areas[0].toFixed(2) + " km<sup>2</sup><br />"
+                        + "Length: " + evt.result.lengths[0].toFixed(2) + " km<br /><br />";
+                }
+                else {
+                    for (var i=0;i<evt.result.areas.length;i++) {
+                        if (i==0) {
+                            html += "Selected Area:<br />"
+                        }
+                        else {
+                            html += "Buffered Area:<br />"
+                        }
+                        html += "Area: " + evt.result.areas[i].toFixed(2) + " km<sup>2</sup><br />"
+                        + "Length: " + evt.result.lengths[i].toFixed(2) + " km<br /><br />";
                     }
-                    else {
-                        html += "Buffered Area:<br />"
-                    }
-                    html += "Area: " + evt.result.areas[i].toFixed(2) + " km<sup>2</sup><br />"
-                    + "Length: " + evt.result.lengths[i].toFixed(2) + " km<br /><br />";
                 }
                 $('#areas-and-lengths').html(html);
             });
@@ -251,7 +261,9 @@ require([
         $(".draw-button").on("click", activateDrawTool);
 
         function activateDrawTool() {
+            // get the type of shape that to be drawn
             var tool = $(this).text().toUpperCase().replace(/ /g, "_");
+            // activate the draw tool
             toolbarDraw.activate(Draw[tool]);
             map.hideZoomSlider();
 
@@ -307,7 +319,8 @@ require([
                 $.each(drawnGraphics, function (i, graphic) {
                     var geometry = graphic.geometry;
                     if (geometry.type === "polygon") {
-                        //if geometry is a polygon then simplify polygon. This will make the user drawn polygon topologically correct.
+                        // if geometry is a polygon then simplify polygon
+                        // This will make the user drawn polygon topologically correct.
                         gs.simplify([geometry], function (geometries) {
                             params.geometries = geometries;
                             gs.buffer(params, showBuffer);
@@ -343,6 +356,7 @@ require([
                 var graphic = new Graphic(geometry, symbol);
                 map.graphics.add(graphic);
                 drawnGraphics.push(graphic);
+                console.log('drawnGraphics.length:', drawnGraphics.length);
             });
 
             console.log('here 4444');
@@ -457,14 +471,17 @@ require([
         });
 
         function getArea() {
+            console.log('in getArea');
             var params = new AreasAndLengthsParameters();
             params.lengthUnit = GeometryService.UNIT_KILOMETER;
             params.areaUnit = GeometryService.UNIT_SQUARE_KILOMETERS;
             params.calculationType = "geodesic";
             var polygons = [];
             for (var i in drawnGraphics) {
-                polygons.push(drawnGraphics[i].geometry);
-                console.log('pushed',i);
+                if (drawnGraphics[i].geometry.type === 'polygon') {
+                    polygons.push(drawnGraphics[i].geometry);
+                    console.log('pushed',i);
+                }
             }
             //console.log(drawnGraphics);
             params.polygons = polygons;
