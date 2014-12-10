@@ -24,9 +24,10 @@
 
 .overlay-inner {
   background: #FFF;
-  margin: 5rem auto;
-  padding: 4rem;
+  margin: 2rem auto;
+  padding: 2rem;
   max-width: 90%;
+  text-align: center;
 }
 
 .overlay-inner h5 {
