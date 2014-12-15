@@ -170,7 +170,7 @@ require([
                 console.log('in showAreasAndLength, meaning areas-and-legnth-complete')
                 var html = "";
                 if (evt.result.areas.length == 1) {
-                    html += "Buffered Area:<br />"
+                    html += "Selected Area:<br />"
                     html += "Area: " + evt.result.areas[0].toFixed(2) + " km<sup>2</sup><br />"
                         + "Length: " + evt.result.lengths[0].toFixed(2) + " km<br /><br />";
                 }
