@@ -258,7 +258,7 @@ function findRelevantLayer(){
 	//data structures for supporting the "layer search" function
 
 	dojo.byId("layerSearchResult").style.visibility='visible';
-	
+
 	var keyword =dojo.byId("layerSearchKeyword").value.toLowerCase();
 	dojo.byId("layerSearchResult").value="";
 	for (var idx in layerNamesInTheLeftPane){
@@ -275,14 +275,14 @@ var numberOfCheckedLandUseCategory=0;
 
 function hideLegend(label){
 	var layerNameHTMLNode, legendURLHTMLNode;
-	switch(label){     
+	switch(label){
 		case "Railroad Speed":
 			dojo.byId("railSpeedLegendLabel").innerHTML="";
 			dojo.byId("railSpeedLegendPicture").innerHTML="";
-			break;   
-		
+			break;
+
 		//landuse
-		case "Land Use": 
+		case "Land Use":
 		case "Agriculture":
 		case "Commercial/Office":
 		case "Forest/Grassland":
@@ -303,7 +303,7 @@ function hideLegend(label){
 				numberOfCheckedLandUseCategory=0;
 			}
 			break;
-		
+
 		//demographics
 		case "Transit Accessibility":
 			dojo.byId("incomeLegendLabel").innerHTML="";
@@ -312,7 +312,7 @@ function hideLegend(label){
 			dojo.byId("employmentLegendPicture").innerHTML="";
 			dojo.byId("populationLegendLabel").innerHTML="";
 			dojo.byId("populationLegendPicture").innerHTML="";
-			break;                    
+			break;
 		case "Population Density":
 		case "Employment Density":
 		case "Median Household Income":
@@ -320,14 +320,14 @@ function hideLegend(label){
 			dojo.byId(fields[0]+"LegendLabel").innerHTML="";
 			dojo.byId(fields[0]+"LegendPicture").innerHTML="";
 			break;
-			
-		//emissions    
+
+		//emissions
 		case "Modeled Air Emissions":
 			dojo.byId("allPollutantsLegendLabel").innerHTML="";
 			dojo.byId("allPollutantsLegendPicture").innerHTML="";
 			break;
 		case "Carbon":
-	   
+
 		case "Hydrocarbon":
 		case "NOx":
 		case "PM10":
@@ -341,7 +341,7 @@ function hideLegend(label){
 			dojo.byId("COLegendLabel").innerHTML="";
 			dojo.byId("COLegendPicture").innerHTML="";
 			break;
-	} 
+	}
 }
 
 function showLegend(label){
@@ -351,9 +351,9 @@ function showLegend(label){
 			legendURL="\/img\/legends\/rail_speed.png";
 			dojo.byId("railSpeedLegendLabel").innerHTML="Rail Speed (km/h) </br>";
 			dojo.byId("railSpeedLegendPicture").innerHTML="<img style=\"border:none;\" src="+legendURL+">";
-			break; 
-		
-		case "Land Use": 
+			break;
+
+		case "Land Use":
 		case "Agriculture":
 		case "Commercial/Office":
 		case "Forest/Grassland":
@@ -374,12 +374,12 @@ function showLegend(label){
 				numberOfCheckedLandUseCategory=numberOfCheckedLandUseCategory+1;
 			}
 			break;
-			
+
 		case "Transit Accessibility":
 			legendURL="\/img\/legends\/population.png";
 			dojo.byId("populationLegendLabel").innerHTML="Population Density \</br> (persons/acre) </br>";
 			dojo.byId("populationLegendPicture").innerHTML="<img height=\"180\" width=\"160\" style=\"border:none;\" src="+legendURL+">";
-			
+
 			legendURL="\/img\/legends\/income.png";
 			dojo.byId("incomeLegendLabel").innerHTML="Income Level \</br> (dollar/year) </br>";
 			dojo.byId("incomeLegendPicture").innerHTML="<img height=\"120\" width=\"160\" style=\"border:none;\" src="+legendURL+">";
@@ -399,14 +399,14 @@ function showLegend(label){
 			dojo.byId("PopulationLegendLabel").innerHTML="Population Density \</br> (persons/acre) </br>";
 			dojo.byId("PopulationLegendPicture").innerHTML="<img height=\"180\" width=\"160\" style=\"border:none;\" src="+legendURL+">";
 			break;
-		
-			
+
+
 		case "all pollutants emissions":
 			legendURL="\/img\/legends\/hotspots.png";
 			dojo.byId("allPollutantsLegendLabel").innerHTML=label+ " \</br> ";
 			dojo.byId("allPollutantsLegendPicture").innerHTML="<img height=\"120\" width=\"160\" style=\"border:none;\" src="+legendURL+">";
 			break;
-		
+
 		case "Carbon":
 		case "Hydrocarbon":
 		case "NOx":
