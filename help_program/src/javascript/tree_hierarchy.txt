@@ -53,8 +53,8 @@ Livable Communities
 Transit Equity
     Median Household Income: income
         //Percentage of Minority Individuals
-Environmental Sustainability  
-    Modeled Air Emissions  
+Environmental Sustainability
+    Modeled Air Emissions
         Emission Hotspots : hotspot_buffer
         //SO2 (need data) 
         Carbon:  carbon
