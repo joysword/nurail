@@ -329,13 +329,10 @@ require([
                         params.geometries = [geometry];
                         gs.buffer(params, showBuffer);
                     }
-                    console.log('here 1111');
                 });
 
-                console.log('here 2222');
             }
             else {
-                console.log('here 3333');
                 getArea();
                 loadFeatureData(drawnGraphics[drawnGraphics.length-1].geometry);
                 openAccordion('#step4');
@@ -522,7 +519,6 @@ require([
 
             for (var idx in checkedLayers) {
                 (function (idx) {
-                    console.log('~~~~~in ', idx);
                     var myTable = {};
 
                     var layerName = 'nurail:'+checkedLayers[idx];
@@ -564,7 +560,6 @@ require([
 
                         //asynochronous function to deal with the response
                         $.getJSON(url, function (obj) {
-                            console.log('~~~~~in ', idx, "'s getJSON");
 
                             var myFeatures = obj.features;
 
@@ -640,15 +635,9 @@ require([
 
                             myTable.html = ConvertJsonToTable(myTable.data, 'jsonTable', null, 'Download');
 
-                            console.log("myTable:", myTable);
-
-                            console.log("html:", myTable.html);
-
                             $("#feature-data").html(function (idx, html) {
                                 return html + "<h5>" + myTable.title + "</h5>" + myTable.html;
                             });
-
-                            console.log('~~~~~out', idx, "'s getJSON");
 
                         });
 
