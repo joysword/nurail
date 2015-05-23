@@ -63,10 +63,19 @@ Environmental Sustainability
         Hydrocarbon: hydrocarbon
         PM10: pm
     Groundwater
-        Alluvial/Glacial Aquifer:  alluvial_glacial_aquifers
-        Shallowest Principal Aquifer:shallowest_principal_aquifers
+        Alluvial/Glacial Aquifer:  alluvial_glacial_aquifers_IL
+        Shallowest Principal Aquifer:shallowest_principal_aquifers_IL
     Habitat 
         Bird Presence : bird
         Critical Habitat: habitat
         Natural Area: natural_area
         Riparian Zone : riverine
+Potential High Adverse Impact Area
+    Critical Habitat : habitat_1
+    Wetlands : wetland_1
+    Water : water_1
+    Riparian Zone : riverine_1
+    Shallowest Principal Aquifer : shallowest_principal_aquifers_IL_1
+    Alluvial/Glacial Aquifer : alluvial_glacial_aquifers_IL_1
+    High Accident Potential :  High_Accident_Risks
+    High Risks of Flood Hazard : 100_yr_flood_zone
