@@ -413,7 +413,7 @@ require([
                         //"&bbox=" + "-87.7575678843978,41.8509798545157,-87.5445361155993,41.893928932665";
                         // "&exceptions=" + "application/vnd.ogc.se_xml"
 
-                        if (remote) callback("http://nurail.uic.edu/geoserver/nurail/wms?" + params );
+                        if (remote) callback("http://52.7.51.7/geoserver/nurail/wms?" + params );
                         else callback("http://localhost:8088/geoserver/NURail/wms?" + params );
                     });
 
@@ -546,7 +546,7 @@ require([
                         //version must be 1.0.0 why?
                         var url = "";
                         if (geom.type === "polygon") {
-                            url='http://nurail.uic.edu/geoserver/nurail/ows?service=WFS&version=1.0.0&request=GetFeature&typeName='+layerName+'&cql_filter=INTERSECTS(the_geom,' + drawnShape + ')&propertyName='+popupAttributesForLayer[layerName]+'&outputFormat=application/json';
+                            url='http://52.7.51.7/geoserver/nurail/ows?service=WFS&version=1.0.0&request=GetFeature&typeName='+layerName+'&cql_filter=INTERSECTS(the_geom,' + drawnShape + ')&propertyName='+popupAttributesForLayer[layerName]+'&outputFormat=application/json';
                         }
                         else if (geom.type === "polyline") {
                             console.log(geom.type);
